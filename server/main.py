@@ -2,57 +2,52 @@
 main.py — FastAPI application for PocketAI.
 
 Endpoints:
-  GET  /                          → serves the chat UI (index.html)
-  GET  /api/status                → hardware tier, model names, cache stats
-  POST /api/chat                  → SSE stream: dual/single-model inference
-  GET  /api/sessions              → list recent sessions (title + timestamp)
-  GET  /api/sessions/{id}/messages → full message history for a session
-  POST /api/memories              → save a persistent user memory
-  GET  /api/memories              → list all memories
-  DELETE /api/memories/{id}       → delete a memory
-  GET  /api/cache/stats           → cache hit/miss statistics
-
-Startup behaviour:
-  If POCKETAI_MODE=usb, starts llama-server.exe processes from the USB before
-  accepting requests. In Ollama mode (default) assumes Ollama is already running.
-
-Session summaries:
-  After every AI response that brings a session to 4+ messages, a background task
-  generates a short summary and saves it. These summaries are prepended as context
-  in every future session (the "context from recent conversations" feature).
+  GET  /                            → chat UI
+  GET  /api/status                  → tier, models, cache stats
+  POST /api/chat                    → SSE inference stream
+  GET  /api/sessions                → recent sessions
+  GET  /api/sessions/{id}/messages  → session message history
+  POST /api/memories                → save a persistent memory
+  GET  /api/memories                → list memories
+  DELETE /api/memories/{id}         → delete a memory
+  GET  /api/cache/stats             → cache statistics
+  POST /api/upload                  → upload a file (PDF/docx/text/code)
+  GET  /api/uploads                 → list active file uploads
+  DELETE /api/uploads/{id}          → remove an uploaded file
+  POST /api/shutdown                → gracefully stop the server
 """
 
 import asyncio
 import json
 import os
+import sys
 import time
 import uuid
 from pathlib import Path
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.responses import HTMLResponse, StreamingResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from server import cache as cache_mod
-from server import memory as mem_mod
+from server import cache    as cache_mod
+from server import memory   as mem_mod
 from server import inference as inf_mod
+from server import uploads  as uploads_mod
 from server.config import detect_config, SERVER_PORT, USB_MODE
 
-# Lazy import — only used in USB mode
 _launcher = None
 
 app = FastAPI(title="PocketAI", docs_url=None, redoc_url=None)
 
-_HERE = Path(__file__).parent.parent
+_HERE = Path(__file__).resolve().parent.parent
 _UI   = _HERE / "ui"
 
 app.mount("/static", StaticFiles(directory=str(_UI)), name="static")
 
-# Seconds to wait for a model token before giving up
-MODEL_TIMEOUT = 300   # 5 min — covers cold-start model loading on first request
+MODEL_TIMEOUT = 300
 
 
-# ── Startup / shutdown ───────────────────────────────────────────
+# ── Lifecycle ────────────────────────────────────────────────────
 
 @app.on_event("startup")
 async def startup():
@@ -73,7 +68,7 @@ async def shutdown():
         await _launcher.stop()
 
 
-# ── Static UI ────────────────────────────────────────────────────
+# ── UI ───────────────────────────────────────────────────────────
 
 @app.get("/", response_class=HTMLResponse)
 async def index():
@@ -96,20 +91,17 @@ async def status():
     }
 
 
-# ── Chat (SSE streaming) ─────────────────────────────────────────
+# ── Chat (SSE) ───────────────────────────────────────────────────
 
 @app.post("/api/chat")
 async def chat(request: Request):
     """
-    Accepts:  { "query": "...", "session_id": "..." }
-    Returns:  Server-Sent Events stream
-
-    Event types:
-      {"type": "token_a",     "token": "..."}   — model A live token
-      {"type": "token_b",     "token": "..."}   — model B live token
-      {"type": "merge_token", "token": "..."}   — merged/final answer token
-      {"type": "done",        "cached": bool, "session_id": "..."}
-      {"type": "error",       "message": "..."}
+    Body: { "query": "...", "session_id": "..." }
+    SSE events:
+      token_a / token_b   — live model tokens (thinking indicator)
+      merge_token         — answer tokens shown in chat bubble
+      done                — {"cached": bool, "session_id": "..."}
+      error               — {"message": "..."}
     """
     body       = await request.json()
     query      = body.get("query", "").strip()
@@ -121,26 +113,28 @@ async def chat(request: Request):
     cfg = detect_config()
 
     async def event_stream():
-        # ── Cache hit — stream cached answer directly ────────────
+        # Inject active file context into the query
+        file_ctx = uploads_mod.build_file_context()
+        effective_query = f"{file_ctx}\n\nUser question: {query}" if file_ctx else query
+
+        # Cache check (uses original query as key, not the expanded one)
         cached = await cache_mod.get_cached(query, cfg.model_a, cfg.model_b)
         if cached:
             for chunk in inf_mod._stream_text(cached, chunk_size=8):
                 yield f"data: {json.dumps({'type': 'merge_token', 'token': chunk})}\n\n"
                 await asyncio.sleep(0.005)
-            yield f"data: {json.dumps({'type': 'done', 'cached': True, 'session_id': session_id})}\n\n"
-
+            yield f"data: {json.dumps({'type':'done','cached':True,'session_id':session_id})}\n\n"
             await mem_mod.create_session(session_id)
             await mem_mod.add_message(session_id, "user",      query)
             await mem_mod.add_message(session_id, "assistant", cached)
             return
 
-        # ── Cache miss — run inference ───────────────────────────
+        # Fresh inference
         await mem_mod.create_session(session_id)
         await mem_mod.add_message(session_id, "user", query)
 
-        # Build history (exclude the message we just added — it's in `query`)
         history       = await mem_mod.get_session_messages(session_id)
-        history       = [m for m in history if not (m["role"] == "user" and m["content"] == query)]
+        history       = [m for m in history if not (m["role"]=="user" and m["content"]==query)]
         system_prompt = await mem_mod.build_system_prompt(session_id)
 
         sse_queue:     asyncio.Queue = asyncio.Queue()
@@ -149,39 +143,28 @@ async def chat(request: Request):
         async def run_inference():
             try:
                 ra, rb, merged = await inf_mod.run_dual(
-                    query, history, system_prompt, sse_queue
+                    effective_query, history, system_prompt, sse_queue
                 )
                 merged_holder.append(merged)
-
-                # Save response to cache and session
                 await cache_mod.save_cache(query, cfg.model_a, cfg.model_b, merged)
                 await mem_mod.add_message(session_id, "assistant", merged)
 
-                # Generate session title after first exchange
                 msgs = await mem_mod.get_session_messages(session_id)
                 if len(msgs) == 2:
                     title = await inf_mod.generate_title(query, cfg.model_a)
                     await mem_mod.update_session_title(session_id, title)
-
-                # Generate session summary once the session has ≥ 4 messages
-                # (2 user + 2 assistant = a meaningful conversation worth summarising).
-                # Runs as a background task so it doesn't block the response.
                 if len(msgs) >= 4:
-                    asyncio.create_task(
-                        _update_summary(session_id, msgs, cfg.model_a)
-                    )
-
+                    asyncio.create_task(_update_summary(session_id, msgs, cfg.model_a))
             except Exception as e:
                 await sse_queue.put({"type": "error", "message": str(e)})
 
         asyncio.create_task(run_inference())
 
-        # Forward SSE queue → HTTP response
         while True:
             try:
                 event = await asyncio.wait_for(sse_queue.get(), timeout=MODEL_TIMEOUT)
             except asyncio.TimeoutError:
-                yield f"data: {json.dumps({'type': 'error', 'message': 'The AI is taking too long. Is the model loaded?'})}\n\n"
+                yield f"data: {json.dumps({'type':'error','message':'AI is taking too long. Is the model loaded?'})}\n\n"
                 break
 
             if event.get("type") == "done":
@@ -196,21 +179,17 @@ async def chat(request: Request):
     return StreamingResponse(
         event_stream(),
         media_type="text/event-stream",
-        headers={
-            "Cache-Control":    "no-cache",
-            "X-Accel-Buffering": "no",
-        },
+        headers={"Cache-Control":"no-cache","X-Accel-Buffering":"no"},
     )
 
 
 async def _update_summary(session_id: str, messages: list, model: str):
-    """Background task: generate and save a session summary."""
     try:
         summary = await inf_mod.generate_summary(messages, model)
         if summary:
             await mem_mod.update_session_summary(session_id, summary)
     except Exception:
-        pass  # Summary failure is non-fatal
+        pass
 
 
 # ── Sessions ─────────────────────────────────────────────────────
@@ -229,7 +208,7 @@ async def get_messages(session_id: str):
 
 @app.post("/api/memories")
 async def add_memory(request: Request):
-    body    = await request.json()
+    body = await request.json()
     content = body.get("content", "").strip()
     if content:
         await mem_mod.save_memory(content)
@@ -247,8 +226,52 @@ async def del_memory(memory_id: int):
     return {"ok": True}
 
 
-# ── Cache stats ───────────────────────────────────────────────────
+# ── Cache ─────────────────────────────────────────────────────────
 
 @app.get("/api/cache/stats")
 async def cache_stats_endpoint():
     return await cache_mod.cache_stats()
+
+
+# ── File uploads ──────────────────────────────────────────────────
+
+@app.post("/api/upload")
+async def upload_file(file: UploadFile = File(...)):
+    """
+    Upload a file to add its text content as context for future queries.
+    The file stays active until explicitly removed or the server restarts.
+    """
+    try:
+        data = await file.read()
+        result = uploads_mod.add_upload(file.filename, data)
+        return {"ok": True, **result}
+    except ValueError as e:
+        return JSONResponse({"ok": False, "error": str(e)}, status_code=400)
+    except Exception as e:
+        return JSONResponse({"ok": False, "error": f"Upload failed: {e}"}, status_code=500)
+
+
+@app.get("/api/uploads")
+async def list_uploads():
+    return {"uploads": uploads_mod.list_uploads()}
+
+
+@app.delete("/api/uploads/{upload_id}")
+async def remove_upload(upload_id: int):
+    ok = uploads_mod.remove_upload(upload_id)
+    return {"ok": ok}
+
+
+# ── Shutdown ──────────────────────────────────────────────────────
+
+@app.post("/api/shutdown")
+async def shutdown_server():
+    """Gracefully stop PocketAI — stops llama-server and exits the process."""
+    async def _do_shutdown():
+        await asyncio.sleep(0.3)   # let the HTTP response send first
+        if _launcher:
+            await _launcher.stop()
+        os._exit(0)
+
+    asyncio.create_task(_do_shutdown())
+    return {"ok": True, "message": "Shutting down..."}

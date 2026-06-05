@@ -39,7 +39,7 @@ PORT_A = 11434
 PORT_B = 11435
 
 HEALTH_TIMEOUT = 60   # seconds to wait for a server to become ready
-CONTEXT_SIZE   = 8192 # tokens — safe for 8 GB RAM with phi4-mini
+CONTEXT_SIZE   = 16384  # 16K tokens — supports long multi-turn conversations
 
 
 class LlamaLauncher:
