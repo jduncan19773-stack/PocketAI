@@ -48,6 +48,10 @@ PORT = args.port
 
 # ── Ollama readiness check ───────────────────────────────────────
 
+_OLLAMA_WIN_PATH = os.path.join(
+    os.environ.get("LOCALAPPDATA", ""), "Programs", "Ollama", "ollama.exe"
+)
+
 def ollama_running() -> bool:
     try:
         r = httpx.get("http://localhost:11434/api/tags", timeout=3)
@@ -56,16 +60,42 @@ def ollama_running() -> bool:
         return False
 
 
+def _start_ollama_if_needed():
+    """Start Ollama if it's installed but the service isn't running yet."""
+    import subprocess, shutil
+    exe = shutil.which("ollama") or (_OLLAMA_WIN_PATH if os.path.exists(_OLLAMA_WIN_PATH) else None)
+    if exe and not ollama_running():
+        print("  ◈  Starting Ollama service…")
+        subprocess.Popen(
+            [exe, "serve"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,
+        )
+        # Give it a few seconds to come up
+        for _ in range(10):
+            import time
+            time.sleep(1)
+            if ollama_running():
+                print("  ◈  Ollama ready.")
+                return
+        print("  ⚠  Ollama did not start in time.")
+
+
 def check_ollama():
     if os.environ.get("POCKETAI_MODE") == "usb":
         return   # llama-server is started by the app itself
     if not ollama_running():
+        _start_ollama_if_needed()   # try to auto-start if installed
+    if not ollama_running():
         print()
         print("  ╔══════════════════════════════════════════════════════╗")
-        print("  ║  Ollama is not running.                              ║")
+        print("  ║  Ollama is not running and could not be started.     ║")
         print("  ║                                                      ║")
-        print("  ║  Please start Ollama, then run this again.           ║")
-        print("  ║  Or use SETUP.bat to install the USB-native engine.  ║")
+        print("  ║  Options:                                            ║")
+        print("  ║  1. Run SETUP.bat to use the built-in AI engine      ║")
+        print("  ║     (no Ollama needed)                               ║")
+        print("  ║  2. Install Ollama from ollama.com and try again     ║")
         print("  ╚══════════════════════════════════════════════════════╝")
         print()
         input("  Press Enter to exit…")

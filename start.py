@@ -50,8 +50,10 @@ def ollama_running() -> bool:
 def _find_ollama() -> str:
     """
     Find the Ollama binary.
-    Priority: USB-local engines/ollama.exe → system PATH.
-    This way the host machine doesn't need Ollama installed.
+    Search order:
+      1. USB engines/ folder (zero-install USB mode)
+      2. System PATH (shutil.which)
+      3. Windows default install location (not always on PATH)
     """
     local = os.path.join(HERE, "engines", "ollama.exe")
     if os.path.exists(local):
@@ -59,6 +61,12 @@ def _find_ollama() -> str:
     found = shutil.which("ollama")
     if found:
         return found
+    # Ollama on Windows installs here but doesn't always add itself to PATH
+    win_default = os.path.join(
+        os.environ.get("LOCALAPPDATA", ""), "Programs", "Ollama", "ollama.exe"
+    )
+    if os.path.exists(win_default):
+        return win_default
     return None
 
 
