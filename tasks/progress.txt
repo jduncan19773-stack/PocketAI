@@ -1,0 +1,25 @@
+POCKETAI – BUILD PROGRESS
+Updated: 2026-06-04
+
+============================================================
+STATUS: PLANNING PHASE
+============================================================
+
+Nothing built yet. See tasks/plan.md for the product vision.
+
+============================================================
+COMPLETED
+============================================================
+
+  [x] Project folder created
+  [x] CLAUDE.md added
+  [x] tasks/ structure created
+
+============================================================
+REMAINING — NEXT SESSION
+============================================================
+
+  [ ] Finalise product vision and architecture (tasks/plan.md)
+  [ ] Decide tech stack
+  [ ] Set up repo and git
+  [ ] Begin implementation

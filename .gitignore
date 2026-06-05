@@ -1,0 +1,22 @@
+venv/
+__pycache__/
+pycache/
+*.pyc
+*.pyo
+
+# USB runtime data — never commit user conversations or cached responses
+data/
+models/
+engines/
+bin/
+
+# Temporary and system files
+.env
+*.log
+*.part
+benchmarks/report_*.md
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

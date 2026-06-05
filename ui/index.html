@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PocketAI</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- ── Sidebar ─────────────────────────────────────────────── -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <span class="logo-icon">◈</span>
+      <span class="logo-text">PocketAI</span>
+    </div>
+    <button class="new-chat-btn" onclick="newChat()" title="Start a new conversation">
+      + New Chat
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="section-label">Recent Conversations</div>
+    <div id="sessions-list"></div>
+  </div>
+
+  <div class="sidebar-section memories-section">
+    <div class="section-label">
+      Things AI Remembers
+      <button class="add-memory-btn" onclick="showAddMemory()" title="Tell the AI something to always remember">+</button>
+    </div>
+    <div id="memories-list"></div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div id="status-indicator" class="status-dot offline"></div>
+    <span id="status-text">Connecting…</span>
+  </div>
+</aside>
+
+<!-- ── Main chat area ───────────────────────────────────────── -->
+<main id="main">
+
+  <!-- Header (mobile only) -->
+  <div class="mobile-header">
+    <button class="menu-btn" onclick="toggleSidebar()" title="Menu">☰</button>
+    <span class="logo-text">PocketAI</span>
+    <div></div>
+  </div>
+
+  <!-- Messages -->
+  <div id="messages" class="messages"></div>
+
+  <!-- Thinking indicator -->
+  <div id="thinking" class="thinking hidden">
+    <div class="thinking-models" id="thinking-models">
+      <div class="model-badge" id="badge-a">◉ <span id="model-a-name">Model A</span></div>
+      <div class="model-badge" id="badge-b">◉ <span id="model-b-name">Model B</span></div>
+    </div>
+    <div class="thinking-dots"><span></span><span></span><span></span></div>
+    <div class="thinking-label" id="thinking-label">Thinking…</div>
+  </div>
+
+  <!-- Input bar -->
+  <div class="input-bar">
+    <div class="input-wrap">
+      <textarea
+        id="query-input"
+        placeholder="Ask me anything…"
+        rows="1"
+        onkeydown="handleKey(event)"
+        oninput="autoResize(this)"
+      ></textarea>
+
+      <!-- Microphone: click to speak -->
+      <button id="voice-btn" class="icon-btn mic-btn" onclick="toggleVoice()" title="Click to speak your question">
+        🎤
+      </button>
+    </div>
+
+    <!-- Speaker: toggle voice responses on/off -->
+    <button id="speak-btn" class="icon-btn speak-btn" onclick="toggleSpeakBack()" title="Toggle spoken responses">
+      🔇
+    </button>
+
+    <button id="send-btn" class="send-btn" onclick="sendMessage()">
+      Send
+    </button>
+  </div>
+
+  <!-- Voice listening banner -->
+  <div id="voice-banner" class="voice-banner hidden">
+    <span class="pulse-ring"></span>
+    <span id="voice-status-text">Listening… speak your question</span>
+    <button onclick="stopVoice()">✕ Cancel</button>
+  </div>
+</main>
+
+<!-- ── Add Memory modal ────────────────────────────────────── -->
+<div id="memory-modal" class="modal-overlay hidden" onclick="closeAddMemory()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Tell AI something to always remember</h3>
+    <p class="modal-hint">This will be included in every future conversation — even after restarting.</p>
+    <textarea id="memory-input" placeholder="e.g. My name is Margaret and I live in Dublin" rows="3"></textarea>
+    <div class="modal-buttons">
+      <button onclick="closeAddMemory()">Cancel</button>
+      <button class="primary" onclick="saveMemory()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- marked.js — bundled locally so it works fully offline -->
+<script src="/static/marked.min.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
