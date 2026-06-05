@@ -1,102 +1,108 @@
-POCKETAI — BUILD PROGRESS
-Updated: 2026-06-04
+POCKETAI -- BUILD PROGRESS
+Updated: 2026-06-05
 
 ============================================================
-STATUS: PHASE 2 COMPLETE — READY FOR TESTING
+STATUS: PHASE 1+2 COMPLETE + E: DRIVE DEPLOYED
 ============================================================
 
 GitHub: https://github.com/jduncan19773-stack/PocketAI
 Branch: feature/phase2-complete
 
 ============================================================
+BENCHMARK RESULTS (2026-06-04, this machine)
+============================================================
+
+Hardware: Intel CPU + NVIDIA GPU 4096MB VRAM, 16GB RAM
+Mode: Single-model (phi4-mini) — VRAM-aware tier selection
+Ollama backend
+
+  Queries run     : 50
+  Errors          : 0
+  Avg TTFT        : 3.58s
+  Avg tok/sec     : 22.8
+  Avg total time  : 11.56s
+  Avg response    : 127 words
+
+E: Drive USB Mode (llama-server CPU build, embedded Python):
+  Avg TTFT        : 6.40s
+  Accuracy        : 3/3 spot checks passed
+
+============================================================
 COMPLETED
 ============================================================
 
-PHASE 1 — CORE BACKEND
-  [x] FastAPI server with SSE streaming (server/main.py)
-  [x] Dual-model parallel inference (server/inference.py)
-      - OpenAI-compatible /v1/chat/completions API
-      - Works with Ollama AND llama-server (llama.cpp)
-  [x] Single-model mode for 8 GB RAM / i3 machines (auto-detected)
-  [x] Hardware tier detection (server/config.py)
-      - high   (≥18 GB free): phi4-mini + qwen3:8b
-      - medium (≥8 GB free):  phi4-mini + qwen3:4b
-      - low    (<8 GB free):  phi4-mini only
-  [x] Two-level SQLite response cache (server/cache.py)
-      - Level 1: exact SHA-256 match
-      - Level 2: 82% Jaccard fuzzy match
-  [x] Session memory (server/memory.py)
-      - Full conversation history in SQLite
-      - Auto-generated session titles
-      - Auto-generated session summaries (fixed — was broken)
-      - Long-term memories injected into every session prompt
+INFERENCE ENGINE
+  [x] Switched from Ollama NDJSON to OpenAI /v1/chat/completions API
+      Works with both Ollama and llama-server
+  [x] Single-model mode auto-detected based on VRAM
+      VRAM < 6GB: single model (phi4-mini only)
+      VRAM >= 6GB: dual model
+  [x] Fast TTFT: model_a streams live, model_b enhances after
+      Before: 43s TTFT (waiting for both models)
+      After:  3.6s TTFT (model_a streams immediately)
+  [x] Anti-preamble system prompt (no "Certainly!" etc.)
+  [x] Preamble stripping in inference.py
+  [x] Session summaries auto-generated after 4+ messages
+  [x] 300s timeout for cold-start model loading
+  [x] Fixed _chunk AttributeError on cached responses
 
-PHASE 1 — WEB UI
-  [x] Dark-mode chat interface (ui/index.html, ui/style.css)
-      - Font size 19px (accessible for all ages)
-      - Responsive layout with mobile sidebar
-  [x] SSE streaming client with live token rendering (ui/app.js)
-  [x] Markdown rendering (marked.js bundled locally — fully offline)
-  [x] Sessions sidebar (last 30 conversations, auto-titled)
-  [x] "Things AI Remembers" memory panel
-  [x] Voice input 🎤 (Web Speech API — Chrome/Edge)
-  [x] Voice output 🔊 (Web Speech Synthesis, toggle button — was MISSING, now fixed)
-  [x] Dual-model thinking indicator (shows both models working)
-  [x] Single-model mode UI (hides second badge automatically)
+WEB UI
+  [x] Font size 19px
+  [x] Voice input mic button
+  [x] Voice output speaker toggle (was missing, now wired)
+  [x] Thinking indicator: model_a done => model_b still active
+  [x] "Things AI Remembers" labeling
   [x] Plain-English error messages
+  [x] Mobile sidebar close-on-outside-click
 
-PHASE 2 — USB DEPLOYMENT
-  [x] server/launcher.py — starts llama-server.exe instances (USB mode)
-      - Model A on port 11434, Model B on 11435
-      - Health-check polling, clean shutdown
-  [x] run.py — Python launcher (USB mode, opens browser)
-  [x] start.py — Python launcher (Ollama mode, pulls models)
-  [x] START_POCKETAI.bat — double-click Windows launcher
-      - Auto-detects USB mode vs Ollama mode
-      - First-run venv setup
-  [x] SETUP.bat — first-time download wizard
-  [x] setup_download.py — downloads llama-server.exe + GGUF models
-      - phi4-mini-q4_k_m.gguf (~2.3 GB)
-      - qwen3-4b-q4_k_m.gguf (~2.5 GB, optional)
+LAUNCHERS (mom-friendly)
+  [x] START_POCKETAI.bat: finds Python in 4 locations,
+      auto-starts Ollama, detects USB vs Ollama mode
+  [x] SETUP.bat: friendly wizard, asks about RAM
+  [x] run.py: auto-starts Ollama if installed but not running
+  [x] README.txt: plain-English instructions at USB root
 
-DOCUMENTATION + TOOLING
-  [x] docs/DESIGN.md — full architecture document
-  [x] docs/STATUS.md — build status and hardware requirements
-  [x] benchmarks/benchmark.py — top-50 LLM query performance test
-  [x] .claude/settings.json — auto-allow all tool calls
+USB DEPLOYMENT
+  [x] llama-server CPU build (b9519) on E: drive
+      All DLLs extracted, works on any Windows PC
+  [x] phi4-mini-q4_k_m.gguf (2.4 GB) on E: drive
+  [x] qwen3-4b-q4_k_m.gguf (2.4 GB) on E: drive
+  [x] Python 3.12 Embeddable on E: drive (no host Python needed)
+  [x] All dependencies installed in embedded Python
 
-BUG FIXES
-  [x] inf_mod._chunk() AttributeError — cached responses crashed server
-  [x] Session summaries never generated — "context from recent conversations" was broken
-  [x] Voice output toggle button missing from UI (function existed, no button)
+BENCHMARKING
+  [x] benchmarks/benchmark.py: top-50 LLM queries
+  [x] Report saved: benchmarks/report_20260604_234138.md
+
+DOCUMENTATION
+  [x] docs/STATUS.md: full status table
+  [x] docs/DESIGN.md: full architecture document
+  [x] README.txt: plain-English user instructions
 
 ============================================================
-REMAINING
+REMAINING (FUTURE PHASES)
 ============================================================
 
-PHASE 3 — BROWSER EXTENSION
-  [ ] Chrome/Edge extension — sidebar on any webpage
-  [ ] "Summarise this page" / "Explain this paragraph"
-  [ ] Firefox manifest
+PHASE 3 - BROWSER EXTENSION
+  [ ] Chrome/Firefox/Edge sidebar
+  [ ] "Summarise this page"
 
-PHASE 4 — POLISH + DISTRIBUTION
-  [ ] Bundle Python Embeddable (eliminate Python-on-host requirement)
-  [ ] Piper TTS integration (better offline voice output)
-  [ ] Whisper.cpp STT integration (offline voice input, all browsers)
-  [ ] Windows code signing (prevent AV false positives on llama-server.exe)
-  [ ] Mac/Linux .sh launcher
-  [ ] Wake word ("Hey Pocket")
+PHASE 4 - POLISH
+  [ ] Python Embeddable bundled by default in git repo
+  [ ] Piper TTS (better voice)
+  [ ] Whisper STT (offline voice input)
+  [ ] Windows code signing
+  [ ] Mac/Linux launcher
 
 ============================================================
 CREDENTIALS + RESOURCES
 ============================================================
 
 GitHub: https://github.com/jduncan19773-stack/PocketAI
-  - Public repo, open source
+E: drive: E:/PocketAI/ (fully deployed, plug-and-play)
+Benchmark report: benchmarks/report_20260604_234138.md
 
-Data paths (USB mode):
-  POCKETAI_DATA   = <USB>/data/     (sessions.db, cache.db)
-  POCKETAI_MODELS = <USB>/models/   (GGUF files)
-  LLM_HOST_A      = http://localhost:11434
-  LLM_HOST_B      = http://localhost:11434  (11435 in dual USB mode)
-  POCKETAI_PORT   = 7860
+Ports:
+  PocketAI server  : 7860
+  Ollama / model A : 11434
+  Model B (USB)    : 11435

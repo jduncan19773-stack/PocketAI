@@ -148,7 +148,7 @@ subprocess.run(
 def open_browser():
     time.sleep(2.5)
     url = f"http://localhost:{SERVER_PORT}"
-    print(f"\n  ✓  Opening PocketAI at {url}\n")
+    print(f"\n  OK  Opening PocketAI at {url}\n")
     webbrowser.open(url)
 
 threading.Thread(target=open_browser, daemon=True).start()

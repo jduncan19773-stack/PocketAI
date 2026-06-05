@@ -282,8 +282,13 @@ def main():
 
     queries = TOP_50_QUERIES[: args.limit]
 
-    print(f"\n  ◈  PocketAI Benchmark — {len(queries)} queries")
-    print(f"     Server: {args.url}\n")
+    # Ensure Unicode output works on Windows console
+    import sys, io
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+    print(f"\n  [*] PocketAI Benchmark - {len(queries)} queries")
+    print(f"      Server: {args.url}\n")
 
     # Check server is up
     try:

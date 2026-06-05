@@ -65,7 +65,7 @@ def _start_ollama_if_needed():
     import subprocess, shutil
     exe = shutil.which("ollama") or (_OLLAMA_WIN_PATH if os.path.exists(_OLLAMA_WIN_PATH) else None)
     if exe and not ollama_running():
-        print("  ◈  Starting Ollama service…")
+        print("  [*]  Starting Ollama service...")
         subprocess.Popen(
             [exe, "serve"],
             stdout=subprocess.DEVNULL,
@@ -77,9 +77,9 @@ def _start_ollama_if_needed():
             import time
             time.sleep(1)
             if ollama_running():
-                print("  ◈  Ollama ready.")
+                print("  [*]  Ollama ready.")
                 return
-        print("  ⚠  Ollama did not start in time.")
+        print("  WARNING  Ollama did not start in time.")
 
 
 def check_ollama():
@@ -98,13 +98,13 @@ def check_ollama():
         print("  ║  2. Install Ollama from ollama.com and try again     ║")
         print("  ╚══════════════════════════════════════════════════════╝")
         print()
-        input("  Press Enter to exit…")
+        input("  Press Enter to exit...")
         sys.exit(1)
 
 
 # ── Wait for the FastAPI server ──────────────────────────────────
 
-def wait_for_server(timeout: int = 20) -> bool:
+def wait_for_server(timeout: int = 90) -> bool:  # 90s for USB model loading
     deadline = time.time() + timeout
     while time.time() < deadline:
         try:
@@ -121,7 +121,7 @@ def wait_for_server(timeout: int = 20) -> bool:
 
 def main():
     print()
-    print("  ◈  PocketAI — starting up…")
+    print("  [*]  PocketAI — starting up...")
 
     check_ollama()
 
@@ -140,27 +140,27 @@ def main():
         cwd=str(HERE),
     )
 
-    print(f"  ◈  Server starting on http://localhost:{PORT}")
+    print(f"  [*]  Server starting on http://localhost:{PORT}")
 
     if wait_for_server():
-        print(f"  ◈  PocketAI ready! Opening browser…")
+        print(f"  [*]  PocketAI ready! Opening browser...")
         webbrowser.open(f"http://localhost:{PORT}")
     else:
-        print("  ⚠  Server did not start in time — please open your browser manually:")
+        print("  WARNING  Server did not start in time — please open your browser manually:")
         print(f"     http://localhost:{PORT}")
 
-    print("  ◈  Press Ctrl+C to stop PocketAI\n")
+    print("  [*]  Press Ctrl+C to stop PocketAI\n")
 
     try:
         proc.wait()
     except KeyboardInterrupt:
-        print("\n  ◈  Shutting down PocketAI…")
+        print("\n  [*]  Shutting down PocketAI...")
         proc.terminate()
         try:
             proc.wait(timeout=5)
         except subprocess.TimeoutExpired:
             proc.kill()
-        print("  ◈  Goodbye!\n")
+        print("  [*]  Goodbye!\n")
 
 
 if __name__ == "__main__":

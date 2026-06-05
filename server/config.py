@@ -44,14 +44,22 @@ def _get_gpu_vram_mb() -> int:
 
 def detect_config() -> ModelConfig:
     """
-    Detect available RAM and return the appropriate model configuration.
-    Called on every request so it reflects current system state.
+    Detect hardware and return the best model configuration.
+
+    Dual-model requires enough VRAM to hold both models simultaneously.
+    Running dual-model on insufficient VRAM causes model thrashing (8x slower).
+
+    Tiers:
+      high   — >= 8 GB VRAM  AND >= 18 GB RAM free: phi4-mini + qwen3:8b
+      medium — >= 6 GB VRAM  AND >= 8  GB RAM free: phi4-mini + qwen3:4b
+      low    — everything else: phi4-mini only (single model, fast, reliable)
     """
     available_gb = psutil.virtual_memory().available / (1024 ** 3)
     gpu_vram_mb  = _get_gpu_vram_mb()
     gpu_note     = f", {gpu_vram_mb} MB VRAM" if gpu_vram_mb else ""
 
-    if available_gb >= 18:
+    # Dual-model only when there's enough VRAM to GPU-accelerate both
+    if gpu_vram_mb >= 8192 and available_gb >= 18:
         return ModelConfig(
             model_a="phi4-mini",
             model_b="qwen3:8b",
@@ -59,7 +67,7 @@ def detect_config() -> ModelConfig:
             single_model=False,
             description=f"High — {available_gb:.0f} GB RAM free{gpu_note}",
         )
-    elif available_gb >= 8:
+    elif gpu_vram_mb >= 6144 and available_gb >= 8:
         return ModelConfig(
             model_a="phi4-mini",
             model_b="qwen3:4b",
@@ -68,13 +76,13 @@ def detect_config() -> ModelConfig:
             description=f"Dual-model — {available_gb:.0f} GB RAM free{gpu_note}",
         )
     else:
-        # 8 GB i3 target: run phi4-mini only to avoid swapping
+        # 4 GB VRAM / 8 GB RAM i3 target: phi4-mini only for fast, reliable answers
         return ModelConfig(
             model_a="phi4-mini",
             model_b="",
             tier="low",
             single_model=True,
-            description=f"Single-model — {available_gb:.0f} GB RAM free (8 GB mode)",
+            description=f"Fast single-model — {available_gb:.0f} GB RAM free{gpu_note}",
         )
 
 
@@ -110,11 +118,12 @@ OLLAMA_HOST = LLM_HOST_A
 # ── Base system prompt ───────────────────────────────────────────
 
 BASE_SYSTEM_PROMPT = (
-    "You are PocketAI, a helpful, honest, and concise AI assistant that runs entirely "
-    "on the user's own device — no internet connection, no cloud, completely private. "
-    "Give accurate, factual answers. If you are uncertain, say so clearly. "
-    "Keep responses clear and well-structured. Avoid padding or repetition. "
-    "When the user asks you to remember something, confirm you have noted it."
+    "You are PocketAI, a private AI assistant running entirely on the user's device — "
+    "no internet, no cloud, completely private. "
+    "RULES: Start every response with the actual answer — never with a preamble. "
+    "Do NOT say 'Certainly', 'Of course', 'I understand', 'The assistant', 'Sure!', "
+    "'Great question', or repeat the question back. Just answer immediately and clearly. "
+    "Be concise. If uncertain, say so briefly. Use markdown only when it genuinely helps."
 )
 
 

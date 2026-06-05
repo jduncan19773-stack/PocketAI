@@ -153,10 +153,10 @@ async function sendMessage() {
 
         } else if (evt.type === "merge_token") {
           if (!isMerging) {
-            // First merge token — both models done, stop thinking animation
+            // First merge token — model_a is streaming live, hide thinking spinner
             showThinking(false);
             setBadge("badge-a", "done");
-            if (!isSingleModel) setBadge("badge-b", "done");
+            // badge-b stays "active" until model_b finishes (done event)
             isMerging = true;
           }
           mergedText += evt.token;
@@ -167,7 +167,8 @@ async function sendMessage() {
         } else if (evt.type === "done") {
           if (evt.session_id) currentSessionId = evt.session_id;
           wasCached = evt.cached || false;
-          loadSessions();   // refresh sidebar
+          setBadge("badge-b", "done");   // model_b finished
+          loadSessions();
 
         } else if (evt.type === "error") {
           showThinking(false);

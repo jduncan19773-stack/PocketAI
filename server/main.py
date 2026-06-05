@@ -49,7 +49,7 @@ _UI   = _HERE / "ui"
 app.mount("/static", StaticFiles(directory=str(_UI)), name="static")
 
 # Seconds to wait for a model token before giving up
-MODEL_TIMEOUT = 180
+MODEL_TIMEOUT = 300   # 5 min — covers cold-start model loading on first request
 
 
 # ── Startup / shutdown ───────────────────────────────────────────
