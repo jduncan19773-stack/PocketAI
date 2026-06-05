@@ -1,25 +1,102 @@
-POCKETAI – BUILD PROGRESS
+POCKETAI — BUILD PROGRESS
 Updated: 2026-06-04
 
 ============================================================
-STATUS: PLANNING PHASE
+STATUS: PHASE 2 COMPLETE — READY FOR TESTING
 ============================================================
 
-Nothing built yet. See tasks/plan.md for the product vision.
+GitHub: https://github.com/jduncan19773-stack/PocketAI
+Branch: feature/phase2-complete
 
 ============================================================
 COMPLETED
 ============================================================
 
-  [x] Project folder created
-  [x] CLAUDE.md added
-  [x] tasks/ structure created
+PHASE 1 — CORE BACKEND
+  [x] FastAPI server with SSE streaming (server/main.py)
+  [x] Dual-model parallel inference (server/inference.py)
+      - OpenAI-compatible /v1/chat/completions API
+      - Works with Ollama AND llama-server (llama.cpp)
+  [x] Single-model mode for 8 GB RAM / i3 machines (auto-detected)
+  [x] Hardware tier detection (server/config.py)
+      - high   (≥18 GB free): phi4-mini + qwen3:8b
+      - medium (≥8 GB free):  phi4-mini + qwen3:4b
+      - low    (<8 GB free):  phi4-mini only
+  [x] Two-level SQLite response cache (server/cache.py)
+      - Level 1: exact SHA-256 match
+      - Level 2: 82% Jaccard fuzzy match
+  [x] Session memory (server/memory.py)
+      - Full conversation history in SQLite
+      - Auto-generated session titles
+      - Auto-generated session summaries (fixed — was broken)
+      - Long-term memories injected into every session prompt
+
+PHASE 1 — WEB UI
+  [x] Dark-mode chat interface (ui/index.html, ui/style.css)
+      - Font size 19px (accessible for all ages)
+      - Responsive layout with mobile sidebar
+  [x] SSE streaming client with live token rendering (ui/app.js)
+  [x] Markdown rendering (marked.js bundled locally — fully offline)
+  [x] Sessions sidebar (last 30 conversations, auto-titled)
+  [x] "Things AI Remembers" memory panel
+  [x] Voice input 🎤 (Web Speech API — Chrome/Edge)
+  [x] Voice output 🔊 (Web Speech Synthesis, toggle button — was MISSING, now fixed)
+  [x] Dual-model thinking indicator (shows both models working)
+  [x] Single-model mode UI (hides second badge automatically)
+  [x] Plain-English error messages
+
+PHASE 2 — USB DEPLOYMENT
+  [x] server/launcher.py — starts llama-server.exe instances (USB mode)
+      - Model A on port 11434, Model B on 11435
+      - Health-check polling, clean shutdown
+  [x] run.py — Python launcher (USB mode, opens browser)
+  [x] start.py — Python launcher (Ollama mode, pulls models)
+  [x] START_POCKETAI.bat — double-click Windows launcher
+      - Auto-detects USB mode vs Ollama mode
+      - First-run venv setup
+  [x] SETUP.bat — first-time download wizard
+  [x] setup_download.py — downloads llama-server.exe + GGUF models
+      - phi4-mini-q4_k_m.gguf (~2.3 GB)
+      - qwen3-4b-q4_k_m.gguf (~2.5 GB, optional)
+
+DOCUMENTATION + TOOLING
+  [x] docs/DESIGN.md — full architecture document
+  [x] docs/STATUS.md — build status and hardware requirements
+  [x] benchmarks/benchmark.py — top-50 LLM query performance test
+  [x] .claude/settings.json — auto-allow all tool calls
+
+BUG FIXES
+  [x] inf_mod._chunk() AttributeError — cached responses crashed server
+  [x] Session summaries never generated — "context from recent conversations" was broken
+  [x] Voice output toggle button missing from UI (function existed, no button)
 
 ============================================================
-REMAINING — NEXT SESSION
+REMAINING
 ============================================================
 
-  [ ] Finalise product vision and architecture (tasks/plan.md)
-  [ ] Decide tech stack
-  [ ] Set up repo and git
-  [ ] Begin implementation
+PHASE 3 — BROWSER EXTENSION
+  [ ] Chrome/Edge extension — sidebar on any webpage
+  [ ] "Summarise this page" / "Explain this paragraph"
+  [ ] Firefox manifest
+
+PHASE 4 — POLISH + DISTRIBUTION
+  [ ] Bundle Python Embeddable (eliminate Python-on-host requirement)
+  [ ] Piper TTS integration (better offline voice output)
+  [ ] Whisper.cpp STT integration (offline voice input, all browsers)
+  [ ] Windows code signing (prevent AV false positives on llama-server.exe)
+  [ ] Mac/Linux .sh launcher
+  [ ] Wake word ("Hey Pocket")
+
+============================================================
+CREDENTIALS + RESOURCES
+============================================================
+
+GitHub: https://github.com/jduncan19773-stack/PocketAI
+  - Public repo, open source
+
+Data paths (USB mode):
+  POCKETAI_DATA   = <USB>/data/     (sessions.db, cache.db)
+  POCKETAI_MODELS = <USB>/models/   (GGUF files)
+  LLM_HOST_A      = http://localhost:11434
+  LLM_HOST_B      = http://localhost:11434  (11435 in dual USB mode)
+  POCKETAI_PORT   = 7860
