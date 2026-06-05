@@ -155,7 +155,14 @@ _SPLASH_HTML = """
 
 
 def main():
-    import webview
+    try:
+        import webview
+    except ImportError:
+        import tkinter as tk
+        from tkinter import messagebox
+        root = tk.Tk(); root.withdraw()
+        messagebox.showerror("PocketAI", "pywebview is not installed.\nRun SETUP.bat to repair.")
+        return
 
     # Show splash while loading
     splash = webview.create_window(
