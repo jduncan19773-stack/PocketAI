@@ -8,16 +8,22 @@ the knowledge corpus. Then rebuilds the search index so PocketAI can use them.
 It crawls breadth-first from a set of seed topics (recent events + major
 reference subjects), following article links, until the target size is hit.
 
+Two sources:
+  --source api  (default)  Crawl Wikipedia + Wikinews live APIs. Reliable and
+                           current (good for recent news), but SLOW — only
+                           practical up to ~100-200 MB.
+  --source hf              Stream Hugging Face's pre-cleaned Wikipedia dataset
+                           (wikimedia/wikipedia). FAST — reaches multiple GB in
+                           minutes. Best for bulk. Needs the 'datasets' library
+                           on the build machine (build-time only):
+                               pip install datasets
+
 Usage:
-  python build_knowledge.py                  # default ~150 MB into knowledge/corpus
-  python build_knowledge.py --target-mb 3000 # fill to ~3 GB
-  python build_knowledge.py --seed           # build the small committed seed set
-  python build_knowledge.py --target-mb 20 --seed
+  python build_knowledge.py                          # ~150 MB via live API
+  python build_knowledge.py --source hf --target-mb 3000   # ~3 GB, fast
+  python build_knowledge.py --seed --target-mb 15    # small committed seed set
 
-Sources:
-  Wikipedia  (en.wikipedia.org)  — CC BY-SA
-  Wikinews   (en.wikinews.org)   — CC BY  (genuinely recent news)
-
+Sources are openly licensed: Wikipedia CC BY-SA, Wikinews CC BY.
 Re-runnable: existing files are skipped, so you can top up over time.
 Provision a new flash drive by cloning the repo and running this script.
 """
@@ -148,14 +154,83 @@ def crawl(api: str, source_name: str, prefix: str, out_dir: Path,
     return total
 
 
+def build_from_hf(out_dir: Path, target_bytes: int, hf_config: str) -> int:
+    """
+    Stream Hugging Face's cleaned Wikipedia dataset and write articles to
+    shard files (many articles per file) until the target size is reached.
+    Returns total bytes written. Requires the 'datasets' library.
+    """
+    try:
+        from datasets import load_dataset
+    except ImportError:
+        print()
+        print("  The Hugging Face fast-path needs the 'datasets' library.")
+        print("  Install it on this machine (build-time only), then re-run:")
+        print("      pip install datasets")
+        print()
+        sys.exit(1)
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    existing = sum((f.stat().st_size for f in out_dir.glob("hf_shard_*.txt")), 0)
+    total = existing
+    if existing:
+        print(f"  Resuming — {existing/1024/1024:.1f} MB of HF shards already present.")
+
+    print(f"  Streaming wikimedia/wikipedia ({hf_config})...")
+    ds = load_dataset("wikimedia/wikipedia", hf_config, split="train", streaming=True)
+
+    SHARD_BYTES = 10 * 1024 * 1024     # ~10 MB per shard file
+    shard_idx = 1 + len(list(out_dir.glob("hf_shard_*.txt")))
+    buf: list[str] = []
+    buf_bytes = 0
+    count = 0
+
+    def flush_shard(idx, parts):
+        path = out_dir / f"hf_shard_{idx:05d}.txt"
+        path.write_text(DOC_SEP.join(parts), encoding="utf-8")
+
+    from server.knowledge import DOC_SEP
+    for row in ds:
+        if total >= target_bytes:
+            break
+        title = (row.get("title") or "").strip()
+        text  = (row.get("text") or "").strip()
+        url   = row.get("url") or ""
+        if len(text) < 400:
+            continue
+        block = f"TITLE: {title}\nSOURCE: Wikipedia\nURL: {url}\n\n{text}"
+        b = len(block.encode("utf-8", "ignore"))
+        buf.append(block)
+        buf_bytes += b
+        total += b
+        count += 1
+        if buf_bytes >= SHARD_BYTES:
+            flush_shard(shard_idx, buf)
+            shard_idx += 1
+            buf.clear()
+            buf_bytes = 0
+            print(f"\r  {count:,} articles, {total/1024/1024:.0f} MB written — last: {title[:42]}", end="", flush=True)
+
+    if buf:
+        flush_shard(shard_idx, buf)
+    print()
+    print(f"  Wrote {count:,} articles ({total/1024/1024:.0f} MB) in shard files.")
+    return total
+
+
 def main():
     ap = argparse.ArgumentParser(description="Build PocketAI's knowledge base")
+    ap.add_argument("--source", choices=["api", "hf"], default="api",
+                    help="api = live Wikipedia/Wikinews crawl (current, slow); "
+                         "hf = Hugging Face Wikipedia dump (fast, bulk)")
     ap.add_argument("--target-mb", type=int, default=150,
                     help="Total corpus size to aim for, in MB (default 150)")
     ap.add_argument("--seed", action="store_true",
                     help="Write into knowledge/seed (the small committed set) instead of corpus/")
     ap.add_argument("--delay", type=float, default=0.3,
-                    help="Seconds between API calls (politeness; default 0.3)")
+                    help="Seconds between API calls (api source only; default 0.3)")
+    ap.add_argument("--hf-config", default="20231101.en",
+                    help="Hugging Face wikimedia/wikipedia config (default 20231101.en)")
     args = ap.parse_args()
 
     out_dir = SEED_DIR if args.seed else CORPUS_DIR
@@ -166,8 +241,21 @@ def main():
     print("   PocketAI — Knowledge Base Builder")
     print("  ============================================================")
     print(f"  Target: ~{args.target_mb} MB into {out_dir}")
-    print(f"  Sources: Wikipedia + Wikinews (openly licensed)")
+    print(f"  Source: {'Hugging Face Wikipedia dump' if args.source == 'hf' else 'Wikipedia + Wikinews live API'}")
     print()
+
+    # ── Fast bulk path: Hugging Face dump ────────────────────────
+    if args.source == "hf":
+        build_from_hf(out_dir, target_bytes, args.hf_config)
+        print("  Rebuilding search index...")
+        sys.path.insert(0, str(HERE))
+        from server import knowledge
+        stats = knowledge.build_index()
+        print(f"  Indexed {stats['documents']} documents into {stats['passages']} passages.")
+        print()
+        print("  Done. PocketAI will use this knowledge base on its next launch.")
+        print()
+        return
 
     out_dir.mkdir(parents=True, exist_ok=True)
 

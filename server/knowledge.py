@@ -40,6 +40,11 @@ INDEX_DB       = KNOWLEDGE_DIR / "index.db"
 CHUNK_CHARS    = 1200
 CHUNK_OVERLAP  = 150
 
+# Separator between articles inside a "shard" file. The HF bulk builder packs
+# many articles into one file (to avoid hundreds of thousands of tiny files on
+# the USB); single-article files from the API crawler simply have no separator.
+DOC_SEP = "\n<<<<POCKETAI_DOC>>>>\n"
+
 # How many passages to retrieve per query, and how much text to inject
 TOP_K          = 4
 MAX_CONTEXT_CHARS = 6000
@@ -71,16 +76,11 @@ def _iter_corpus_files():
             yield from sorted(d.glob("*.txt"))
 
 
-def _parse_file(path: Path) -> tuple[str, str, str]:
-    """Return (title, source, body) from a corpus file."""
-    try:
-        raw = path.read_text(encoding="utf-8", errors="ignore")
-    except Exception:
-        return path.stem, "", ""
-    title, source, body = path.stem, "", raw
-    # Optional header block
-    if raw.startswith("TITLE:"):
-        head, _, rest = raw.partition("\n\n")
+def _parse_segment(seg: str, default_title: str) -> tuple[str, str, str]:
+    """Parse one article segment (optional TITLE/SOURCE/URL header + body)."""
+    title, source, body = default_title, "", seg
+    if seg.startswith("TITLE:"):
+        head, _, rest = seg.partition("\n\n")
         for line in head.splitlines():
             if line.startswith("TITLE:"):
                 title = line[6:].strip()
@@ -90,6 +90,24 @@ def _parse_file(path: Path) -> tuple[str, str, str]:
                 source = source or line[4:].strip()
         body = rest
     return title, source, body
+
+
+def _iter_docs(path: Path):
+    """
+    Yield (title, source, body) for every article in a corpus file.
+    Most files hold one article; HF shard files hold many (split on DOC_SEP).
+    """
+    try:
+        raw = path.read_text(encoding="utf-8", errors="ignore")
+    except Exception:
+        return
+    if DOC_SEP in raw:
+        for seg in raw.split(DOC_SEP):
+            seg = seg.strip()
+            if seg:
+                yield _parse_segment(seg, path.stem)
+    else:
+        yield _parse_segment(raw, path.stem)
 
 
 def _chunk(text: str):
@@ -139,19 +157,19 @@ def build_index() -> dict:
         passages = 0
         batch = []
         for path in _iter_corpus_files():
-            title, source, body = _parse_file(path)
-            had = False
-            for ch in _chunk(body):
-                batch.append((title, source, ch))
-                passages += 1
-                had = True
-                if len(batch) >= 500:
-                    conn.executemany(
-                        "INSERT INTO chunks (title, source, content) VALUES (?,?,?)", batch
-                    )
-                    batch.clear()
-            if had:
-                docs += 1
+            for title, source, body in _iter_docs(path):
+                had = False
+                for ch in _chunk(body):
+                    batch.append((title, source, ch))
+                    passages += 1
+                    had = True
+                    if len(batch) >= 1000:
+                        conn.executemany(
+                            "INSERT INTO chunks (title, source, content) VALUES (?,?,?)", batch
+                        )
+                        batch.clear()
+                if had:
+                    docs += 1
         if batch:
             conn.executemany(
                 "INSERT INTO chunks (title, source, content) VALUES (?,?,?)", batch
