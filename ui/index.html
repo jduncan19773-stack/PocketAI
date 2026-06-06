@@ -85,9 +85,9 @@
     <div id="thinking-label" class="thinking-label">Thinking...</div>
   </div>
 
-  <!-- File attachment chips (shown when files are uploaded) -->
+  <!-- File / image attachment chips (shown when something is uploaded) -->
   <div id="attachments-bar" class="attachments-bar hidden">
-    <span class="attachments-label">Context files:</span>
+    <span id="attachments-label" class="attachments-label">Attached:</span>
     <div id="attachment-chips"></div>
   </div>
 
@@ -96,13 +96,13 @@
     <div class="input-row">
 
       <!-- Attach file button -->
-      <button class="btn-icon attach-btn" onclick="document.getElementById('file-input').click()" title="Attach a file (PDF, Word, text, code)">
+      <button class="btn-icon attach-btn" onclick="document.getElementById('file-input').click()" title="Attach a file or image (PDF, Word, text, code, or photos for the vision model)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
         </svg>
       </button>
       <input type="file" id="file-input" style="display:none" multiple
-             accept=".txt,.md,.pdf,.docx,.csv,.py,.js,.ts,.jsx,.tsx,.html,.css,.json,.yaml,.yml,.xml,.sh,.sql,.rb,.go,.java,.c,.cpp,.h,.rs"
+             accept=".txt,.md,.pdf,.docx,.csv,.py,.js,.ts,.jsx,.tsx,.html,.css,.json,.yaml,.yml,.xml,.sh,.sql,.rb,.go,.java,.c,.cpp,.h,.rs,.png,.jpg,.jpeg,.gif,.webp,.bmp"
              onchange="handleFileUpload(this)">
 
       <div class="input-wrap">

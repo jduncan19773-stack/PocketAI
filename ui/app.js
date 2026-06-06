@@ -310,11 +310,14 @@ async function sendMessage() {
   scrollBottom();
 }
 
-// ── File uploads ────────────────────────────────────────────────
+// ── File / image uploads ────────────────────────────────────────
+const imageThumbs = {};   // upload id -> local object URL (for thumbnails)
+
 async function handleFileUpload(input) {
   const files = Array.from(input.files);
   input.value = "";   // allow re-upload of same file
   for (const file of files) {
+    const isImage = file.type.startsWith("image/");
     const fd = new FormData();
     fd.append("file", file);
     try {
@@ -322,6 +325,9 @@ async function handleFileUpload(input) {
       const d = await r.json();
       if (!d.ok) {
         alert(`Could not read ${file.name}:\n${d.error}`);
+      } else if (isImage && d.id != null) {
+        // Keep a local thumbnail for this image
+        imageThumbs[d.id] = URL.createObjectURL(file);
       }
     } catch {
       alert(`Upload failed for ${file.name}`);
@@ -332,24 +338,44 @@ async function handleFileUpload(input) {
 
 async function loadUploads() {
   try {
-    const d    = await api("/api/uploads");
-    const bar  = document.getElementById("attachments-bar");
+    const d     = await api("/api/uploads");
+    const bar   = document.getElementById("attachments-bar");
     const chips = document.getElementById("attachment-chips");
+    const label = document.getElementById("attachments-label");
 
     if (!d.uploads.length) { bar.classList.add("hidden"); return; }
 
     bar.classList.remove("hidden");
-    chips.innerHTML = d.uploads.map(u => `
-      <div class="attachment-chip">
-        <span class="chip-name" title="${esc(u.filename)}">${esc(u.filename)}</span>
-        <span class="chip-size">${fmtK(u.chars)}</span>
-        <button class="chip-remove" onclick="removeUpload(${u.id})" title="Remove">&#x2715;</button>
-      </div>`).join("");
+
+    const hasImage = d.uploads.some(u => u.kind === "image");
+    // When an image is attached, tell the user it'll use the vision model
+    label.textContent = hasImage ? "Attached (images use Moondream vision):" : "Attached:";
+
+    chips.innerHTML = d.uploads.map(u => {
+      if (u.kind === "image") {
+        const thumb = imageThumbs[u.id]
+          ? `<img class="chip-thumb" src="${imageThumbs[u.id]}" alt="">`
+          : `<span class="chip-thumb chip-thumb-fallback">&#x1F5BC;</span>`;
+        return `
+          <div class="attachment-chip chip-image">
+            ${thumb}
+            <span class="chip-name" title="${esc(u.filename)}">${esc(u.filename)}</span>
+            <button class="chip-remove" onclick="removeUpload(${u.id})" title="Remove">&#x2715;</button>
+          </div>`;
+      }
+      return `
+        <div class="attachment-chip">
+          <span class="chip-name" title="${esc(u.filename)}">${esc(u.filename)}</span>
+          <span class="chip-size">${fmtK(u.chars)}</span>
+          <button class="chip-remove" onclick="removeUpload(${u.id})" title="Remove">&#x2715;</button>
+        </div>`;
+    }).join("");
   } catch {}
 }
 
 async function removeUpload(id) {
   await fetch(`/api/uploads/${id}`, { method: "DELETE" });
+  if (imageThumbs[id]) { URL.revokeObjectURL(imageThumbs[id]); delete imageThumbs[id]; }
   loadUploads();
 }
 

@@ -164,26 +164,36 @@ async def chat(request: Request):
         return JSONResponse({"error": "Empty query"}, status_code=400)
 
     cfg = detect_config()
+
+    # Images attached? Route to the vision model (Moondream) and skip the cache.
+    images = uploads_mod.get_image_data_uris()
+    if images:
+        vision_ids = [m for m in AVAILABLE_MODELS if AVAILABLE_MODELS[m]["vision"]]
+        run_model  = vision_ids[0] if vision_ids else sel_model
+    else:
+        run_model  = sel_model
+
     # Cache key includes the model selection so different models cache separately
-    cache_key_model = sel_model
+    cache_key_model = run_model
 
     async def event_stream():
-        # Inject active file context into the query
+        # Inject active TEXT file context into the query (images handled separately)
         file_ctx = uploads_mod.build_file_context()
         effective_query = f"{file_ctx}\n\nUser question: {query}" if file_ctx else query
 
-        # Cache check (keyed by query + selected model)
-        cached = await cache_mod.get_cached(query, cache_key_model, "")
-        if cached:
-            for chunk in inf_mod._stream_text(cached, chunk_size=8):
-                yield f"data: {json.dumps({'type': 'merge_token', 'token': chunk})}\n\n"
-                await asyncio.sleep(0.005)
-            yield f"data: {json.dumps({'type':'done','cached':True,'session_id':session_id})}\n\n"
-            await mem_mod.create_session(session_id)
-            await mem_mod.add_message(session_id, "user",      query)
-            await mem_mod.add_message(session_id, "assistant", cached)
-            history_mod.save_exchange(session_id, query, cached)
-            return
+        # Cache check — skipped entirely for image queries (every image is unique)
+        if not images:
+            cached = await cache_mod.get_cached(query, cache_key_model, "")
+            if cached:
+                for chunk in inf_mod._stream_text(cached, chunk_size=8):
+                    yield f"data: {json.dumps({'type': 'merge_token', 'token': chunk})}\n\n"
+                    await asyncio.sleep(0.005)
+                yield f"data: {json.dumps({'type':'done','cached':True,'session_id':session_id})}\n\n"
+                await mem_mod.create_session(session_id)
+                await mem_mod.add_message(session_id, "user",      query)
+                await mem_mod.add_message(session_id, "assistant", cached)
+                history_mod.save_exchange(session_id, query, cached)
+                return
 
         # Fresh inference
         await mem_mod.create_session(session_id)
@@ -201,15 +211,19 @@ async def chat(request: Request):
                 # USB mode: make sure the needed model server(s) are running
                 if USB_MODE and _launcher:
                     from server.config import text_model_ids
-                    needed = text_model_ids() if sel_model == "all" else [sel_model]
+                    if images:
+                        needed = [run_model]
+                    else:
+                        needed = text_model_ids() if run_model == "all" else [run_model]
                     await _launcher.ensure_models([m for m in needed if m in AVAILABLE_MODELS])
 
                 ra, rb, merged = await inf_mod.run_inference(
                     effective_query, history, system_prompt, sse_queue,
-                    selected_model=sel_model,
+                    selected_model=run_model, images=images,
                 )
                 merged_holder.append(merged)
-                await cache_mod.save_cache(query, cache_key_model, "", merged)
+                if not images:
+                    await cache_mod.save_cache(query, cache_key_model, "", merged)
                 await mem_mod.add_message(session_id, "assistant", merged)
                 history_mod.save_exchange(session_id, query, merged)
 

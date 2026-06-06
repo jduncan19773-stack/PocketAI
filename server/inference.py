@@ -55,20 +55,37 @@ _PREAMBLE_RE = re.compile(
 
 # ── Streaming helper ─────────────────────────────────────────────
 
-async def _stream_llm(host: str, model: str, messages: list, on_token=None) -> str:
+async def _stream_llm(host: str, model: str, messages: list, on_token=None, images: list = None) -> str:
     """
     Stream a chat completion via OpenAI-compatible /v1/chat/completions.
     Calls on_token(str) for each content chunk.
     Returns the full response text (stripped of preambles).
     Works with both Ollama and llama-server.
+
+    If `images` (a list of base64 data URIs) is given, they are attached to
+    the final user message using the multimodal content format so a vision
+    model (e.g. Moondream) can see them.
     """
     full = ""
     url  = f"{host}/v1/chat/completions"
 
+    payload_messages = messages
+    if images:
+        # Attach images to the last user message in multimodal format
+        payload_messages = [dict(m) for m in messages]   # shallow copy
+        for m in reversed(payload_messages):
+            if m.get("role") == "user":
+                text = m.get("content", "")
+                content = [{"type": "text", "text": text}] if text else []
+                for uri in images:
+                    content.append({"type": "image_url", "image_url": {"url": uri}})
+                m["content"] = content
+                break
+
     async with httpx.AsyncClient(timeout=MODEL_TIMEOUT) as client:
         async with client.stream(
             "POST", url,
-            json={"model": model, "messages": messages, "stream": True},
+            json={"model": model, "messages": payload_messages, "stream": True},
         ) as resp:
             resp.raise_for_status()
             async for line in resp.aiter_lines():
@@ -150,6 +167,7 @@ async def run_inference(
     system_prompt:  str,
     sse_queue:      asyncio.Queue,
     selected_model: str = "all",
+    images:         list = None,
 ) -> tuple:
     """
     Run inference and stream results to sse_queue.
@@ -158,6 +176,11 @@ async def run_inference(
     selected_model:
       "all"            — run all available text models, merge into one answer
       a model id       — run only that model (single, streams live)
+
+    images:
+      Optional list of base64 data URIs. When present, inference runs as a
+      single vision model (caller routes to Moondream) and the images are
+      attached to the user message.
 
     SSE event types:
       token_a     — primary model live token (thinking indicator)
@@ -170,7 +193,10 @@ async def run_inference(
     ]
 
     # Decide which models to run
-    if selected_model == "all":
+    if images:
+        # Vision query — single model only (caller has routed to a vision model)
+        model_ids = [selected_model] if selected_model in AVAILABLE_MODELS else ["moondream"]
+    elif selected_model == "all":
         model_ids = text_model_ids()
         # Keep only models that are actually configured
         model_ids = [m for m in model_ids if m in AVAILABLE_MODELS]
@@ -188,7 +214,7 @@ async def run_inference(
             await sse_queue.put({"type": "merge_token", "token": t})
 
         try:
-            resp = await _stream_llm(_host_for(mid), _tag_for(mid), messages, on_tok)
+            resp = await _stream_llm(_host_for(mid), _tag_for(mid), messages, on_tok, images=images)
         except Exception as e:
             resp = ""
             err = f"Sorry, {AVAILABLE_MODELS[mid]['label']} is unavailable. ({e})"
