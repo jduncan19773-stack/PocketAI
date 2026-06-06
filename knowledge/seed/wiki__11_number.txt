@@ -1,0 +1,145 @@
+TITLE: 11 (number)
+SOURCE: Wikipedia
+URL: https://en.wikipedia.org/wiki/11_%28number%29
+
+11 (eleven) is the natural number following 10 and preceding 12. It is the smallest number whose name in English has three syllables.
+
+
+== Name ==
+"Eleven" derives from the Old English ęndleofon, which is first attested in Bede's late 9th-century Ecclesiastical History of the English People. It has cognates in every Germanic language (for example, German elf), whose Proto-Germanic ancestor has been reconstructed as *ainalifa-, from the prefix *aina- (adjectival "one") and suffix *-lifa-, of uncertain meaning. It is sometimes compared with the Lithuanian vienúolika, though -lika is used as the suffix for all numbers from 11 to 19.
+The Old English form has closer cognates in Old Frisian, Saxon, and Norse, whose ancestor has been reconstructed as *ainlifun. This was formerly thought to be derived from Proto-Germanic *tehun ("ten"); it is now sometimes connected with *leikʷ- or *leip- ("left; remaining"), with the implicit meaning that "one is left" after counting to ten.
+
+
+== Mathematics ==
+11 is a prime number, and a super-prime. 11 forms a twin prime with 13, and sexy pair with 5 and 17. 11 is also the first prime exponent that does not yield a Mersenne prime. 11 is part of a pair of Brown numbers. Only three such pairs of numbers are known. Rows in Pascal's triangle can be seen as representation of powers of 11.
+
+
+=== Geometry ===
+
+An 11-sided polygon is called a hendecagon, or undecagon. A regular hendecagon is the polygon with the fewest number of sides that is not able to be  constructed with a straightedge, compass, and angle trisector.
+The Mathieu group 
+  
+    
+      
+        
+          
+            M
+          
+          
+            11
+          
+        
+      
+    
+    {\displaystyle \mathrm {M} _{11}}
+  
+ is the smallest of twenty-six sporadic groups. It has order 
+  
+    
+      
+        7920
+        =
+        
+          2
+          
+            4
+          
+        
+        ⋅
+        
+          3
+          
+            2
+          
+        
+        ⋅
+        5
+        ⋅
+        11
+        =
+        8
+        ⋅
+        9
+        ⋅
+        10
+        ⋅
+        11
+      
+    
+    {\displaystyle 7920=2^{4}\cdot 3^{2}\cdot 5\cdot 11=8\cdot 9\cdot 10\cdot 11}
+  
+, with 11 as its largest prime factor. 
+  
+    
+      
+        
+          
+            M
+          
+          
+            11
+          
+        
+      
+    
+    {\displaystyle \mathrm {M} _{11}}
+  
+ is the maximal subgroup Mathieu group 
+  
+    
+      
+        
+          
+            M
+          
+          
+            12
+          
+        
+      
+    
+    {\displaystyle \mathrm {M} _{12}}
+  
+, where 11 is also its largest prime factor.
+
+
+=== List of basic calculations ===
+
+
+== Music ==
+
+The interval of an octave plus a fourth is an 11th. A complete 11th chord has almost every note of a diatonic scale.
+In just intonation and microtonal music theory, the number 11 or the ratio 11/8 denotes an interval between that of a perfect fifth and of a tritone; eleven eighths the frequency of the fundamental tone, or the eleventh harmonic. It is an unstable interval and appears mostly in contemporary and experimental music.
+
+
+== Cultural references ==
+
+
+=== Film ===
+In the mockumentary film "This Is Spinal Tap", the idiomatic phrase up to eleven is coined to allude to going beyond typical limits, in this case guitar amplifier volume levels.
+
+
+=== "Eleventh hour" ===
+Being one hour before 12:00, the eleventh hour means the last possible moment to take care of something, and often implies a situation of urgent danger or emergency (see Doomsday clock). "The eleventh hour" is a phrase in the Parable of the Workers in the Vineyard in the Bible.
+
+
+=== Eleventh Night ===
+
+In Protestant communities in Northern Ireland, bonfires are lit to mark the eve of Protestant William III of England's victory over the Catholic James II of England at the Battle of the Boyne.
+
+
+== Languages ==
+While 11 has its own name in Germanic languages such as English, German, or Swedish, and some Latin-based languages such as Spanish, Portuguese, and French, it is the first compound number in many other languages: Chinese 十一 shí yī, Korean 열하나 yeol hana or 십일 ship il.
+In Basque, hamaika, "11", also means "a lot".
+
+
+== Religion ==
+The number 11 (alongside its multiples 22 and 33) are master numbers in numerology, especially in New Age.
+
+
+== References ==
+
+
+== External links ==
+
+Grimes, James. "Eleven". Numberphile. Brady Haran. Archived from the original on 2017-10-15. Retrieved 2016-01-03.

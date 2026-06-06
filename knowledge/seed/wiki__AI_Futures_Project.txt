@@ -1,0 +1,33 @@
+TITLE: AI Futures Project
+SOURCE: Wikipedia
+URL: https://en.wikipedia.org/wiki/AI_Futures_Project
+
+The AI Futures Project is a nonprofit research organization based in the United States that specializes in forecasting the development and societal impact of advanced artificial intelligence. The organization is best known for its 2025 scenario forecast, AI 2027, which examines the potential near-term emergence of artificial general intelligence (AGI) and its possible global consequences.
+
+
+== History ==
+The AI Futures Project was founded in 2025 by Daniel Kokotajlo, a former researcher in the governance division of OpenAI. Kokotajlo resigned from OpenAI in April 2024, expressing concerns that the company prioritized rapid product development over AI safety and was advancing without sufficient safeguards. He founded the nonprofit to conduct independent forecasting and policy research.
+The organization is registered as a 501(c)(3) nonprofit in the United States and is funded through donations. It operates with a small research staff and network of advisors drawn from fields including AI policy, forecasting, and risk analysis.
+
+
+== Activities ==
+The mission of the AI Futures Project is to develop detailed scenario forecasts of the trajectory of advanced AI systems to inform policymakers, researchers, and the public.
+In addition to written reports, the group has conducted tabletop exercises and workshops based on its scenarios, involving participants from academia, technology, and public policy.
+
+
+== AI 2027 ==
+In April 2025, the AI Futures Project released AI 2027, a detailed scenario forecast describing possible developments in AI between 2025 and 2027. The report was authored by Daniel Kokotajlo along with Eli Lifland, Thomas Larsen, and Romeo Dean, with editing assistance from blogger Scott Alexander.
+The scenario depicts very rapid progress in AI capabilities, including the development of autonomous AI systems capable of recursive self-improvement. AI 2027 presents two alternative endings: one in which international competition over advanced AI leads to catastrophic loss of human control, and another in which coordinated global action slows down development and averts imminent disaster. The authors emphasize that the narratives are hypothetical and intended as planning tools rather than literal forecasts.
+
+
+== Reception ==
+AI 2027 attracted attention from technology journalists and AI researchers. Some commentators praised the report for its level of detail and its usefulness as a strategic planning exercise, while others criticized the scenario as implausibly aggressive in its timelines.
+The report was cited in policy discussions about AI governance. U.S. Vice President JD Vance reportedly read AI 2027 and referenced its warnings in conversations about international AI coordination.
+More recent reporting noted that the authors of AI 2027 had publicly revised some of their timelines. According to Kokotajlo, developments since the report's original publication suggested a slower path toward fully autonomous AI research systems than initially forecasted.
+
+
+== References ==
+
+
+== External links ==
+Official website

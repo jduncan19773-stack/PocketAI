@@ -29,11 +29,12 @@ from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.responses import HTMLResponse, StreamingResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from server import cache    as cache_mod
-from server import memory   as mem_mod
-from server import inference as inf_mod
-from server import uploads  as uploads_mod
-from server import history  as history_mod
+from server import cache     as cache_mod
+from server import memory    as mem_mod
+from server import inference  as inf_mod
+from server import uploads   as uploads_mod
+from server import history   as history_mod
+from server import knowledge as kb_mod
 from server.config import (
     detect_config, SERVER_PORT, USB_MODE,
     AVAILABLE_MODELS, MODEL_ORDER,
@@ -58,6 +59,7 @@ async def startup():
     await cache_mod.init_cache()
     await mem_mod.init_memory()
     history_mod.init_history()   # rolling cross-session conversation memory
+    kb_mod.ensure_index()        # build the knowledge-base search index if needed
 
     if USB_MODE:
         from server import launcher as launcher_mod
@@ -95,6 +97,7 @@ async def status():
         "description":  cfg.description,
         "cache":        stats,
         "history":      history_mod.history_stats(),
+        "knowledge":    kb_mod.kb_stats(),
     }
 
 
@@ -202,6 +205,16 @@ async def chat(request: Request):
         history       = await mem_mod.get_session_messages(session_id)
         history       = [m for m in history if not (m["role"]=="user" and m["content"]==query)]
         system_prompt = await mem_mod.build_system_prompt(session_id)
+
+        # Knowledge-base retrieval (RAG): pull relevant passages for this query
+        # and add them to the prompt. Skipped for image queries (vision model).
+        if not images:
+            try:
+                kb_block = kb_mod.search_context(query)
+                if kb_block:
+                    system_prompt = system_prompt + "\n\n" + kb_block
+            except Exception:
+                pass   # retrieval is best-effort; never block a chat on it
 
         sse_queue:     asyncio.Queue = asyncio.Queue()
         merged_holder: list[str]     = []

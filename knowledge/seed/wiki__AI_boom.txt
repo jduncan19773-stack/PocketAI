@@ -1,0 +1,151 @@
+TITLE: AI boom
+SOURCE: Wikipedia
+URL: https://en.wikipedia.org/wiki/AI_boom
+
+An AI boom is a period of rapid growth in the field of artificial intelligence. The most recent boom happened in the early 2020s. before seeing increased acceleration and media coverage. Examples of this include generative AI technologies, such as large language models (LLM) and AI image generators developed by companies like OpenAI, Google and Anthropic, as well as scientific advances, such as protein folding prediction led by Google DeepMind and Google AI. This period is sometimes referred to as an AI spring, a term used to differentiate it from previous AI winters. As of 2025, ChatGPT has emerged as the 4th-most visited website globally, surpassed only by Google, YouTube, and Facebook.
+
+
+== History ==
+
+In 1950, Alan Turing proposed the idea of "Thinking Machines". These were computers that would be able to reason at the same level as humans. He began his well-known "Turing Test", where an interrogator is provided with two materials and they must determine which one was done by artificial intelligence and which one was done by a human being. 
+
+In 1956, John McCarthy used the term "artificial intelligence" for the first time. That year, McCarthy, Nathaniel Rochester, Marvin Minsky, and Claude Shannon organized the Dartmouth conference, which formalized artificial intelligence as an academic field. In 1958, McCarthy created the programming language LISP, LISP stands for "List Processing" and was the main programming language for artificial intelligence. which remained the most common programming language for artificial intelligence in the United States for decades. In 1962 McCarthy founded Stanford Artificial Intelligence Laboratory (SAIL). McCarthy was also a cofounder of MIT's first Artificial Intelligence Laboratory, now known as MIT Computer Science and Artificial Intelligence Laboratory.
+In 1966, Joseph Weizenbaum created ELIZA, the first chatbot, as an experimental emotional tool.
+The text-to-image models DALL-E 2 and Midjourney were released in 2022.
+ChatGPT, an AI chatbot created by OpenAI, was launched at the end of 2022. It grew to over 100 million users in 2 months, becoming the fastest-growing software application. Large language models are designed to respond to human language, by accessing a large amount of training data.
+
+
+== Advances ==
+
+
+=== Biomedical ===
+In 2020, DeepMind's AlphaFold program, which is designed to predict protein folding, scored more than 90 in CASP's Global distance test (GDT). The structural biologist and Nobel Prize winner Venki Ramakrishnan called the result "a stunning advance on the protein folding problem". The ability to predict protein structures accurately based on the constituent amino acid sequence may accelerate drug discovery and enable a better understanding of diseases.
+
+
+=== Images and videos ===
+
+As time passed, the power of generative AI grew stronger. In 2015, initial popularity began to grow with the release of Google's DeepDream. DeepDream is a generative AI that takes inputs from a previous image and morphs them to produce hallucinogenic images.
+In January 2021, OpenAI released DALL-E, allowing for image generation through text prompts. This allows users to generate any image with a simple prompt. Soon after, other powerful models followed DALL-E, such as Google's Gemini.
+The popularity of text-to-video generative AI tools grew exponentially. With the release of models such as OpenAI's Sora in 2024, the use of text-to-video tools became normalized, as people utilized them for advertisements, which saves on production costs and increases production speed.
+Generative AI is growing at a rapid rate, outpacing modern-day detection tools. With the common public having access to these tools, it raises concerns about the ethical use of generative AI. There have been multiple occasions where misinformation has been spread over the internet about politics due to a generated or deep-faked video, posing as a security threat.
+
+
+=== Language ===
+GPT-3 is a large language model that was released in 2020 by OpenAI and is capable of generating human-like text. A new version called GPT-4 was released on March 14, 2023, and was used in the Microsoft Bing search engine. Other language models have been released, such as PaLM and Gemini by Google and LLaMA by Meta Platforms.
+
+
+=== Software development ===
+
+Generative coding can be used to produce, edit, explain, and debug code. A 2026 study in the journal Management Science found that less experienced developers have higher adoption rates and greater productivity gains.
+
+
+=== Music and voice ===
+In 2016, Google's DeepMind produced WaveNet. WaveNet allowed the generation of raw audio of speech and piano. WaveNet is able to generate different voices by identifying the speakers. This acted as a fundamental building block for future models, allowing audio to be formed from scratch. This wouldn't only help with the production of music, but voice generation as well.
+OpenAI released Jukebox, the first large-scale model to generate songs, in 2020. Jukebox allowed for raw audio in different genres and styles. 
+In 2024, AI models capable of producing high-fidelity music became available to the public. In June 2024, AI-generated music services Udio and Suno AI were sued by a group of major record labels over copyright infringement concerns.
+In March 2020, 15.ai was founded. 15.ai allowed for audio deepfakes. Artificially generated vocals can be generated with tools such as ElevenLabs, which allows for the creation of vocals from any audio. This allows for any celebrity or politician who has voice clips on the internet to be subject to audio deepfakes for both speech and singing. The voices of politicians, such as Joe Biden, have been used for fake robocalls to voters to attempt to manipulate elections.
+
+
+== Impact ==
+
+
+=== Energy ===
+
+Electricity consumed by hardware used for AI has increased demands on power grids, which has led to prolonged use of fossil fuel power plants which would otherwise have been deactivated.
+Microsoft, Google, and Amazon have all invested in existing or proposed nuclear power plants to meet these demands. In September 2024, Microsoft signed a deal with Constellation Energy to purchase power from a reactor at Three Mile Island which had been shut down in 2019. The reactor is set to reopen in 2028 to provide power to Microsoft's data centers. The reactor is next to the unit which caused the worst nuclear power accident in US history in 1979.
+
+
+=== Cultural ===
+According to a report from Pew Research, opinions on AI are divided, with most Americans expressing concerns over a lack of control over AI and potential negative effect on human creativity. Nikolova & Angrisani (2025) found that people are specifically distrustful of the use AI in personal relationships, while being more accepting of its use in medicine, such as for creating new antibiotics.
+
+
+=== Business and economy ===
+
+Some economists have been optimistic about the potential of the current wave of AI to boost productivity and economic growth. Notably, Stanford University economist Erik Brynjolfsson, in a series of articles has argued for an "AI-powered Productivity Boom"  and a "Coming Productivity Boom". At the same time, others like Northwestern University economist Robert Gordon remain more pessimistic. Brynjolfsson and Gordon have made a formal bet, registered at long bets, about the rate of productivity growth in the 2020s, to be resolved at the end of the decade.
+Big Tech companies view the AI boom as both opportunity and threat; Alphabet's Google, for example, realized that ChatGPT could be an innovator's dilemma-like replacement for Google Search. The company merged DeepMind and Google Brain, a rival internal unit, to accelerate its AI research.
+The market capitalization of Nvidia, whose GPUs are in high demand to train and use generative AI models, rose to over US$3.3 trillion, making it the world's largest company by market capitalization as of June 19, 2024 and became the first company to reach US$4 trillion on July 9, 2025 and subsequently US$5 trillion on October 29 later that same year.
+In 2023, San Francisco's population increased for the first time in years, with the boom cited as a contributing factor.
+Machine learning resources, hardware or software can be bought and licensed off-the-shelf or as cloud platform services. This enables wide and publicly available uses, spreading AI skills. Over half of businesses consider AI to be a top organizational priority and to be the most crucial technological advancement in many decades.
+Across industries, generative AI tools are becoming widely available through the AI boom and are increasingly used in businesses across regions. A main area of use is data analytics. Seen as an incremental change, machine learning improves industry performance. Businesses report AI to be most useful in increased process efficiency, improved decision-making and strengthening of existing services and products. Through adoption, AI has already positively influenced revenue generation in multiple business functions. Businesses have experienced revenue increases of up to 16%, mainly in manufacturing, risk management and research and development.
+AI and generative AI investments have been increasing with the boom, increasing from $18 billion in 2014 to $119 billion in 2021. Most notably, the share of generative AI investments was around 30% in 2023. Further,  generative AI businesses have seen considerable venture capital investments even though regulatory and economic outlooks remain in question.
+Tech giants capture the bulk of the monetary gains from AI and act as major suppliers to or customers of private users and other businesses.
+With the introduction of AI, there has been an exponential rise in production for businesses. It's expected that workers could use resources provided by artificial intelligence in order to boost their productivity. As many small businesses don't use AI, it's believed that if it's adopted by more businesses, the whole work structure could be changed, as many tasks will be automated by AI.
+The U.S. Census Bureau's Business Trends and Outlook Survey measured AI use at 3–9% of businesses in March 2025, using language that asked whether firms used AI "to produce goods and services." After revising the question to cover "any business function," the Bureau's measured adoption rate increased to 18% in March 2026.
+According to Bell & Korinek (2023), economic effect of AI could worsen economic inequality, which could potentially threaten democracy in ways which are separate from threats caused by AI's use in misinformation and propaganda.
+
+
+== Concerns ==
+
+Inaccuracy, cybersecurity and intellectual property infringement are considered to be the main risks associated with the boom, although not many actively attempt to mitigate the risk. Large language models have been criticized for reproducing biases inherited from their training data, including discriminatory biases related to ethnicity or gender. As a dual-use technology, AI carries risks of misuse by malicious actors. As AI becomes more sophisticated, it may eventually become cheaper and more efficient than human workers, which could cause technological unemployment and a transition period of economic turmoil. Public reaction to the AI boom has been mixed, with some hailing the new possibilities that AI creates, its sophistication and potential for benefiting humanity; while others denounced it for threatening job security and for giving 'uncanny' or flawed responses.
+
+
+=== Dominance by tech giants ===
+Commercial AI is dominated by American Big Tech companies such as Alphabet Inc., Amazon, Apple Inc., Meta Platforms, and Microsoft, whose investments in this area have surpassed those from U.S.-based venture capitalists. These companies own the majority of cloud infrastructure, AI chips, and computing power from data centers.
+
+
+=== Intellectual property ===
+
+Tech companies such as Meta, OpenAI and Nvidia have been sued by artists, writers, journalists, and software developers for using their work to train AI models. Early generative AI chatbots, such as the GPT-1, used the BookCorpus, and books are still the best source of training data for producing high-quality language models. ChatGPT aroused suspicion that its sources included libraries of pirated content after the chatbot produced detailed summaries of every part of Sarah Silverman's The Bedwetter and verbatim excerpts of paywalled content from The New York Times. In protest of the UK government holding consultations on how copyrighted music can legally be used to train AI models, more than a thousand British musicians released an album with no sounds, entitled Is This What We Want?
+
+
+=== Likeness and impersonation ===
+
+The ability to generate convincing, personalized messages as well as realistic images may facilitate large-scale misinformation, manipulation, and propaganda.
+On April 19, 2024, as part of an ongoing feud with fellow rapper Kendrick Lamar, the artist Drake released the diss track "Taylor Made Freestyle", which featured AI-generated vocals imitating the voices of Tupac Shakur and Snoop Dogg. Shakur's estate threatened to sue over the use of Shakur's likeness, saying that it constituted a violation of Shakur's personality rights.
+On May 20, 2024, following the release of a demo of updates to OpenAI's ChatGPT Voice Mode feature a week earlier, actor Scarlett Johansson issued a statement in relation to the "Sky" voice shown in the demo, accusing OpenAI of producing it to be very similar to her own, and her portrayal of the artificial intelligence voice assistant Samantha in the film Her (2013), despite Johansson refusing an earlier offer from the company to provide her voice for the system. The agent of the unnamed voice actress who voiced Sky stated that she had recorded her lines in her natural speaking voice and that OpenAI had not mentioned the movie Her nor Johansson.
+Several incidents involving sharing of non-consensual deepfake pornography have occurred. In late January 2024, deepfake images of American musician Taylor Swift proliferated. Several experts have warned that deepfake pornography is more quickly created and disseminated, due to the relative ease of using the technology. Canada introduced federal legislation targeting sharing of non-consensual sexually explicit AI-generated photos; most provinces already had such laws. In the United States, the DEFIANCE Act was introduced in March 2024.
+
+
+=== Environment ===
+
+A large amount of electricity is needed to power generative AI products, making it more difficult for companies to achieve net zero emissions. From 2019 to 2024, Google's greenhouse gas emissions increased by nearly 50%, partly as a result of increased energy consumption by AI data centres.
+
+
+=== Biosecurity and cybersecurity ===
+AI is expected by researchers of the Center for AI Safety to improve the "accessibility, success rate, scale, speed, stealth and potency of cyberattacks", potentially causing "significant geopolitical turbulence" if it reinforces attack more than defense. Concerns have been raised about the potential capability of future AI systems to engineer particularly lethal and contagious pathogens.
+The AI boom is said to have started an arms race in which large companies are competing against each other to have the most powerful AI model on the market, with speed and profit prioritized over safety and user protection.
+
+
+=== Human extinction ===
+
+Industry leaders and others have signed the Statement on AI Risk, arguing that humanity might irreversibly lose control over a sufficiently advanced artificial general intelligence (AGI).
+
+
+=== Digital sentience ===
+Coverage of advances in machine learning and artificial intelligence have coincided with discussions of digital sentience and morality, such as whether AI programs should be granted rights.
+
+
+=== Financial concerns and potential bubble ===
+
+Much of the AI boom has been funded by loans and venture capital, but many commercial AI services remain of questionable practical utility or quality for business. Despite more than $60 billion in corporate investment in AI in 2025, 95% of business AI projects are unprofitable, according to research from MIT. Producers of generative AI, such as OpenAI, also themselves currently have costs greatly exceeding their revenue. As other major tech companies such as Nvidia are both heavily invested into AI and dependent on the AI ecosystem and its hardware demands for their own ongoing growth, this has raised speculation of a wider economic bubble in the tech industry, particularly if future demand falls short of the current levels of AI investment.
+
+
+== See also ==
+
+AI bubble
+AI datacenter
+AI effect
+AI slop
+AI winter, a period of reduced funding and interest in artificial intelligence research
+History of artificial intelligence
+History of artificial neural networks
+Hype cycle
+List of artificial intelligence projects
+List of artificial intelligence journals
+Lists of open-source artificial intelligence software
+Progress in artificial intelligence
+Regulation of artificial intelligence
+Technological singularity
+Timeline of artificial intelligence risks in global finance
+
+
+== References ==
+
+
+== Further reading ==
+Chen, Caiwei (March 26, 2025). "China built hundreds of AI data centers to catch the AI boom. Now many stand unused". MIT Technology Review. Retrieved March 27, 2025.
+Heath, Alex (December 5, 2024). Why investors don't mind that AI is a money pit. The Verge. Retrieved March 16, 2025.
+
+
+== External links ==
+"In the Age of AI". Frontline. Season 38. Episode 6. November 5, 2019. PBS. WGBH. Retrieved June 4, 2023.

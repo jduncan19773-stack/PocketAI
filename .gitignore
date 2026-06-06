@@ -13,6 +13,12 @@ models/
 engines/
 bin/
 
+# Knowledge base — commit only the small seed set; the bulk corpus and the
+# search index are built locally by build_knowledge.py (too big for git).
+knowledge/corpus/
+knowledge/index.db
+# (knowledge/seed/ IS committed so a fresh clone works immediately)
+
 # Temporary and system files
 .env
 *.log

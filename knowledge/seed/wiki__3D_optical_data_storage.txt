@@ -1,0 +1,42 @@
+TITLE: 3D optical data storage
+SOURCE: Wikipedia
+URL: https://en.wikipedia.org/wiki/3D_optical_data_storage
+
+3D optical data storage is any form of optical data storage in which information can be recorded or read with three-dimensional resolution (as opposed to the two-dimensional resolution afforded, for example, by CD).
+
+
+== History ==
+The origins of the field date back to the 1950s, when Yehuda Hirshberg developed the photochromic spiropyrans and suggested their use in data storage. In the 1970s, Valerii Barachevskii demonstrated that this photochromism could be produced by two-photon excitation, and at the end of the 1980s Peter M. Rentzepis showed that this could lead to three-dimensional data storage.
+
+
+== Processes for reading data ==
+Second-harmonic generation has been demonstrated as a method to read data written into a poled polymer matrix.
+Optical coherence tomography has also been demonstrated as a parallel reading method.
+
+
+== Academic development ==
+Masahiro Irie developed the diarylethene family of photochromic materials.
+Yoshimasa Kawata, Satoshi Kawata, and Zouheir Sekkat have developed and worked on several optical data manipulation systems, in particular involving poled polymer systems.
+Kevin C Belfield is developing photochemical systems for 3D optical data storage by the use of resonance energy transfer between molecules, and also develops high two–photon cross-section materials.
+Tom Milster has made many contributions to the theory of 3D optical data storage.
+Min Gu has examined confocal readout and methods for its enhancement.
+
+
+== Commercial development ==
+
+Call/Recall was founded in 1987 on the basis of Peter Rentzepis' research. Using two–photon recording (at 25 Mbit/s with 6.5 ps, 7 nJ, 532 nm pulses), one–photon readout (with 635 nm), and a high NA (1.0) immersion lens, they have stored 1 TB as 200 layers in a 1.2 mm thick disk. They aim to improve capacity to >5 TB and data rates to up to 250 Mbit/s within a year, by developing new materials as well as high-powered pulsed blue laser diodes.
+Mempile are developing a commercial system with the name TeraDisc. In March 2007, they demonstrated the recording and readback of 100 layers of information on a 0.6 mm thick disc, as well as low crosstalk, high sensitivity, and thermodynamic stability. They intend to release a red-laser 0.6-1.0 TB consumer product in 2010, and have a roadmap to a 5 TB blue-laser product.
+Constellation 3D developed the Fluorescent Multilayer Disc at the end of the 1990s, which was a ROM disk, manufactured layer by layer. The company failed in 2002, but the intellectual property (IP) was acquired by D-Data Inc., who are attempting to introduce it as the Digital Multilayer Disk (DMD).
+Landauer Inc. are developing a media based on resonant two-photon absorption in a sapphire single crystal substrate. In May 2007, they showed the recording of 20 layers of data using 2 nJ of laser energy (405 nm) for each mark. The reading rate is limited to 10 Mbit/s because of the fluorescence lifetime.
+Colossal Storage aim to develop a 3D holographic optical storage technology based on photon-induced electric field poling using a far UV laser to obtain large improvements over current data capacity and transfer rates, but as yet they have not presented any experimental research or feasibility study.
+Microholas operates out of the University of Berlin, under the leadership of Prof Susanna Orlic, and has achieved the recording of up to 75 layers of microholographic data, separated by 4.5 micrometres, and suggesting a data density of 10 GB per layer.
+3DCD Technology Pty. Ltd. is a university spin-off set up to develop 3D optical storage technology based on materials identified by Daniel Day and Min Gu.
+
+
+== See also ==
+Dual layer
+5D optical data storage
+List of emerging technologies
+
+
+== References ==

@@ -1,0 +1,31 @@
+TITLE: 1X Technologies
+SOURCE: Wikipedia
+URL: https://en.wikipedia.org/wiki/1X_Technologies
+
+1X Technologies is a Norwegian-American robotics and artificial intelligence company developing general-purpose humanoid robots for home environments. The company is headquartered in Palo Alto, California, with main manufacturing operations in Hayward and additional manufacturing in Moss, Norway.
+
+
+== History ==
+1X Technologies was founded in 2014 by Norwegian roboticist Bernt Øivind Børnich under the name Halodi Robotics. The company initially focused on developing safe actuators and full-body control systems for industrial and healthcare robotics. In 2018, it released its first humanoid robot, EVE, designed for logistics, security, and medical environments. In 2022, the company rebranded as 1X Technologies and shifted its focus to domestic robotics, developing humanoid assistants intended for use in private homes.
+In March 2023, 1X raised $23.5 million in Series A2 funding, led by the OpenAI Startup Fund, with participation from Tiger Global, Sandwater, Alliance Ventures, and Skagerak Capital. In January 2024, the company secured $100 million in Series B funding led by EQT Ventures, alongside Samsung NEXT, Nistad Group, and existing investors.
+In September 2025, it was reported that 1X Technologies was seeking to raise $1 billion in new funding to support the development and deployment of its humanoid robots for home environments.
+
+
+== Products ==
+
+
+=== EVE ===
+EVE is a wheeled humanoid robot designed for industrial and institutional use in logistics, security, and healthcare. It served as a platform for real-world testing of 1X's proprietary actuation, perception, and manipulation technologies.
+
+
+=== NEO ===
+NEO is 1X's bipedal humanoid robot designed specifically for home use. The robot features humanlike motion, a slim anthropomorphic design, and is intended to operate in unstructured home environments. The first version of NEO was introduced as NEO Beta on August 30th, 2024. On February 21st, 2025, 1X introduced an update that featured a sleeker design, known as NEO Gamma.
+On October 28, 2025, 1X opened pre-orders for NEO, also known as NEO Home Robot, a humanoid robot designed for use in private homes, scheduled for release in 2026. It will be available in tan, gray, and dark brown, and cost $20,000 for early adopters; it is also planned to be offered as a subscription service for $499 per month. Joanna Stern reported that as of October 2025, most tasks were teleoperated by a human with a virtual reality headset, raising concerns about privacy.
+The company plans to provide an app where users can schedule sessions during which a remote operator can accomplish tasks. CEO Bernt Børnich said that obtaining training data from early adopters was needed to improve the autonomy of the robot.
+
+
+== References ==
+
+
+== External links ==
+Official website

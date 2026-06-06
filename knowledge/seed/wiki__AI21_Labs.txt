@@ -1,0 +1,46 @@
+TITLE: AI21 Labs
+SOURCE: Wikipedia
+URL: https://en.wikipedia.org/wiki/AI21_Labs
+
+AI21 Labs is an Israeli company specializing in Natural Language Processing (NLP), which develops AI systems that can understand and generate natural language.
+
+
+== History ==
+AI21 Labs was founded in November 2017 by Yoav Shoham, Ori Goshen, and Amnon Shashua in Tel Aviv, Israel.
+In January 2019, the company raised $9.5 million from investors in a seed funding round. On October 27, 2020, AI21 Labs launched its first product, Wordtune, an AI-based writing assistant that understands context and can suggest paraphrases and rewrites. Google named Wordtune one of its favorite extensions of 2021. In August 2021, the company launched AI21 Studio. In the same month, Jurassic-1, a natural language processing system, was launched with a token vocabulary over 250,000.
+In November 2021, Walden Catalyst announced an investment of $20 Million in AI21 Labs. Later that month, AI21 Labs completed a $25 million series A round led by Pitango First. In July 2022, the company raised $64 million in a series B funding round led by Ahren with the participation of prof. Amnon Shashua, Walden Catalyst, Pitango, TPY Capital, and Mark Leslie.
+On January 17, 2023, AI21 Labs announced the launch of Wordtune Spices, a generative AI tool that generates a range of text options that can enhance sentences.
+On March 9, 2023, the company announced the release of Jurassic-2, claiming it has better response times, understands more languages, and features advanced instruction following.
+On August 31, 2023, the company announced the closing of a $155 million Series C financing round. Investors include previous participants, alongside new ones such as Google and Nvidia.
+On March 29, 2024, the company released Jamba, an open weights large language model built on a hybrid Mamba SSM transformer using mixture of experts with context lengths up to 256,000 tokens. In September 2024, AI21 Labs partnered with Amazon Web Services (AWS) to make its Jamba 1.5 family of models available on Amazon Bedrock, enabling the integration of Jamba into enterprise applications.
+In March 2025, AI21 Labs released Jamba 1.6 for private enterprise deployment, claiming it outperformed other open models across multiple benchmarks. The same month, AI21 Labs launched Maestro, an AI planning and orchestration system aimed at improving the accuracy of GPT-4o and Claude 3.5 Sonnet in complex tasks.
+
+
+== Management ==
+
+
+=== Leadership ===
+Chairman and co-founder: Amnon Shashua
+Co-CEO and co-founder: Ori Goshen
+Co-CEO and co-founder: Yoav Shoham
+
+
+=== Advisors ===
+Omri Abend, Professor of Cognitive and Brain Science, Computer Science, Hebrew University of Jerusalem
+Yonatan Belinkov, Professor of Cognitive and Brain Science, Computer Science, Hebrew University of Jerusalem
+Dan Jurafsky, Professor of Linguistics, Professor of Computer Science, Stanford University
+Kevin Leyton-Brown, Professor of Computer Science, University of British Columbia
+Christopher Ré, Associate Professor in the Stanford AI Lab (SAIL), Stanford University
+Sebastian Thrun, Adjunct Professor of Computer Science, Stanford University
+Shai Shalev-Shwartz, Professor of Cognitive and Brain Science, Computer Science, Hebrew University of Jerusalem
+Dan Roth, Professor of Computer & Information Science, University of Pennsylvania
+Nick McKeown, Professor of Computer Science & Electrical Engineering, Stanford University
+
+
+== See also ==
+ChatGPT
+OpenAI
+Second Nature (AI Company)
+
+
+== References ==

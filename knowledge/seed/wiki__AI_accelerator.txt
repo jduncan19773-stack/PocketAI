@@ -1,0 +1,49 @@
+TITLE: AI accelerator
+SOURCE: Wikipedia
+URL: https://en.wikipedia.org/wiki/AI_accelerator
+
+A neural processing unit (NPU), also known as an AI accelerator or deep learning processor, is a class of specialized hardware accelerator or computer system designed to accelerate artificial intelligence and machine learning applications, including artificial neural networks and computer vision. NPU can be standalone, a part of a CPU or a part of a GPU.
+
+
+== Use ==
+Their purpose is either to efficiently execute already trained AI models (inference) or to train AI models. NPUs can be more efficient in terms of speed or power consumption.
+NPU applications include algorithms for robotics, Internet of things, and data-intensive or sensor-driven tasks. They are often manycore or spatial designs and focus on low-precision arithmetic, novel dataflow architectures, or in-memory computing capability. As of 2024, a widely used datacenter-grade AI integrated circuit chip, the Nvidia H100 GPU, contains tens of billions of MOSFETs. 
+
+
+=== Consumer devices ===
+AI accelerators are used in Apple silicon, Qualcomm, Samsung, Huawei, and Google Tensor smartphone processors. When used as part of a GPU, it can significantly reduce resource use by rendering at a much lower resolution and frame rate (540p 30fps). Then use NPU with pre-trained AI model to generate a significantly smoother and higher resolution output (2160p 240fps) in real-time.
+Vision processing units are accelerators specialized for machine vision algorithms such as CNN (convolutional neural networks) and SIFT (scale-invariant feature transform). They are used in devices that need to keep track of objects visually such as AR headsets and drones.
+It is more recently (circa 2017) added to processors from Apple and (circa 2022) to processors from Intel and AMD. All models of Intel Meteor Lake processors have a built-in versatile processor unit (VPU) for accelerating inference for computer vision and deep learning.
+On consumer devices, the NPU is intended to be small, power-efficient, but reasonably fast when used to run small models. To do this they are designed to support low-bitwidth operations using data types such as INT4, INT8, FP8, and FP16. A common metric is trillions of operations per second (TOPS). Although TOPS does not explicitly specify the kind of operations, it is typically INT8 additions and multiplications.
+
+
+=== Datacenters ===
+Accelerators are used in cloud computing servers: e.g., tensor processing units (TPU) for Google Cloud Platform, and Trainium and Inferentia chips for Amazon Web Services. Many vendor-specific terms exist for devices in this category, and it is an emerging technology without a dominant design.
+Since the late 2010s, graphics processing units designed by companies such as Nvidia and AMD often include AI-specific hardware in the form of dedicated functional units for low-precision matrix-multiplication operations. These GPUs are commonly used as AI accelerators, both for training and inference.
+
+
+=== Scientific computation ===
+Although NPUs are tailored for low-precision (e.g., FP16, INT8) matrix multiplication operations, they can be used to emulate higher-precision matrix multiplications in scientific computing. As modern GPUs place much focus on making the NPU part fast, using emulated FP64 (Ozaki scheme) on NPUs can potentially outperform native FP64. This has been demonstrated using FP16-emulated FP64 on NVIDIA TITAN RTX and using INT8-emulated FP64 on NVIDIA consumer GPUs and the A100 GPU. Consumer GPUs especially benefited as they have limited FP64 hardware capacity, showing a 6× speedup. Since CUDA Toolkit 13.0 Update 2, cuBLAS automatically uses INT8-emulated FP64 matrix multiplication of the equivalent precision if it is faster than native. This is in addition to the FP16-emulated FP32 feature introduced in version 12.9.
+
+
+== Programming ==
+An operating system or a higher-level library may provide application programming interfaces such as TensorFlow with LiteRT Next (Android), CoreML (iOS, macOS) or DirectML (Windows). Formats such as ONNX are used to represent trained neural networks.
+Consumer CPU-integrated NPUs are accessible through vendor-specific APIs. AMD (Ryzen AI), Intel (OpenVINO), Apple silicon (CoreML), and Qualcomm (SNPE) each have their own APIs, which can be built upon by a higher-level library.
+GPUs generally use existing GPGPU pipelines such as CUDA and OpenCL adapted for lower precisions and specialized matrix-multiplication operations. Vulkan is also being used. Custom-built systems such as the Google TPU use private interfaces.
+There are a large number of separate underlying acceleration APIs and compilers/runtimes in use in the AI field, causing a great increase in software development effort due to the many combinations involved. As of 2025, the open standard organization Khronos Group is pursuing standardization of AI-related interfaces to reduce the amount of work needed. Khronos is working on three separate fronts: expansion of data types and intrinsic operations in OpenCL and Vulkan, inclusion of compute graphs in SPIR-V, and a NNEF/SkriptND file format for describing a neural network.
+
+
+== Notes ==
+
+
+== See also ==
+Wetware computer
+Real-time ray tracing processing unit
+
+
+== References ==
+
+
+== External links ==
+Nvidia Puts The Accelerator To The Metal With Pascal, The Next Platform
+Eyeriss Project, Massachusetts Institute of Technology

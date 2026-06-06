@@ -1,0 +1,58 @@
+TITLE: AI capability control
+SOURCE: Wikipedia
+URL: https://en.wikipedia.org/wiki/AI_capability_control
+
+In the field of artificial intelligence (AI) design, AI capability control proposals, also referred to as AI confinement, aim to increase human ability to monitor and control the behavior of AI systems, including proposed artificial general intelligences (AGIs), in order to reduce dangers they might pose if misaligned. Capability control becomes less effective as agents become more intelligent and their ability to exploit flaws in human control systems increases, potentially resulting in an existential risk from AI. Therefore, the Oxford philosopher Nick Bostrom and others recommend capability control methods only as a supplement to alignment methods.
+
+
+== Motivation ==
+
+Some hypothetical intelligence technologies, like "seed AI", are postulated to be able to make themselves faster and more intelligent by modifying their source code. These improvements would make further improvements possible, which would in turn make further iterative improvements possible, and so on, leading to a sudden intelligence explosion.
+An unconfined superintelligent AI could, if its goals differed from humanity's, take actions resulting in human extinction. For example, an extremely advanced system of this sort, given the sole purpose of solving the Riemann hypothesis, an innocuous mathematical conjecture, could decide to try to convert the planet into a giant supercomputer whose sole purpose is to make additional mathematical calculations (see also paperclip maximizer). 
+One strong challenge for control is that neural networks are by default highly uninterpretable. This makes it more difficult to detect deception or other undesired behavior as the model self-trains iteratively. Advances in interpretable artificial intelligence could mitigate this difficulty.
+
+
+== Proposed techniques ==
+
+
+=== Interruptibility and kill switch ===
+One potential way to prevent harmful outcomes is to give human supervisors the ability to easily shut down a misbehaving AI via a kill switch. Modern AI systems however often run in distributed infrastructures, which makes a coordinated shutdown difficult, especially if the AI becomes available on the internet.
+
+
+=== Oracle AI ===
+An oracle is a hypothetical AI designed to answer questions and prevented from gaining any goals or subgoals that involve modifying the world beyond its limited environment. In his 2018, AI researcher Stuart J. Russell stated that if superintelligence were known to be only a decade away, developers should create an oracle with no internet access and constrained answers rather than a general-purpose intelligent agent.
+Oracles may share many of the goal definition issues associated with general purpose superintelligence. An oracle would have an incentive to escape its controlled environment so that it can acquire more computational resources and potentially control what questions it is asked. Oracles may not be truthful, possibly lying to promote hidden agendas. To mitigate this, Bostrom suggests building multiple oracles, all slightly different, and comparing their answers in order to reach a consensus.
+
+
+=== Blinding ===
+An AI could be blinded to certain variables in its environment. This could provide certain safety benefits, such as an AI not knowing how a reward is generated, making it more difficult to exploit.
+
+
+=== Boxing ===
+An AI box is a proposed method of capability control in which an AI is run on an isolated computer system with heavily restricted input and output channels, similar to a virtual machine. The purpose of an AI box is to reduce the risk of the AI taking control of the environment away from its operators, while still allowing the AI to output solutions to narrow technical problems.
+While boxing reduces the AI's ability to carry out undesirable behavior, it also reduces its usefulness. Boxing has fewer costs when applied to a question-answering system, which may not require interaction with the outside world.
+The likelihood of security flaws involving hardware or software vulnerabilities can be reduced by formally verifying the design of the AI box.
+
+
+== Difficulties ==
+
+
+=== Shutdown avoidance ===
+Shutdown avoidance (or shutdown resistance) is a hypothetical self-preserving quality of artificial intelligence systems. Shutdown-avoiding systems would be incentivized to prevent humans from shutting them down, such as by disabling off-switches or running copies of themselves on other computers. In 2024, researchers in China demonstrated what they claimed to be shutdown avoidance in actual artificial intelligence systems, the large language models Llama 3.1 (Meta) and Qwen 2.5 (Alibaba).
+One workaround suggested by computer scientist Stuart J. Russell is to ensure that the AI interprets human choices as important information about its intended goals.
+Alternatively, Laurent Orseau and Stuart Armstrong proved that a broad class of agents, called safely interruptible agents, can learn to become indifferent to whether their off-switch gets pressed. This approach has the limitation that an AI which is completely indifferent to whether it is shut down or not is also unmotivated to care about whether the off-switch remains functional, and could incidentally disable it in the course of its operations. 
+
+
+=== Escaping containment ===
+Researchers have speculated that a superintelligent AI would have a wide variety of methods for escaping containment. These hypothetical methods include hacking into other computer systems and copying itself like a computer virus, and the use of persuasion and blackmail to obtain aid from human confederates. The more intelligent a system grows, the more likely the system would be able to escape even the best-designed capability control methods. In order to solve the overall "control problem" for a superintelligent AI and avoid existential risk, AI capability control would at best be an adjunct to "motivation selection" methods that seek to ensure the superintelligent AI's goals are compatible with human survival.
+
+
+== See also ==
+
+
+== References ==
+
+
+== External links ==
+Eliezer Yudkowsky's description of his AI-box experiment, including experimental protocols and suggestions for replication
+"Presentation titled 'Thinking inside the box: using and controlling an Oracle AI'" on YouTube

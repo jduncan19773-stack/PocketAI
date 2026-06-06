@@ -1,0 +1,289 @@
+TITLE: 2025 in science
+SOURCE: Wikipedia
+URL: https://en.wikipedia.org/wiki/2025_in_science
+
+The following scientific events occurred, or were scheduled to occur in 2025. The United Nations declared 2025 the International year of quantum science and technology.
+
+
+== Events ==
+
+
+=== January ===
+1 January – Detailed telemetry data from the Parker Solar Probe is received, following its passage through the Sun's corona.
+2 January
+The biggest dinosaur fossil trackway ever found in the UK is reported at a quarry in Oxfordshire, consisting of 200 huge footprints made during the mid-Jurassic.
+Bioengineers at Rice University report having developed a novel "construction kit" for building custom sense-and-respond circuits in human cells.
+3 January – Researchers report discovering a new class of anti-malaria antibodies.
+8 January
+Scientists publish a comprehensive map of protein locations within human cells, offering potential new insights into how cells respond to infections and other changing circumstances.
+A study published in Nature demonstrates the theoretical existence of paraparticles, a proposed class of quantum quasiparticles with exchange statistics beyond fermions and bosons, emerging in certain quantum spin models.
+9 January – The El Capitan supercomputer is officially dedicated at the Lawrence Livermore National Laboratory in Livermore, California, United States.
+10 January
+The European Copernicus Climate Change Service reports that 2024 was the world's hottest year on record, and the first calendar year to pass the symbolic threshold of 1.5°C of global warming.
+The first fully 3D printed microscope is revealed by the University of Strathclyde, made in just a few hours and for a fraction of the cost of traditional devices.
+13 January – Researchers discover what could be the world's oldest three-dimensional map in a cave in the Paris Basin of France, dating back 13,000 years.
+15 January – The European Space Agency's Gaia spacecraft ends its operation after 11 years of mapping the Milky Way galaxy, during which time it made three trillion observations of two billion stars.
+16 January
+Microsoft researchers publish details of MatterGen, a generative AI tool for materials design.
+The first two-dimensional (2D) mechanically interlocked material is demonstrated by Northwestern University, consisting of 100 trillion bonds per square centimetre, which its creators describe as having exceptional flexibility and strength. Adding just 2.5% of the new material to Ultem boosted the latter's tensile modulus by 45%.
+The air monitoring station at Mauna Loa Observatory in Hawaii reports that CO2 jumped by 3.58 parts per million (ppm) in 2024, exceeding the previous record of 3.36 ppm set in 2023. The global atmospheric concentration of CO2 is now at 427 ppm, more than 50% higher than the pre-industrial level.
+
+21 January
+Coral bleaching on the southern Great Barrier Reef in early 2024 is reported to have struck 80% of colonies, with some coral genera, such as Acropora, experiencing a 95% mortality rate.
+More than a third (34%) of the Arctic-boreal zone is now reported to be a source of carbon emissions, rather than a carbon sink, a figure that rises to 40% when including emissions from fires.
+The exoplanet WASP-127b is discovered to have wind speeds of up to 33,000 km/h, the fastest jetstream of its kind ever measured.
+22 January – The second Trump administration imposes an immediate freeze on scientific grants, communications, hiring, and meetings at the National Institutes of Health (NIH) – by far the biggest supporter of biomedical research worldwide – impacting $47.4 billion worth of activities.
+23 January
+Machine learning and 3D printing are used at the University of Toronto to design nano-architected materials exhibiting the strength of carbon steel but the lightness of Styrofoam.
+A study of adults with attention deficit hyperactivity disorder (ADHD) finds that the condition may reduce life expectancy by 4.5 to 9 years for men, and 6.5 to 11 years for women.
+24 January – A study by the University of Birmingham finds that electric vehicles now have an average lifespan of 18.4 years, outlasting the average diesel vehicle at 16.8 years and almost matching the average petrol vehicle at 18.7 years.
+29 January – The European Space Agency (ESA) announces that it has begun monitoring the asteroid 2024 YR4, which at the time had a 1 in 77 (1.3%) chance of impacting Earth on 22 December 2032.
+
+
+=== February ===
+3 February – Researchers in Berkeley and Cambridge attach copper nanoflower catalysts on perovskite-based artificial leaves for solar-driven hydrocarbon synthesis. Devices can produce ethane and ethylene at high rates by coupling CO2 reduction with glycerol oxidation into value-added chemicals.
+7 February – Researchers develop a neural network chip, smaller than a grain of salt, that mounts on the tip of an optical fibre and uses a "diffractive neural network" to decode images at light speed with very low energy. This breakthrough promises advances in efficient medical imaging and quantum communication technologies.
+10 February
+The microlensing event MOA-2011-BLG-262L is confirmed to be associated with the highest-velocity exoplanet system detected to date, moving at 541 km/s (1.2 million mph), which is close to the escape velocity for the Milky Way galaxy.
+Following an increase in the impact probability of 2024 YR4 – from 1.3% to 2.1% – the European Space Agency announces that it will use the advanced capabilities of the James Webb Space Telescope to observe the asteroid, in order to better determine its size and trajectory.
+12 February
+The WEST tokamak in France is reported to have maintained plasma for 1,337 seconds, a new world record duration for nuclear fusion and 25% longer than a similar effort by China the previous month.
+A new blood test able to detect early-stage pancreatic cancer with 85% accuracy is developed by Oregon Health & Science University.
+13 February – Scientists at the University of Cambridge report the creation of a solar-powered reactor that pulls carbon dioxide directly from the air and converts it into sustainable fuel.
+15 February – A new record-low global sea ice extent is reported, dipping below the previous lowest that occurred in early 2023.
+18 February
+The impact probability of 2024 YR4 is raised by NASA, from 2.1% to 2.6% and then 3.1% in the same day.
+The first 3D mapping of an exoplanet atmosphere is achieved by the European Southern Observatory's Very Large Telescope. WASP-121b (also known as Tylos) is found to have powerful winds carrying elements like iron and titanium, creating intricate weather patterns across its atmosphere.
+19 February – Microsoft unveils Majorana 1, a quantum chip powered by its new topological core architecture that it hopes will enable quantum computers capable of solving meaningful industrial-scale problems. Microsoft claims that the Majorana 1 represents progress in its long-running project to create a quantum computer based on topological qubits.
+24 February
+NASA formally announces that asteroid 2024 YR4 now poses "no significant threat" to Earth in 2032 and beyond, as the chances of an impact drops to 1-in-59,000 (0.0017%). This means a planetary defense mission to intercept and deflect the object in 2028 during a close flyby of Earth will not be necessary.
+Researchers model neuronal activity using stochastic random walks and shows that these dynamics can be mapped to a Schrödinger-like equation, suggesting that individual neurons may exhibit quantum-like behavior.
+27 February
+OpenAI announces a research preview of GPT-4.5.
+Researchers at AWS and Caltech develop the Ocelot chip, using "cat qubits" to reduce quantum computing errors by up to 90%, making error correction more efficient and scalable.
+28 February – An electronic device called "e-Taste", developed by Ohio State University, is shown to replicate the perception of taste, which could enhance virtual reality experiences.
+
+
+=== March ===
+
+2 March – Firefly Aerospace successfully lands the Blue Ghost Mission 1 on the Moon as part of NASA's Commercial Lunar Payload Services program, delivering payloads to Mare Crisium with instruments to study lunar regoliths and the interactions between solar wind and Earth's magnetic field.
+4 March – De-extinction company Colossal Biosciences announces the creation of a "woolly mouse" with eight modified genes, expressing mammoth-like traits relevant to cold adaptation and providing a platform for validation of genome engineering targets.
+5 March – Italian researchers report turning light into a supersolid for the first time.
+6 March – A study in Science finds that butterfly populations in the U.S. declined by 22% between 2000 and 2020, with 13 times as many species decreasing as increasing, raising concerns about future biodiversity loss.
+10 March – A study in the journal PNAS finds that microplastic pollution reduces photosynthesis in plants and algae by up to 12%, leading to estimated annual food losses of 110–361 million tonnes of crops and up to 24 million tonnes of seafood. Without action to reduce plastic waste, this could lead to another 400 million people at risk of starvation within two decades.
+11 March
+The discovery of 128 new moons of Saturn is reported, by astronomers using the Canada–France–Hawaii Telescope, bringing the gas giant's total number of confirmed satellites to 274.
+Three new rocky exoplanets, all smaller than Earth in size, are detected around Barnard's Star, the closest solitary star to our own Sun at just 5.96 light-years away. Barnard b, a candidate world that observations had hinted at previously, is also confirmed, bringing the total number of known planets around the star to four.
+13 March – The first image of two PINK1 proteins attached to the membrane of a mitochondrion is obtained, via cryo-electron microscopy, a potential breakthrough in developing treatments for Parkinson's disease.
+20 March – Oxygen is discovered in JADES-GS-z14-0, the furthest confirmed galaxy, located 13.4 billion light-years from Earth.
+26 March
+Aurorae are photographed on Neptune for the first time, seen by combining visible light images from the Hubble Space Telescope with near-infrared images from the James Webb Space Telescope, although the planet was known to have aurorae since it was visited by Voyager 2.
+A study in The Lancet finds that cuts to foreign aid proposed by major donor countries, such as the US and UK, could undo decades of progress made to end HIV/AIDS as a public health threat, with potentially 10.8m additional new infections by 2030.
+28 March – Research published by two high-schoolers proves that upstream contamination is possible even without the Marangoni effect.
+31 March – GPT-4.5 is reported to have passed the Turing Test.
+
+
+=== April ===
+1 April – Fram2 launches aboard a SpaceX Falcon 9 rocket, becoming the first crewed spaceflight to enter a polar retrograde orbit, i.e., to fly over Earth's poles.
+2 April – The world's smallest pacemaker – able to fit inside the tip of a syringe and be non-invasively injected into the body – is demonstrated by scientists at Northwestern University. The device, measuring just 3.5 millimeters in length, is designed for temporary use and can be made to biodegrade within a set number of days, depending on a patient's needs.
+7 April – Colossal Biosciences announces Romulus, Remus, and Khaleesi, genetically modified grey wolves which reproduced characteristics of extinct dire wolves.
+8 April – Maxwell Labs, in collaboration with Sandia National Laboratories and the University of New Mexico, announces a laser-based photonic cooling system for computer chips, aiming to reduce data centre cooling energy use by up to 40% while improving processor performance.
+14 April – The Minor Planet Center (MPC) announces the discovery of 2023 KQ14, a trans-Neptunian object and the fourth known sednoid.
+16 April
+Scientists report a new method of generating electricity from falling rainwater using plug flow in vertical tubes, converting over 10% of the water's energy into electricity and producing enough power to light 12 LEDs.
+OpenAI announces the launch of two new AI models, o3 and o4-mini.
+
+17 April – The atmosphere of K2-18b, a candidate water world located 124 light-years away, is found to contain large quantities of dimethyl sulfide and dimethyl disulfide – two compounds that, on Earth, are only known to be produced by life. This discovery, while requiring further proof, is described as "the strongest evidence to date for a biological activity beyond the Solar System".
+18 April – Scientists at UC Berkeley use lasers to stimulate human retinas to see an extremely saturated blue-green imaginary color dubbed "olo".
+20 April – NASA's Lucy spacecraft returns images of the main belt asteroid Donaldjohanson, revealing it to be a contact binary and larger than originally estimated.
+22 April – Astronomers at MIT report the discovery of BD+05 4868Ab, a small rocky exoplanet located 142 light-years from Earth, which is rapidly disintegrating due to extreme heat from its nearby host star. The planet, orbiting every 30.5 hours, exhibits a comet-like tail of vaporised minerals extending up to 9 million kilometres. It is estimated to be losing mass equivalent to Mount Everest each orbit and may completely evaporate within 1–2 million years.
+27 April – Astronomers report the discovery of the Eos cloud, a vast molecular hydrogen cloud located about 300 light-years from Earth, revealed through far-ultraviolet emission techniques. Expected to evaporate within 6 million years, Eos is among the largest and closest molecular clouds ever found.
+30 April
+Engineers at ITER complete the construction of the world's largest and most powerful pulsed superconducting electromagnet system, marking a major milestone on the path to sustained nuclear fusion. The Central Solenoid and surrounding magnets will confine plasma at 150 million °C, enabling ITER to produce 500 megawatts of fusion power from just 50 megawatts of input.
+The Minor Planet Center announces two additional moons of Jupiter, bringing the planet's total moon count to 97.
+
+
+=== May ===
+
+4 May – The first successful human bladder transplant is performed at Ronald Reagan UCLA Medical Center.
+5 May – Physicists at MIT capture the first images of individual atoms interacting freely in space, showing behaviors previously only predicted.
+8 May
+The ALICE experiment at CERN detects the conversion of lead into gold.
+A study by Uppsala University in Sweden finds that lack of sleep can increase the risk of cardiovascular disease. Researchers found that just three nights of restricted sleep – around four hours a night – triggered changes in the blood linked to a higher risk of heart disease.
+9 May – Kosmos 482, an attempted Soviet Venus probe which failed to escape low Earth orbit, crashes back to Earth after more than 53 years.
+13 May – Genes linked to obsessive–compulsive disorder (OCD) are discovered for the first time. A study involving more than 2 million people identifies 250 genes linked to the condition.
+16 May – MoM-z14, discovered using the James Webb Space Telescope, is confirmed as the most distant galaxy ever detected, with a redshift of 14.44 placing its formation within 280 million years of the Big Bang.
+20 May
+The 150th anniversary of the signing of the Metre Convention, which established the BIPM, one of the first international organizations, is celebrated.
+Google DeepMind announces Veo 3, a new state-of-the-art video generation model.
+MIT releases a detailed report on the energy footprint of generative AI. Some models are shown to require the equivalent of running a microwave oven for an hour to produce five seconds of video.
+21 May
+The world's first gonorrhoea vaccine is launched by NHS England, with an efficacy of 30–40%.
+A major clinical trial, published in The American Journal of Clinical Nutrition, reveals that vitamin D supplements can reduce biological aging, preserving telomeres and potentially adding three years to lifespan.
+The discovery of 2017 OF201, a new dwarf planet candidate in the outer Solar System, is reported.
+22 May
+A review by Murdoch University in Australia finds that agricultural soils now hold around 23 times more microplastics than the oceans.
+Infrared contact lenses allowing people to see in the dark, even with their eyes closed, are created by a team in China.
+27 May – Engineers at MIT develop a new fuel cell based on a reaction between sodium metal and air, with potentially three times as much energy per pound as the current best lithium-ion batteries used in EVs.
+28 May
+The Tianwen-2 asteroid sample return and comet exploration mission is successfully launched by the China National Space Administration aboard a Long March 3B rocket. The mission will explore the co-orbital near-Earth asteroid 469219 Kamoʻoalewa and the main-belt comet 311P/PANSTARRS.
+In tests on mice, a combination of Rapamycin and Trametinib is found to extend lifespan by around 30% and works better than either of the drugs alone.
+29 May – The first delivery of mRNA into white blood cells hiding HIV is demonstrated, using specially formulated nanoparticles known as LNP X. The mRNA instructs the cells to reveal the hidden virus.
+
+
+=== June ===
+11 June – The first ever view of the Sun's south pole is revealed by the European Space Agency's Solar Orbiter.
+17 June – Scientists in China demonstrate a parallel optical computing chip capable of 100 simultaneous wavelength-based operations, using a soliton microcomb and Mach–Zehnder interferometer mesh, marking a major step toward scalable, light-based AI hardware.
+22 June – The Royal Observatory Greenwich celebrates its 350th anniversary.
+23 June – The Vera C. Rubin Observatory releases images from its first light, which includes the Virgo Cluster, the Trifid and Lagoon nebulae, and the discovery of roughly 2,000 asteroids.
+25 June – A previously unknown organelle, described as a hemifusome, is found to exist within human cells.
+
+
+=== July ===
+
+1 July
+MethaneSAT is reported to have run out of power, making it "likely not recoverable", following a loss of contact the previous month.
+The third ever confirmed interstellar object to pass into our Solar System, 3I/ATLAS, is discovered by the Asteroid Terrestrial-impact Last Alert System (ATLAS).
+2 July – GRB 250702B, the longest gamma-ray burst observed to date, is detected by NASA's Fermi Gamma-ray Space Telescope and shown to have lasted for nearly an entire day.
+3 July – A study in Frontiers in Plant Science finds that climate change could disrupt the habitat overlap between wild vanilla species and their pollinators by 2050, threatening the survival of both. This mismatch may endanger global vanilla supply and limit the genetic diversity needed for future crop resilience.
+6 July – The Eclipsing Binary Patrol project, collaborating with TESS, confirms the detection of 10,001 eclipsing binary star systems, including almost 8,000 previously unknown ones.
+8 July – A study by the Centre for Research on Energy and Clean Air finds that China's carbon emissions declined in the 12 months up to May 2025, even as demand for new power generation grew rapidly, marking a potential milestone in addressing climate change.
+13 July – The LIGO-Virgo-KAGRA Collaboration announces the detection of the most massive black hole merger ever observed via gravitational waves, producing a final object of more than 225 solar masses. Professor Mark Hannam of the LIGO Scientific Collaboration says this discovery challenges existing models of black hole formation.
+14 July
+Astronomers publish details of 2023 KQ14, informally nicknamed Ammonite, a sednoid announced in April 2025.
+Researchers perform the first experimental demonstration of logical-level magic state distillation on a neutral-atom quantum computer, demonstrating a critical step toward universal, fault-tolerant quantum computation by producing high-fidelity magic states entirely within error-corrected logical qubits.
+17 July – OpenAI announces ChatGPT Agent.
+18 July – The British Antarctic Survey reports the extraction of 1.5 million-year-old ice cores from depths of 2,800 metres in East Antarctica. The samples, containing bubbles of trapped CO2, could significantly improve the understanding of Earth's climate history by nearly doubling the current ice core record of 800,000 years.
+21 July – Astronomers report a possible but unconfirmed direct detection of a companion star orbiting Betelgeuse with the Gemini Observatory.
+22 July
+A new bioplastic, LAHB, is shown to biodegrade under deep-sea conditions, losing over 80% of its mass after 13 months at a depth of 855 m, while conventional polylactide-based plastic (PLA) remains intact.
+Physicists at MIT perform an idealised atomic-scale double-slit experiment with single ultracold atoms and photons, showing light’s coherence depends only on which-way information, confirming Niels Bohr’s complementarity principle and refuting Albert Einstein’s idea of simultaneous wave–particle observation.
+24 July – Scientists at the Technical University of Denmark and Scripps Research develop an AI platform that designs custom protein minibinders in weeks, enabling T cells to selectively target and destroy cancer cells in lab experiments.
+25 July – A new study models the potential consequences of asteroid 2024 YR4 striking the Moon in 2032, finding that such an impact – if it occurs – would be the largest in 5,000 years, ejecting debris that could threaten satellites and produce a visible meteor shower on Earth.
+30 July – Chinese researchers report the first wafer-scale fabrication of two-dimensional indium selenide (InSe) semiconductors. These ultra-high-performance transistors demonstrate the potential to surpass silicon, offering a pathway toward faster, smaller, and more efficient electronics.
+31 July
+The CONUS+ experiment detects antineutrinos from a commercial nuclear reactor in Switzerland, using a detector with a mass of just 3 kg, orders of magnitude less massive than standard neutrino detectors. This confirms coherent elastic neutrino-nucleus scattering (CEvNS) at full coherence and low energies, as first theorised in 1974.
+Astronomers report that free-floating planets, similar in mass to Jupiter, may form their own miniature planetary systems. Observations with the James Webb Space Telescope revealed dusty disks and silicate grains around six such objects, suggesting early signs of rocky planet formation even in the absence of a host star.
+
+
+=== August ===
+
+7 August
+OpenAI releases GPT-5, a new version of ChatGPT.
+NASA reports the strongest evidence to date of the hypothetical Alpha Centauri Ab, a gas giant orbiting Alpha Centauri A.
+8 August – Researchers at the University of Adelaide report a way of using sunlight to dissolve PFAS, causing the so-called "forever chemicals" to break down into a range of harmless substances including fluoride.
+12 August – A study finds that rising sea levels could threaten the iconic moai statues of Easter Island by the year 2080.
+14 August – A new allotrope of carbon known as cyclo[48]carbon, consisting of 48 carbon atoms in an alternating single/triple bond pattern, is demonstrated by Oxford University's Department of Chemistry.
+15 August
+The primary radar for the NISAR satellite is deployed, becoming the largest antenna reflector ever deployed for a NASA mission, with a diameter of 12 metres (39 feet). It will image Earth's surface down to a resolution of 10 metres (30 feet).
+Researchers report Weaver ants display remarkable teamwork, increasing individual effort as group size grows—unlike human teams. They build complex leaf nests using a "force ratchet" system, where some ants pull while others anchor, boosting efficiency. This coordinated labor offers insights for robotics, suggesting that mimicking ant strategies could enhance multi-agent cooperation and improve autonomous systems. Their behavior challenges long-held assumptions about group dynamics and productivity.
+17 August – Engineers at Columbia University create CAPPSID: tumour-homing Salmonella smuggle an oncolytic virus into cancers, evading antibodies and releasing it inside tumour cells. A built-in safety switch – viral maturation requiring a bacterial protease – limits spread to tumours.
+19 August
+The discovery of Uranus XXVIII (S/2025 U 1), a new moon of Uranus measuring just six miles (10 kilometres) in diameter, is reported by astronomers using the James Webb Space Telescope.
+Scientists at Michigan State University discover that microbes begin shaping the brain before a baby is born. These microbes affect cells in a part of the brain that controls stress and how we act with other people.
+20 August – A new type of supernova, Ien, is reported by observing SN2021yfj.
+25 August
+Researchers at the South Australian Health and Medical Research Institute develop nanoparticles that both detect and shrink arterial plaque, offering a new theranostic approach to treating heart disease.
+Jakob Steininger and Sergey Yurkevich of Vienna describe a convex polyhedron without Rupert's property, which they call a 'noperthedron'.
+29 August – Recent research suggests that the common cold may reduce COVID-19 risk and severity by activating airway defense proteins. Children, who develop colds more often, show stronger protective responses than adults.
+30 August – Researchers identify "cathartocytosis," a rapid "vomiting" purge that injured cells use to jettison machinery and revert to stem-like states, accelerating repair. The messy external waste may drive inflammation, foster cancer risk, and serve as a detectable biomarker, suggesting therapeutic targets to encourage healing while limiting malignant progression.
+
+
+=== September ===
+
+2 September
+NASA scientist Nicholas Heinz finds an unusual basalt rock in Sedona, Arizona, resembling Martian samples, possibly hinting at ancient volcanic origins.
+Scientists at Tulane University report that Cuban brown anoles in New Orleans exhibit extreme lead tolerance, hinting at oxygen-carrying adaptations and new research frontiers.
+3 September
+The Korea Institute of Machinery & Materials unveils a hydrogen-powered plasma torch that can break down mixed plastic waste in under 0.01 seconds, converting it into high-purity chemical feedstocks such as ethylene and benzene, while minimising carbon emissions.
+A study led by the International Institute for Applied Systems Analysis, published in Nature, finds that safe and practical underground carbon storage could reduce global warming by only 0.7 °C, nearly ten times less than previous estimates. The research establishes a prudent global storage limit of about 1,460 gigatonnes of CO2, highlighting the resource's scarcity and the need for careful management.
+5 September
+Chemists at the University of Copenhagen make a new material called BAETA from old plastic bottles. It can catch CO2 from the air. Making BAETA does not need much energy and can be done in big amounts. This helps the planet and can also help companies make money.
+University of Leicester have identified that around 150 million years ago, two young pterosaurs, dubbed Lucky and Lucky II, were fatally caught in fierce tropical storms. Their fractured wings and exceptional preservation in Germany's Solnhofen limestones highlight how such storms buried delicate juveniles quickly, while larger adults decayed over time, leaving fewer fossil traces and distorting the fossil record.
+6 September – Scientists from the Medical Research Council (MRC) state that visceral fat accelerates heart aging by hardening tissue. Hip and thigh fat may protect women's hearts, offering contrasting effects.
+7 September
+Paleontologists at Freie Universität Berlin discover Sauropoda teeth and find clues about their diets and migration. Scratches reveal seasonal movement and diverse plant consumption. Climate influenced their eating habits, and rough, sandy plants in Tanzania caused more tooth damage. These findings shed light on dinosaur lifestyles and ancient environments.
+Researchers of Charles Darwin University report that AI is changing laws and rules very fast, and this can hurt human dignity. They state today's rules are too weak to protect people's privacy, freedom, and fairness. The "black box problem" means people can't understand or question AI decisions that may hurt them.
+Cambridge scientists find that weak parts of Earth's plates helped hot rock from Iceland spread across the North Atlantic, causing volcanoes long ago. These old cracks still affect earthquakes and may help in the discovery of geothermal energy.
+Scientists from the Smithsonian Tropical Research Institute report that the seasonal winds which normally bring nutrient-rich waters to Panama's coast have stalled, likely as a result of climate change, with negative impacts on marine life.
+8 September
+Experts at Leipzig University identify a receptor, GPR133, which helps bones stay strong. Stimulating this receptor with a new compound called AP503 boosted bone strength in mice, even reversing osteoporosis-like conditions.
+Researchers at UC Berkeley map the brain circuits that control growth hormone release during sleep, uncovering a feedback system where sleep fuels hormone release, and the hormone regulates wakefulness. This discovery may explain links between poor sleep, obesity, diabetes, and cognitive decline, while opening new paths for treating sleep and metabolic disorders.
+9 September
+University of Florida researchers develop a chip that replaces electricity with light for key AI tasks. Using microscopic lenses etched onto silicon, it performs laser-powered computations with drastically lower energy and near-perfect accuracy.
+An international team of 42 scientists publishes a critical assessment in Frontiers in Science, finding five prominent geoengineering proposals – such as pumping seawater onto Arctic ice, deploying reflective glass beads, building underwater curtains, injecting aerosols, and fertilizing oceans – to be technologically unfeasible, unscalable, and environmentally harmful, and cautioning that they distract from vital emission-reduction efforts.
+10 September – NASA announces the discovery of vivianite and greigite on Mars.
+17 September – NASA announces the 6,000th confirmed exoplanet.
+24 September
+A breakthrough in treating Huntington's disease is reported by UK doctors, with a new gene therapy able to slow its progression by 75 percent.
+NASA's IMAP probe is launched toward Lagrange point 1 to collect interstellar dust and investigate space weather.
+29 September – A study by the Potsdam Institute for Climate Impact Research in Germany finds that Earth has now exceeded a critical threshold for ocean acidification, marking the seventh of nine "planetary boundaries" to be breached.
+
+
+=== October ===
+1 October – Scientists report the detection of organic molecules on Enceladus, based on plume samples taken by the Cosmic Dust Analyzer on the Cassini spacecraft.
+3 October – Scientists at the University of British Columbia and Avivo Biomedical perform the first human test of an enzyme treatment that converts a donor kidney to a universal blood type, marking a major step toward universally compatible organ transplants.
+6 October – Mary E. Brunkow, Fred Ramsdell and Shimon Sakaguchi share the Nobel Prize in Physiology or Medicine "for their discoveries concerning peripheral immune tolerance"
+7 October – John Clarke, John M. Martinis, and Michel Devoret win the Nobel Prize in Physics “for the discovery of macroscopic quantum mechanical tunnelling and energy quantisation in an electric circuit.”
+8 October – Omar M. Yaghi, Richard Robson, and Susumu Kitagawa win the Nobel Prize in Chemistry "for the development of metal–organic frameworks."
+10 October – A theoretical study published in Science Advances derives generalized thermodynamic laws for correlated quantum systems, showing that atomic-scale thermal machines can convert quantum correlations into usable work, enabling efficiencies beyond the classical Carnot limit.
+11 October – Researchers at the Florey Institute report that COVID-19 infection can alter sperm, leading to increased anxiety and behavioural changes in the offspring of mice. While further research is needed to determine whether similar effects occur in humans, the findings suggest the pandemic may have lasting biological impacts on future generations.
+12 October – At a planetary science meeting in Helsinki, scientists from the Austrian Academy of Sciences report that the nearest technological civilisation in the Milky Way could be about 33,000 light-years away. Their modelling suggests that such civilisations would need to last for at least 280,000 years to coincide in time with humanity.
+20 October
+Scientists report the detection of carbonaceous chondrites on the far side of the Moon, based on samples returned by Chang'e 6.
+Japanese scientists report a successful trial of enteral ventilation using perfluorodecalin on 27 healthy male volunteers.
+27 October – Astronomers claim to have discovered population III stars for the first time, using the James Webb Space Telescope.
+29 October – Dozens of new marine species are reported to have been discovered in the Southern Ocean, including the carnivorous "death ball" sponge Chondrocladia sp. nov.
+
+
+=== November ===
+3 November – Hektoria Glacier in Antarctica is reported to have undergone the fastest retreat of any glacier in modern history, with nearly 50% disintegrating in just two months.
+10 November – In a Phase 1, first-in-human trial, a CRISPR gene therapy targeting ANGPTL3 is found to be safe and able to reduce LDL cholesterol by nearly 50%, while triglycerides are reduced by 55%.
+13 November – The ESCAPADE mission is launched by NASA, using Blue Origin's partially reusable New Glenn rocket. Two spacecraft, known as Blue and Gold, are scheduled to arrive at Mars in 2026.
+14 November – Researchers at ChristianaCare's Gene Editing Institute report that disabling the NRF2 gene with CRISPR can reverse chemotherapy resistance in lung cancer, restoring drug sensitivity and slowing tumour growth. This method shows consistent benefits across cell studies and animal models, suggesting wider potential for treating other NRF2-driven resistant tumours.
+18 November
+Google releases Gemini 3.
+Scientists at Japan's RIKEN institute report the first Milky Way simulation to model more than 100 billion individual stars, using a deep-learning surrogate model alongside large-scale tests on the Fugaku supercomputer. Their AI-accelerated approach runs over 100 times faster than previous methods and enables detailed modelling of galactic evolution, with potential applications to other multi-scale systems such as climate and weather.
+Scientists at CERN's ALPHA experiment report an eightfold increase in the rate of production of antimatter, achieved by using laser-cooled beryllium ions to sympathetically cool positrons to −266 °C. This technique allows over 15,000 antihydrogen atoms to be created in under seven hours.
+27 November – Tryptophan, an amino acid used in the biosynthesis of proteins, is confirmed to exist on the asteroid Bennu, following analysis of samples from NASA's OSIRIS-REx mission.
+
+
+=== December ===
+2 December – The first complete synthesis of verticillin A is reported by chemists at MIT. The fungal compound, discovered more than 50 years ago, has long been viewed as a promising anticancer agent – particularly for treating aggressive brain tumours.
+4 December – A new microscopy technique known as virus-view dual confocal and AFM (ViViD-AFM), which combines atomic force microscopy with fluorescence microscopy, is demonstrated at ETH Zurich. This reveals a never-before-seen, high-resolution view of influenza's invasion of human cells.
+15 December
+Researchers at the University of Pennsylvania and University of Michigan create the world's smallest fully programmable, autonomous robots, measuring just 200 x 300 x 50 micrometres.
+An international team led by ETH Zurich reports the first global timeline for glacier disappearance, introducing the concept of "Peak Glacier Extinction" and projecting that, under current warming trends, the Alps could lose nearly all but a few dozen glaciers by 2100, with annual global glacier losses peaking mid-century.
+Researchers at the Japan Advanced Institute of Science and Technology report that a gut bacterium isolated from amphibians and reptiles can completely eliminate colorectal tumours in mice after a single intravenous dose. The bacterium, Ewingella americana, selectively accumulates in tumour tissue, combining direct cancer cell killing with immune activation and outperforming standard chemotherapy and immunotherapy in preclinical tests.
+16 December – Scientists using NASA's James Webb Space Telescope report the discovery of an exoplanet with an atmospheric composition unlike any previously observed. The Jupiter-mass object, PSR J2322-2650b, orbits a pulsar every 7.8 hours, is gravitationally distorted into a lemon-like shape, and shows a helium- and molecular-carbon-dominated atmosphere that appears to rule out all known planet formation mechanisms.
+17 December – A new study suggests that AI systems may have a carbon footprint equivalent to that of New York City in 2025, while their water footprint could be in the range of the global annual consumption of bottled water.
+18 December
+A new all-optical chip known as LightGen and featuring two million photonic "neurons" is presented by Chinese researchers in the journal Science. Its computing speed and energy efficiency are reportedly two orders of magnitude greater than conventional electronic chips.
+Construction begins on the southern part of Cherenkov Telescope Array Observatory at the European Southern Observatory Paranal site in Chile. It is designed be the world's largest and most powerful gamma-ray observatory.
+31 December – UK company Space Forge reports a milestone in space-based manufacturing, after successfully demonstrating a 1,000 °C furnace aboard an orbital micro-factory. The system is designed to produce semiconductor materials in microgravity, which the company claims could be up to 4,000 times purer than those manufactured on Earth.
+
+
+== Predicted and scheduled events ==
+
+
+=== Date unknown ===
+The Vera C. Rubin Observatory was expected to begin science operations in late 2025.
+Science-related budgets
+US: Various details about planned science-related spending for 2025 have been described with some information on the planned research subjects or areas.
+
+
+== See also ==
+Category:Science events
+Category:Science timelines
+List of emerging technologies
+List of years in science
+2025 in climate change
+2025 in Antarctica
+2025 in spaceflight
+
+
+== References ==
+
+
+== External links ==
+ Media related to 2025 in science at Wikimedia Commons

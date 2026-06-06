@@ -1,0 +1,92 @@
+TITLE: AI Safety Institute (United Kingdom)
+SOURCE: Wikipedia
+URL: https://en.wikipedia.org/wiki/AI_Safety_Institute_%28United_Kingdom%29
+
+An artificial intelligence safety institute is a type of state-backed organization aiming to evaluate and ensure the safety of advanced artificial intelligence (AI) models, also called frontier AI models.
+AI safety gained prominence in 2023, notably with public declarations about potential existential risks from AI. During the AI Safety Summit in November 2023, the United Kingdom and the United States both created their own AISI. During the AI Seoul Summit in May 2024, international leaders agreed to form a network of AI Safety Institutes, comprising institutes from the UK, the US, Japan, France, Germany, Italy, Singapore, South Korea, Australia, Canada and the European Union. In 2025, the UK's AI Safety Institute was renamed the "AI Security Institute", and its US counterpart became the Center for AI Standards and Innovation (CAISI).
+
+
+== Timeline ==
+In 2023, Rishi Sunak, the Prime Minister of the United Kingdom, expressed his intention to "make the UK not just the intellectual home but the geographical home of global AI safety regulation" and unveiled plans for an AI Safety Summit. He emphasized the need for independent safety evaluations, stating that AI companies cannot "mark their own homework". During the summit in November 2023, the UK AISI was officially established as an evolution of the Frontier AI Taskforce, and the US AISI as part of the National Institute of Standards and Technology. Japan followed by launching an AI safety institute in February 2024.
+Politico reported in April 2024 that many AI companies had not shared pre-deployment access to their most advanced AI models for evaluation. Meta's president of global affairs Nick Clegg said that many AI companies were waiting for the UK and the US AI Safety Institutes to work out common evaluation rules and procedures. An agreement was indeed concluded between the UK and the US in April 2024 to collaborate on at least one joint safety test. Initially established in London, the UK AI Safety Institute announced in May 2024 that it would open an office in San Francisco, where many AI companies are located. This is part of a plan to "set new, international standards on AI safety", according to UK's technology minister Michele Donelan.
+
+
+== International network ==
+At the AI Seoul Summit in May 2024, the European Union and other countries agreed to create their own AI safety institutes, forming an international network.
+In July 2025, the international network held an exercise to explore issues with evaluating AI agents, especially when it came to leaking sensitive information or cybersecurity. Network members also met at NeurIPS 2025 in the city of San Diego.
+
+
+== Specific institutes ==
+
+
+=== Australia ===
+The Albanese government announced the creation of the Australian AI Safety Institute on 25 November 2025.
+
+
+=== Canada ===
+Canada announced in April 2024 that it would create an AI safety institute, and such an institute was officially founded in November 2024. The institute is housed under Innovation, Science and Economic Development Canada, though it also partners with the Canadian Institute for Advanced Research (CIFAR). It is supported by a budget of CA$50,000,000 for a five-year timespan.
+
+
+=== European Union ===
+
+The EU AI office, founded in May 2024, is a member of the international network of AI safety institutes.
+
+
+=== France ===
+On 31 January 2025, the government of France created the Institut national pour l'évaluation et la sécurité de l'intelligence artificielle (INESIA), or the National Institute for AI Evaluation and Security.
+
+
+=== India ===
+The Ministry of Electronics and Information Technology held consultations with  Meta Platforms, Google, Microsoft, IBM, OpenAI, NASSCOM, Broadband India Forum, Software Alliance, Indian Institutes of Technology (IITs), The Quantum Hub, Digital Empowerment Foundation, and Access Now on October 7, 2024, in relation to the establishment of the AI Safety Institute. The decision was made to shift focus from regulation to standards-setting, risk identification, and damage detection—all of which require interoperable technologies. The AISI may spend the ₹20 crore allotted to the Safe and Trusted Pillar of the IndiaAI Mission for the initial budget. Future funding may come from other components of the IndiaAI Mission.
+UNESCO and MeitY began consulting on AI Readiness Assessment Methodology under Safety and Ethics in Artificial Intelligence from 2024. It is to encourage the ethical and responsible use of AI in industries. The study will find areas where government can become involved, especially in attempts to strengthen institutional and regulatory capabilities.
+Minister for Electronics & Information Technology Ashwini Vaishnaw announced the creation of an IndiaAI Safety Institute on January 30, 2025, to ensure the ethical and safe application of AI models. The institute will promote domestic R&D that is grounded in India's social, economic, cultural, and linguistic diversity and is based on Indian datasets. With the help of academic and research institutions, as well as private sector partners, the institute will follow the hub-and-spoke approach to carry out projects within Safe and Trusted Pillar of the IndiaAI Mission. It operates under a "hub-and-spoke" model with collaboration from academic institutions (e.g., IITs), tech firms, and international organizations like UNESCO.
+
+
+=== Japan ===
+
+The Japan AISI (or J-AISI) was founded in February 2024. Part of the Information Technology Promotion Agency, it employs about 23 people. The institute consists of the Council of AISI, the AISI Steering Committee, and a secretariat with six teams. Akiko Murakami (previously of IBM Japan and Sompo Japan) serves as the institute's executive director, and Kenji Hiramoto and Suguru Nishimura serve as the institute's two deputy executive directors.
+
+
+=== Kenya ===
+Kenya agreed to join the international network of AI safety institutes, but the country has not announced any details yet. It is the only African state in the network.
+
+
+=== Singapore ===
+The Digital Trust Centre was initially founded in June 2022. In May 2024, it was renamed to the Singapore AISI. Part of Nanyang Technological University, the institute partners with Infocomm Media Development Authority and is supported by an investment of S$10,000,000 per year.
+
+
+=== South Korea ===
+South Korea announced in May 2024 that it would create an AI safety institute under the umbrella of the Electronics and Telecommunications Research Institute. It will be supported by a tentative investment of somewhere between 10 and 20 million South Korean won per year, and employ at least 30 people. The institute was founded in November 2024 and is based in Bundang District within the city of Seongnam.
+
+
+=== United Kingdom ===
+
+The United Kingdom founded in April 2023 a safety organisation called Frontier AI Taskforce, with an initial budget of £100 million. In November 2023, it evolved into the AI Safety Institute, and continued to be led by Ian Hogarth. The AISI is part of the United Kingdom's Department for Science, Innovation and Technology.
+The United Kingdom's AI strategy aims to balance safety and innovation. Unlike the European Union which adopted the AI Act, the UK is reluctant to legislate early, considering that it may lower the sector's growth, and that laws might be rendered obsolete by technological progress.
+In May 2024, the institute open-sourced an AI safety tool called "Inspect", which evaluates AI model capabilities such as reasoning and their degree of autonomy.
+In February 2025, the UK body was renamed the AI Security Institute. Observers saw the name change as a signal that the institute will not focus on ethical issues such as algorithmic bias or freedom of speech in AI applications.
+
+
+=== United States ===
+The US AISI was founded in November 2023 as part of the National Institute of Standards and Technology (NIST). This happened the day after the signature of the Executive Order 14110. In February 2024, Joe Biden's former economic policy adviser Elizabeth Kelly was appointed to lead it.
+In February 2024, the US government created the US AI Safety Institute Consortium (AISIC), regrouping more than 200 organizations such as Google, Anthropic or Microsoft.
+In March 2024, a budget of $10 million was allocated. Observers noted that this investment is relatively small, especially considering the presence of many big AI companies in the US. The NIST itself, which hosts the AISI, is also known for its chronic lack of funding. Biden administration's request for additional funding was met with further budget cuts from congressional appropriators.
+Under President Trump, plans for members of the agency to attend the February 2025 AI Action Summit in Paris were scrapped. The US and the UK refused to sign the summit's final communique. US Vice President JD Vance said "pro-growth AI policies" should be prioritised over safety.
+The name of the agency was changed in June 2025 to the Center for AI Standards and Innovation (CAISI) and its mission transformed. According to Secretary of Commerce Howard Lutnick, "For far too long, censorship and regulations have been used under the guise of national security. Innovators will no longer be limited by these standards. CAISI will evaluate and enhance US innovation of these rapidly developing commercial AI systems while ensuring they remain secure to our national security standards." The United States Department of Commerce stated that CAISI would represent American interests internationally, guarding against burdensome and unnecessary regulation of US technologies by foreign governments. It collaborates with the NIST Information Technology Laboratory.
+
+
+== See also ==
+Alignment Research Center
+Foundation model
+Regulation of artificial intelligence
+
+
+== References ==
+
+
+== External links ==
+Canada AI Safety Institute
+Japan AI Safety Institute
+Singapore AI Safety Institute
+South Korea AI Safety Institute
+US AI Safety Institute

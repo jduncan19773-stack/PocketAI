@@ -1,0 +1,45 @@
+TITLE: AI Overviews
+SOURCE: Wikipedia
+URL: https://en.wikipedia.org/wiki/AI_Overviews
+
+AI Overviews is an artificial intelligence (AI) feature integrated into Google Search that produces AI-generated summaries of search results. The feature has been criticized for its inaccuracy and for reducing website traffic.
+
+
+== History and development ==
+AI Overviews were first introduced as part of Google's Search Generative Experience (SGE), which was unveiled at the Google I/O conference in May 2023. In May 2024 at Google I/O 2024, the feature was rebranded as AI Overviews and launched in the United States. The introduction of AI Overviews was seen as a strategic move to compete with other generative AI advancements, including OpenAI's ChatGPT.
+By August 2024, AI Overviews was rolled out to several other countries, including the United Kingdom, India, Japan, Brazil, Mexico, and Indonesia, with support for multiple languages. In October 2024, Google expanded the feature globally, making it available in over 100 countries.
+In December 2024, Botify x Demandsphere released findings stating that when AI Overviews and featured snippets appear together on the search engine results page, they take up approximately 67.1% of the screen on desktop and 75.7% on mobile. Even if content is ranking in the #1 position, it may not be visible to consumers if other visual elements on the results page are more prominent.
+In March 2025, Google started testing an "AI Mode", where the search results page is AI-generated. The company was also considering adding advertisements to the AI Mode, as they already exist in AI Overviews.
+As of May 2025, AI Overviews are available in over 200 countries and territories and in more than 40 languages. As of March 2026, Google AI Overviews appear on more than 48% of total Google Search queries, compared to just 6.49% in the previous year (58% year-over-year growth).
+
+
+== Functionality ==
+The AI Overviews feature uses large language models to generate summaries from web content. The overviews are designed to be concise, providing a snapshot of relevant information about the queried topic. Google allows users to adjust the language complexity in summaries, offering both simplified and detailed options.
+The overviews also include links to sources. According to a June 2025 study by Semrush, the most cited source is Quora, followed by Reddit.
+
+
+== Reception ==
+
+The feature has faced criticism for inaccuracies, including instances where erroneous or nonsensical content was generated. Depending on what is searched for, the overview may also consist of hallucinated content, such as when searching for idioms that do not exist. In May 2024, Google temporarily restricted the AI tool after it provided suggestions that were seen as nonsensical and harmful, such as telling users to eat rocks or apply glue on pizza. Concerns were also raised by content publishers, who feared a decline in web traffic as users relied on the summaries instead of visiting source websites. A Google patent from 2026 raised the concern of webmasters that Google could entirely replace the landing page of websites by an AI optimized copy of the website in its results.
+There is also apprehension about the ethical implications of AI-driven content aggregation, including its impact on intellectual property rights and the visibility of smaller content providers. The European Commission announced in December 2025 that they were investigating whether AI Overviews breached European competition law. 
+In response, Google has stated its commitment to improve content validation and refine the algorithms used to filter unreliable information. Google implemented measures to prioritize link placement within AI Overviews, aiming to balance user convenience with the needs of content creators. In January 2026, Google restricted AI Overviews on certain health-related searches following an investigation by The Guardian.
+
+
+== Lawsuits ==
+On February 24, 2025, Chegg sued Alphabet over the AI Overviews feature, claiming that it was leading to students preferring "low-quality, unverified AI summaries", thus violating antitrust law. Chegg also said it was considering either a sale or a take-private transaction.
+In September 2025, Penske Media Corporation, the publisher of Rolling Stone and The Hollywood Reporter, sued Google, claiming that AI Overviews illegally regurgitate content from their websites and drive off potential site visitors by always appearing on top of the search results while leaving little incentive to see the linked sources. The company stated that "the future of digital media and [...] its integrity [...] is threatened by Google's current actions", alleging that 20% of searches that link to Penske-owned websites show AI Overviews and that the figure is expected to rise. Google spokesperson José Castañeda called the claims "meritless" and stated that "AI Overviews send traffic to a greater diversity of sites."
+In 2026, Canadian musician Ashley MacIsaac filed a lawsuit against Google claiming that the AI Overview feature had wrongly stated that MacIsaac had been convicted of numerous criminal offences and was on the sex offender registry. He claims this incorrect information led to the cancellation of a December 2025 gig organized by the Sipekne'katik First Nation.
+
+
+== See also ==
+AI slop
+Google AI Mode
+Generative engine optimization
+Zero-click result
+
+
+== References ==
+
+
+== External links ==
+Official website

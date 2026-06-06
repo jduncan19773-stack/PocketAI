@@ -1,0 +1,85 @@
+TITLE: AI bubble
+SOURCE: Wikipedia
+URL: https://en.wikipedia.org/wiki/AI_bubble
+
+The AI bubble is a theorised stock market bubble growing since 2025 amid the AI boom, a period of rapid increase in investment in artificial intelligence (AI) that is affecting the broader economy. Speculation about a bubble largely originates from concerns that leading AI tech firms are involved in a circular flow of investments that are artificially inflating the value of their stocks. Some see similarities with the dot-com bubble of the 1990s and 2000s.
+
+
+== History ==
+
+In January 2025, the Chinese-made chatbot DeepSeek demonstrated performance on par with AI models developed at far greater expense. The stock prices of many AI companies dropped—for example, Nvidia's dropped 17%, or approximately US$600 billion in market value in a single day, though it recovered 8.8% the following day. 
+In late 2025, spending from US mega caps was expected to reach $1.1 trillion between 2026 and 2029, while total AI spending was expected to surpass $1.6 trillion.
+Due to the growing demand for semiconductors to sustain AI technologies, Nvidia in July 2025 became the first company in the world to reach a market value of $4 trillion. The figure had quadrupled since 2023, when it surpassed $1 trillion. The company's value made up roughly 7.3% of the S&P 500, which hit an all-time high. In October 2025, the company's value grew beyond $5 trillion, rising higher than the GDP of every country except for the US and China, according to data from the World Bank. Over the year 2025, AI-related enterprises accounted for roughly 80% of gains in the American stock market. Some sceptics warned that the rapid rise of AI tech firms may be the result of excessive financial engineering.
+Microsoft disclosed that it had spent almost $35 billion on AI infrastructure in the three months leading up to the end of September. In October, it became the second-most-valuable company in the world, largely due to its 27% stake in OpenAI. While seeing increases in revenue by 18% and in net income by 12%, share values dropped by 4% in after-hours trading amid investors' concerns about the possible costs of sustaining the AI boom.
+In late 2025, 30% of the US S&P 500 and 20% of the MSCI World index was solely held up by the five largest companies, which was the greatest concentration in half a century, and share valuations were reportedly the most stretched since the dot-com bubble. Experts warned that AI companies were extremely overvalued, with the S&P 500 trading at 23 times forward earnings, and the FTSE Index trading at 14 times, showing how expensive the US market had become. The Shiller price-to-earnings ratio for the US market also exceeded 40 for the first time since the dot-com crash.
+
+
+== Speculation ==
+
+In early 2025, Bridgewater Associates co-chief investment officer Ray Dalio said that the current levels of investment in AI are "very similar" to the dot-com bubble. In August 2025, Sam Altman, CEO of OpenAI and creator of ChatGPT, said in August 2025 that he believed that an AI bubble exists. In September 2025, the Australian Financial Review said that "If we really are in another share-market bubble, it's surely the most anticipated example in history."
+In October 2025, Jamie Dimon, head of JP Morgan, the largest bank in the US, said he thinks "AI is real" but said he believes some money invested now will be wasted. He also said there is a higher chance of a meaningful drop in stocks over the following two years than the market was reflecting. Dimon warned that an AI-driven stock crash could result in a lot of invested money being lost, although he acknowledged that AI would pay off "just like cars in total paid off, and TVs in total paid off, but most people involved in them didn't do well." However, he further stated on AI that "the level of uncertainty should be higher in most people's minds."
+
+
+=== Lack of profitability ===
+The values of technology company stocks have been inflated based on AI hype regardless of market fundamentals or the financial reality behind monetizing AI products. A National Bureau of Economic Research study published in February 2026 found that despite 90% of firms reporting no impact of AI on workplace and productivity, executives projected AI to increase productivity by 1.4% and increase output by 0.8%, leading to comparison with productivity paradox.
+OpenAI committed to spending US$1.4 trillion over 8 years in building new datacenters, partnering with Nvidia to deliver 10 gigawatts of data center computation, with just US$13 billion in revenue. This long-term spending is funded by debt. An estimate from Morgan Stanley put global spending on datacenters between 2025 and 2028 at US$3 trillion, half of which is covered by private credit. OpenAI has failed to present a reasonable roadmap to profitability or how it will pay for these investments. In November 2025, OpenAI said it expected to report annual losses through 2028, including US$74 billion in operating losses in 2028 alone. The Wall Street Journal obtained financial documents where OpenAI projects significant profits in 2030 despite preceding years of deep losses. Deutsche Bank analyst Jim Reid estimated OpenAI's losses amounting to US$140 billion between 2024 and 2029.
+Aside from its sizable expenditures in data centers, OpenAI has also been incurring rising inference costs as time goes on, making ChatGPT increasingly costly to run when a user submits a prompt. In 2024, they spent US$3.76 billion on inference which rose to US$5.02 billion on inference with Microsoft Azure in just the first half of 2025. Former Fidelity manager George Noble said that OpenAI is "burning US$15 million per day on Sora alone." He also highlighted that AI companies will face diminishing returns in model improvements paired with rising costs, saying that "It's going to cost 5x the energy and money to make these models 2x better." OpenAI has been projected to run out of money by mid-2027.
+
+
+=== Circular investment ===
+
+Concerns were raised that leading AI tech firms were using circular financing and investment to artificially boost their valuations. In September, Nvidia announced a $100 billion investment into OpenAI, expanding the pre-existing stake that it held in the company. This agreement was made on the expectation that OpenAI would power additional data centres using the GPUs that it had been buying from Nvidia, establishing a circular flow of money.
+On 9 September 2025, Nvidia entered into a $6.3 billion agreement with AI cloud-computing provider CoreWeave to purchase the latter's unsold data center capacity through to April 13, 2032. Nvidia held 7% of CoreWeave shares as at 31 March 2025, and is also supplying GPUs to the company.
+In October 2025, OpenAI purchased billions of dollars worth of electronics from AMD, a rival of Nvidia, to supply its development of AI in an agreement that made it one of the largest shareholders in the company. Microsoft also held a large stake in OpenAI, and Oracle Corporation, a computing company, also entered into a $300 billion deal with the company.
+
+
+=== Bank of England statement ===
+The Bank of England warned of the growing risks of a global market correction due to a possible overvaluation of leading AI tech firms in the stock market, such as OpenAI, which more than tripled its value from $157 billion in October 2024 to $500 billion the following year. The bank also warned that those valuations could fall further if the cost of the infrastructure needed to run AI systems proved too high. They added that investors were not properly cautioned about the risks of a stock market crash were AI to fall short of market expectations.
+The International Monetary Fund agreed with and reinforced the bank's claims. Kristalina Georgieva, a Bulgarian economist and the 12th managing director of the IMF, also drew comparisons to the dot-com bubble of 2001, highlighting that a market correction could stunt global growth and weaken the economies of developing countries.
+
+
+=== Debt ===
+Debt funding has also raised the risk of the bubble. Analysts at Morgan Stanley estimated that debt used to fund data centers could exceed $1 trillion by 2028.
+Many data center debt bonds are either BBB-rated or junk-rated bonds.
+
+
+=== Dot-com bubble comparisons ===
+The AI bubble has drawn comparisons to the dot-com bubble of the 2000s. Billionaire investor Ray Dalio, who predicted the 2008 financial crisis, warned that the AI bubble echoes the dot-com in the overvaluation of tech stocks amid low interest rates.
+Ed Zitron has eschewed direct comparisons to the dot-com bubble, writing that the AI bubble is far larger and more destructive than the dot-com bubble popping was. The underlying asset powering the AI bubble, GPUs, are much more limited in their costs and utility compared to the dot-com bubble's networking and fiber infrastructure that helped power the internet. He contextualizes the AI bubble as part of the larger "rot economy" that prioritizes growth-at-all-costs. In The Rot Economy, Zitron writes that "Businesses are expected to be - and rewarded for being - eternal burning engines of capital that create more and more shareholder value." Julien Garran, a researcher and partner at MacroStrategy Partnership, published a report in October 2025 that called the AI bubble "the biggest and most dangerous bubble the world has ever seen" that is 17 times larger than the dot-com bubble.
+
+
+== Opposing views ==
+Several major financial institutions have pushed back against claims of an AI bubble, arguing that current valuations reflect real earnings growth rather than speculation.
+Goldman Sachs's chief equity strategist argued that stock price gains among large-cap AI companies are backed by actual profit growth. The firm noted that forward price-to-earnings (P/E) ratios for these companies remain well below the levels seen during the dot-com era.
+Morgan Stanley analysts described bubble fears as "misplaced" or "premature," pointing to data showing that the median cash flow and capital reserves of the top 500 US firms were about three times higher than during past bubble periods. They also noted that today's market leaders, unlike dot-com-era companies, generate substantial revenue and positive margins.
+JPMorgan likewise concluded that AI does not meet the classic criteria for a financial bubble. A December 2025 analysis applied a five-factor diagnostic framework to the AI rally and found that investment in the sector is linked to actual enterprise revenue rather than speculation alone.
+Federal Reserve Chair Jerome Powell also drew a distinction from the dot-com era, arguing that AI companies generate real revenue and that spending on AI data centres is contributing to broader economic growth.
+As Los Angeles Times culture critic Mary McNamara asserted in late March 2026, the demise of ChatGPT's Sora text-to-video model would be neither "the first domino [n]or the bursting of the AI bubble." Rather it reflects public disinterest within the AI market and vulnerabilities of companies producing and marketing their own AI projects.
+
+
+== See also ==
+
+AI washing – Marketing tactic
+Cryptocurrency bubble – Speculative bubble involving cryptocurrency prices
+Digital Revolution – Industrial shift to information technologyPages displaying short descriptions of redirect targets
+Fourth Industrial Revolution – 2010s–present technological convergence era
+History of artificial intelligence
+Productivity paradox – Economic paradox
+Social media stock bubble – Speculative bubble involving social media
+Speculation – Engaging in risky financial transactions
+Theranos – Defunct American health technology company
+Workplace impact of artificial intelligence
+2024–2026 global memory supply shortage – Semiconductor memory supply crisisPages displaying short descriptions of redirect targets
+
+
+== References ==
+
+
+== Further reading ==
+Desai, Radhika (November 27, 2025). "DeepSeek Upends Silicon Valley's Sci-Fin-Fi Business Model". International Critical Thought. 15 (4): 656–674. doi:10.1080/21598282.2025.2579900.
+Goodell Ugalde, Elliot (November 30, 2025). "The AI bubble isn't new — Karl Marx explained the mechanisms behind it nearly 150 years ago". The Conversation. Academic Journalism Society. doi:10.64628/AAM.xqmhy659t.
+Williams, Sean (December 19, 2024). "Prediction: The Artificial Intelligence (AI) Bubble Will Burst in 2025. Here's Why". Yahoo Finance. The Motley Fool. Retrieved March 31, 2026.
+
+
+== External links ==
+Robert Reich on the AI bubble on YouTube
