@@ -12,11 +12,14 @@ let recognition   = null;
 let isSingleModel = true;
 let modelA        = "phi4-mini";
 let modelB        = "";
+let selectedModel = "all";   // current model toggle selection
+let availableModels = [];    // populated from /api/models
 const synth       = window.speechSynthesis;
 
 // ── Init ───────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", async () => {
   await loadStatus();
+  await loadModels();
   await Promise.all([loadSessions(), loadMemories(), loadUploads()]);
   showWelcome();
   document.getElementById("query-input").focus();
@@ -29,19 +32,6 @@ async function loadStatus() {
     modelA        = d.model_a;
     modelB        = d.model_b || "";
     isSingleModel = d.single_model || false;
-
-    document.getElementById("model-a-name").textContent = modelA;
-    document.getElementById("model-b-name").textContent = modelB;
-    document.getElementById("hint-model").textContent   = isSingleModel ? modelA : `${modelA} + ${modelB}`;
-
-    const badge = document.getElementById("model-badge");
-    badge.textContent = isSingleModel ? modelA : `${modelA} + ${modelB}`;
-    badge.classList.remove("hidden");
-
-    if (isSingleModel) {
-      document.getElementById("badge-b").style.display = "none";
-    }
-
     setStatus("online", "AI ready");
   } catch {
     setStatus("offline", "Connecting...");
@@ -53,6 +43,91 @@ function setStatus(cls, text) {
   document.getElementById("status-dot").className  = `status-dot ${cls}`;
   document.getElementById("status-text").textContent = text;
 }
+
+// ── Model picker ───────────────────────────────────────────────
+async function loadModels() {
+  try {
+    const d = await api("/api/models");
+    availableModels = d.models || [];
+    selectedModel   = localStorage.getItem("pocketai_model") || d.default || "all";
+    renderModelMenu();
+    updateModelLabel();
+  } catch {
+    availableModels = [];
+  }
+}
+
+function renderModelMenu() {
+  const menu = document.getElementById("model-menu");
+  const avail = availableModels.filter(m => m.available);
+
+  // "All models" option at top
+  let html = `<div class="model-menu-header">Smart Mode</div>`;
+  html += modelOptionHTML({
+    id: "all",
+    label: "All Models",
+    blurb: "Searches across every model and combines the best answer",
+    available: avail.length > 0,
+    vision: false,
+  });
+
+  html += `<div class="model-menu-divider"></div>`;
+  html += `<div class="model-menu-header">Single Model</div>`;
+
+  for (const m of availableModels) {
+    html += modelOptionHTML(m);
+  }
+  menu.innerHTML = html;
+}
+
+function modelOptionHTML(m) {
+  const sel = m.id === selectedModel ? " selected" : "";
+  const dis = m.available ? "" : " disabled";
+  let tag = "";
+  if (m.vision)        tag = `<span class="mo-tag vision">Images</span>`;
+  if (!m.available)    tag = `<span class="mo-tag unavailable">Not installed</span>`;
+  return `
+    <button class="model-option${sel}"${dis} onclick="selectModel('${m.id}')">
+      <span class="mo-radio"></span>
+      <span class="mo-text">
+        <span class="mo-label">${esc(m.label)} ${tag}</span>
+        <span class="mo-blurb">${esc(m.blurb)}</span>
+      </span>
+    </button>`;
+}
+
+function selectModel(id) {
+  selectedModel = id;
+  localStorage.setItem("pocketai_model", id);
+  renderModelMenu();
+  updateModelLabel();
+  closeModelMenu();
+}
+
+function updateModelLabel() {
+  const label = document.getElementById("model-picker-label");
+  const hint  = document.getElementById("hint-model");
+  if (selectedModel === "all") {
+    label.textContent = "All Models";
+    if (hint) hint.textContent = "All Models";
+  } else {
+    const m = availableModels.find(x => x.id === selectedModel);
+    const name = m ? m.label : selectedModel;
+    label.textContent = name;
+    if (hint) hint.textContent = name;
+  }
+}
+
+function toggleModelMenu(e) {
+  e.stopPropagation();
+  document.getElementById("model-menu").classList.toggle("hidden");
+}
+function closeModelMenu() {
+  document.getElementById("model-menu").classList.add("hidden");
+}
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".model-picker")) closeModelMenu();
+});
 
 // ── Welcome screen ─────────────────────────────────────────────
 const SUGGESTIONS = [
@@ -121,7 +196,7 @@ async function sendMessage() {
     const resp = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query, session_id: sessionId }),
+      body: JSON.stringify({ query, session_id: sessionId, model: selectedModel }),
     });
     if (!resp.ok) throw new Error(`Server error ${resp.status}`);
 
@@ -439,21 +514,22 @@ function showThinking(show) {
   const el = document.getElementById("thinking");
   if (show) {
     el.classList.remove("hidden");
-    setBadge("badge-a", "active");
-    if (!isSingleModel) setBadge("badge-b", "active");
-    document.getElementById("thinking-label").textContent =
-      isSingleModel ? "Thinking..." : "Both models thinking...";
+    const lbl = document.getElementById("thinking-label");
+    if (selectedModel === "all") {
+      lbl.textContent = "Searching across all models...";
+    } else {
+      const m = availableModels.find(x => x.id === selectedModel);
+      lbl.textContent = `${m ? m.label : "AI"} is thinking...`;
+    }
   } else {
     el.classList.add("hidden");
-    setBadge("badge-a", "");
-    setBadge("badge-b", "");
   }
 }
 
+// Badge helper kept as a no-op safety net (badges removed from thinking UI)
 function setBadge(id, cls) {
   const el = document.getElementById(id);
-  if (!el) return;
-  el.className = "thinking-badge" + (cls ? " " + cls : "");
+  if (el) el.className = "thinking-badge" + (cls ? " " + cls : "");
 }
 
 // ── Sidebar ─────────────────────────────────────────────────────

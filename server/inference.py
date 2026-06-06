@@ -18,9 +18,30 @@ API compatibility:
 import asyncio
 import re
 import json
-from server.config import LLM_HOST_A, LLM_HOST_B, detect_config
+from server.config import (
+    LLM_HOST_A, LLM_HOST_B, detect_config,
+    AVAILABLE_MODELS, text_model_ids, USB_MODE,
+)
 
 import httpx
+
+
+def _host_for(model_id: str) -> str:
+    """
+    Return the API host for a given model id.
+
+    Ollama mode: every model is served by the one Ollama instance.
+    USB mode:    each model has its own llama-server on its own port.
+    """
+    if USB_MODE:
+        port = AVAILABLE_MODELS.get(model_id, {}).get("port", 11434)
+        return f"http://localhost:{port}"
+    return LLM_HOST_A
+
+
+def _tag_for(model_id: str) -> str:
+    """Return the Ollama tag (or llama-server model name) for a model id."""
+    return AVAILABLE_MODELS.get(model_id, {}).get("tag", model_id)
 
 MODEL_TIMEOUT = 300   # 5 min covers cold-start model loading on first request
 
@@ -121,123 +142,132 @@ def _get_novel_sentences(primary: str, secondary: str, max_extra: int = 3) -> st
     return " ".join(extra[:max_extra])
 
 
-# ── Main dual/single-model runner ────────────────────────────────
+# ── Main inference runner (model-selectable) ─────────────────────
 
-async def run_dual(
-    query:         str,
-    history:       list,
-    system_prompt: str,
-    sse_queue:     asyncio.Queue,
+async def run_inference(
+    query:          str,
+    history:        list,
+    system_prompt:  str,
+    sse_queue:      asyncio.Queue,
+    selected_model: str = "all",
 ) -> tuple:
     """
     Run inference and stream results to sse_queue.
-    Returns (resp_a, resp_b, merged_text).
+    Returns (primary_response, secondary_response, merged_text).
+
+    selected_model:
+      "all"            — run all available text models, merge into one answer
+      a model id       — run only that model (single, streams live)
 
     SSE event types:
-      token_a     — model A live token (shown in thinking indicator)
-      token_b     — model B live token (shown in thinking indicator)
+      token_a     — primary model live token (thinking indicator)
+      token_b     — secondary model live token (thinking indicator)
       merge_token — the answer token shown in the chat bubble
       done        — {"type":"done","cached":false}
     """
-    cfg          = detect_config()
-    model_a      = cfg.model_a
-    model_b      = cfg.model_b
-    single_model = cfg.single_model
-
     messages = [{"role": "system", "content": system_prompt}] + history + [
         {"role": "user", "content": query}
     ]
 
-    resp_b_ref: list[str] = []
-    a_failed = False
+    # Decide which models to run
+    if selected_model == "all":
+        model_ids = text_model_ids()
+        # Keep only models that are actually configured
+        model_ids = [m for m in model_ids if m in AVAILABLE_MODELS]
+    elif selected_model in AVAILABLE_MODELS:
+        model_ids = [selected_model]
+    else:
+        # Unknown selection — fall back to the first available model
+        model_ids = [text_model_ids()[0]]
 
-    if single_model:
-        # ── Single-model: stream directly as merge_token ─────────
-        async def on_tok_single(t):
+    # ── Single model: stream it live ─────────────────────────────
+    if len(model_ids) == 1:
+        mid = model_ids[0]
+
+        async def on_tok(t):
             await sse_queue.put({"type": "merge_token", "token": t})
 
         try:
-            resp_a = await _stream_llm(LLM_HOST_A, model_a, messages, on_tok_single)
+            resp = await _stream_llm(_host_for(mid), _tag_for(mid), messages, on_tok)
         except Exception as e:
-            resp_a = ""
-            a_failed = True
-            err = f"Sorry, the AI model is unavailable. Is Ollama running? ({e})"
+            resp = ""
+            err = f"Sorry, {AVAILABLE_MODELS[mid]['label']} is unavailable. ({e})"
             for chunk in _stream_text(err):
                 await sse_queue.put({"type": "merge_token", "token": chunk})
                 await asyncio.sleep(0.003)
 
         await sse_queue.put({"type": "done", "cached": False})
-        return resp_a, "", resp_a
+        return resp, "", resp
 
-    # ── Dual-model: stream model_a live, enhance with model_b ────
+    # ── Multiple models: primary streams live, others run AFTER ──
     #
-    # model_a tokens go straight to the chat bubble (merge_token)
-    # → fast time-to-first-token for the user.
-    #
-    # model_b tokens go to the indicator only (token_b)
-    # → user sees "Model B thinking" while reading model_a's answer.
-    #
-    # After both finish: if model_b has novel sentences, append them.
+    # The other models run SEQUENTIALLY after the primary finishes, not
+    # concurrently. On machines with little VRAM, running several models
+    # at once causes severe thrashing (each swap reloads gigabytes). Running
+    # them one at a time keeps each at full speed and the user sees the
+    # primary answer immediately while the rest enhance it.
+    primary_id = model_ids[0]
+    other_ids  = model_ids[1:]
 
-    resp_a = ""
-    resp_a_failed = False
+    primary_resp = ""
+    primary_failed = False
 
-    # Start model_b in background immediately
-    async def run_b():
-        async def on_tok_b(t):
-            await sse_queue.put({"type": "token_b", "token": t})
-        try:
-            resp_b_ref.append(await _stream_llm(LLM_HOST_B, model_b, messages, on_tok_b))
-        except Exception:
-            resp_b_ref.append("")
-
-    b_task = asyncio.create_task(run_b())
-
-    # Stream model_a live to the user
+    # Stream the primary model live to the chat bubble
     async def on_tok_a(t):
-        nonlocal resp_a
-        resp_a += t
-        await sse_queue.put({"type": "token_a", "token": t})
+        nonlocal primary_resp
+        primary_resp += t
         await sse_queue.put({"type": "merge_token", "token": t})
 
     try:
-        await _stream_llm(LLM_HOST_A, model_a, messages, on_tok_a)
-    except Exception as e:
-        resp_a_failed = True
-        resp_a = ""
+        await _stream_llm(_host_for(primary_id), _tag_for(primary_id), messages, on_tok_a)
+    except Exception:
+        primary_failed = True
+        primary_resp = ""
 
-    # Wait for model_b
-    await b_task
-    resp_b = resp_b_ref[0] if resp_b_ref else ""
-    b_failed = not resp_b or resp_b.startswith("[")
+    # Run each other model one at a time, appending novel info as it arrives
+    merged = primary_resp
+    good_others: list[str] = []
 
-    if resp_a_failed and b_failed:
-        # Both failed — error message
-        err = "Sorry, both AI models are unavailable. Is Ollama running?"
-        for chunk in _stream_text(err):
-            await sse_queue.put({"type": "merge_token", "token": chunk})
-            await asyncio.sleep(0.003)
-        merged = err
-    elif resp_a_failed:
-        # model_a failed — stream model_b instead
-        for chunk in _stream_text(resp_b):
-            await sse_queue.put({"type": "merge_token", "token": chunk})
-            await asyncio.sleep(0.003)
-        merged = resp_b
-    else:
-        # model_a already streamed — check if model_b adds anything useful
-        merged = resp_a
-        if not b_failed:
-            extra = _get_novel_sentences(resp_a, resp_b)
+    for mid in other_ids:
+        # Tell the UI another model is now working
+        await sse_queue.put({"type": "token_b", "token": ""})
+        try:
+            other = await _stream_llm(_host_for(mid), _tag_for(mid), messages)
+        except Exception:
+            other = ""
+        if not other or other.startswith("["):
+            continue
+        good_others.append(other)
+
+        if primary_failed and merged == "":
+            # Primary failed — use this model's answer as the base, stream it
+            merged = other
+            for chunk in _stream_text(other):
+                await sse_queue.put({"type": "merge_token", "token": chunk})
+                await asyncio.sleep(0.003)
+        else:
+            extra = _get_novel_sentences(merged, other)
             if extra:
                 addition = "\n\n**Also worth noting:** " + extra
-                merged = resp_a.rstrip() + addition
+                merged = merged.rstrip() + addition
                 for chunk in _stream_text(addition):
                     await sse_queue.put({"type": "merge_token", "token": chunk})
                     await asyncio.sleep(0.004)
 
+    if primary_failed and not good_others:
+        err = "Sorry, the AI models are unavailable. Is the engine running?"
+        for chunk in _stream_text(err):
+            await sse_queue.put({"type": "merge_token", "token": chunk})
+            await asyncio.sleep(0.003)
+        merged = err
+
     await sse_queue.put({"type": "done", "cached": False})
-    return resp_a, resp_b, merged
+    secondary = good_others[0] if good_others else ""
+    return primary_resp, secondary, merged
+
+
+# Backwards-compatible alias
+run_dual = run_inference
 
 
 def _stream_text(text: str, chunk_size: int = 6):

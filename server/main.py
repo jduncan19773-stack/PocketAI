@@ -33,7 +33,10 @@ from server import cache    as cache_mod
 from server import memory   as mem_mod
 from server import inference as inf_mod
 from server import uploads  as uploads_mod
-from server.config import detect_config, SERVER_PORT, USB_MODE
+from server.config import (
+    detect_config, SERVER_PORT, USB_MODE,
+    AVAILABLE_MODELS, MODEL_ORDER,
+)
 
 _launcher = None
 
@@ -58,6 +61,7 @@ async def startup():
         from server import launcher as launcher_mod
         global _launcher
         _launcher = launcher_mod.LlamaLauncher()
+        launcher_mod.set_active_launcher(_launcher)
         cfg = detect_config()
         await _launcher.start(cfg)
 
@@ -91,6 +95,51 @@ async def status():
     }
 
 
+# ── Models (for the UI toggle) ───────────────────────────────────
+
+@app.get("/api/models")
+async def list_models():
+    """
+    Return the available models for the UI toggle, plus the 'All models' option.
+    Only models whose backend is actually reachable are marked available.
+    """
+    # Which Ollama tags are currently installed?
+    installed_tags = set()
+    if not USB_MODE:
+        try:
+            import httpx
+            from server.config import LLM_HOST_A
+            r = httpx.get(f"{LLM_HOST_A}/api/tags", timeout=3)
+            if r.status_code == 200:
+                installed_tags = {m["name"] for m in r.json().get("models", [])}
+        except Exception:
+            pass
+
+    def is_available(tag: str) -> bool:
+        if USB_MODE:
+            # USB mode: assume the GGUF is present (launcher manages it)
+            return True
+        # Ollama mode: check if the tag (or its base) is installed
+        base = tag.split(":")[0]
+        return any(t == tag or t.startswith(base) for t in installed_tags)
+
+    models = []
+    for mid in MODEL_ORDER:
+        m = AVAILABLE_MODELS[mid]
+        models.append({
+            "id":        mid,
+            "label":     m["label"],
+            "blurb":     m["blurb"],
+            "vision":    m["vision"],
+            "available": is_available(m["tag"]),
+        })
+
+    return {
+        "default": "all",
+        "models":  models,
+    }
+
+
 # ── Chat (SSE) ───────────────────────────────────────────────────
 
 @app.post("/api/chat")
@@ -106,19 +155,22 @@ async def chat(request: Request):
     body       = await request.json()
     query      = body.get("query", "").strip()
     session_id = body.get("session_id") or str(uuid.uuid4())
+    sel_model  = body.get("model") or "all"
 
     if not query:
         return JSONResponse({"error": "Empty query"}, status_code=400)
 
     cfg = detect_config()
+    # Cache key includes the model selection so different models cache separately
+    cache_key_model = sel_model
 
     async def event_stream():
         # Inject active file context into the query
         file_ctx = uploads_mod.build_file_context()
         effective_query = f"{file_ctx}\n\nUser question: {query}" if file_ctx else query
 
-        # Cache check (uses original query as key, not the expanded one)
-        cached = await cache_mod.get_cached(query, cfg.model_a, cfg.model_b)
+        # Cache check (keyed by query + selected model)
+        cached = await cache_mod.get_cached(query, cache_key_model, "")
         if cached:
             for chunk in inf_mod._stream_text(cached, chunk_size=8):
                 yield f"data: {json.dumps({'type': 'merge_token', 'token': chunk})}\n\n"
@@ -142,11 +194,18 @@ async def chat(request: Request):
 
         async def run_inference():
             try:
-                ra, rb, merged = await inf_mod.run_dual(
-                    effective_query, history, system_prompt, sse_queue
+                # USB mode: make sure the needed model server(s) are running
+                if USB_MODE and _launcher:
+                    from server.config import text_model_ids
+                    needed = text_model_ids() if sel_model == "all" else [sel_model]
+                    await _launcher.ensure_models([m for m in needed if m in AVAILABLE_MODELS])
+
+                ra, rb, merged = await inf_mod.run_inference(
+                    effective_query, history, system_prompt, sse_queue,
+                    selected_model=sel_model,
                 )
                 merged_holder.append(merged)
-                await cache_mod.save_cache(query, cfg.model_a, cfg.model_b, merged)
+                await cache_mod.save_cache(query, cache_key_model, "", merged)
                 await mem_mod.add_message(session_id, "assistant", merged)
 
                 msgs = await mem_mod.get_session_messages(session_id)

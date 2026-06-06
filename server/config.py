@@ -18,6 +18,59 @@ import psutil
 from dataclasses import dataclass
 
 
+# ── Model registry ───────────────────────────────────────────────
+# Every model PocketAI can use. Each entry:
+#   id      — stable key used in the API and UI toggle
+#   tag     — Ollama model tag (used in Ollama mode)
+#   gguf    — GGUF filename in models/ (used in USB / llama-server mode)
+#   label   — friendly name shown in the UI
+#   blurb   — one-line description shown in the UI
+#   vision  — True if it is an image model (excluded from the text "all" merge)
+#   port    — llama-server port reserved for this model in USB mode
+
+AVAILABLE_MODELS = {
+    "phi4-mini": {
+        "tag":   "phi4-mini",
+        "gguf":  "phi4-mini-q4_k_m.gguf",
+        "label": "Phi-4 Mini",
+        "blurb": "Fast & balanced — Microsoft",
+        "vision": False,
+        "port":  11434,
+    },
+    "qwen3-4b": {
+        "tag":   "qwen3:4b",
+        "gguf":  "qwen3-4b-q4_k_m.gguf",
+        "label": "Qwen 3 (4B)",
+        "blurb": "Strong reasoning — Alibaba",
+        "vision": False,
+        "port":  11435,
+    },
+    "llama3.2-3b": {
+        "tag":   "llama3.2:3b",
+        "gguf":  "llama3.2-3b-q4_k_m.gguf",
+        "label": "Llama 3.2 (3B)",
+        "blurb": "Versatile all-rounder — Meta",
+        "vision": False,
+        "port":  11436,
+    },
+    "moondream": {
+        "tag":   "moondream",
+        "gguf":  "moondream2-q4.gguf",
+        "label": "Moondream 2",
+        "blurb": "Understands images",
+        "vision": True,
+        "port":  11437,
+    },
+}
+
+# Order shown in the UI toggle
+MODEL_ORDER = ["phi4-mini", "qwen3-4b", "llama3.2-3b", "moondream"]
+
+# Text models eligible for the "all models" merge (vision models excluded)
+def text_model_ids() -> list:
+    return [m for m in MODEL_ORDER if not AVAILABLE_MODELS[m]["vision"]]
+
+
 @dataclass
 class ModelConfig:
     model_a:      str   # Primary model name (Ollama tag or any name for llama-server)

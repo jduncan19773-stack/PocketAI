@@ -57,8 +57,18 @@
     <button class="btn-icon topbar-menu" onclick="toggleSidebar()" title="Menu">&#x2630;</button>
     <div class="topbar-title">
       <span class="topbar-name">PocketAI</span>
-      <div id="model-badge" class="model-badge hidden"></div>
     </div>
+
+    <!-- Model selector -->
+    <div class="model-picker">
+      <button id="model-picker-btn" class="model-picker-btn" onclick="toggleModelMenu(event)">
+        <span class="mp-icon">&#x25C8;</span>
+        <span id="model-picker-label">All Models</span>
+        <span class="mp-caret">&#x25BE;</span>
+      </button>
+      <div id="model-menu" class="model-menu hidden"></div>
+    </div>
+
     <div class="topbar-actions">
       <button class="btn-icon" onclick="newChat()" title="New conversation">&#x2B;</button>
     </div>
@@ -69,16 +79,6 @@
 
   <!-- Thinking indicator -->
   <div id="thinking" class="thinking hidden">
-    <div id="thinking-badges" class="thinking-badges">
-      <div class="thinking-badge" id="badge-a">
-        <span class="badge-dot"></span>
-        <span id="model-a-name">Model A</span>
-      </div>
-      <div class="thinking-badge" id="badge-b">
-        <span class="badge-dot"></span>
-        <span id="model-b-name">Model B</span>
-      </div>
-    </div>
     <div class="thinking-pulse">
       <span></span><span></span><span></span>
     </div>
