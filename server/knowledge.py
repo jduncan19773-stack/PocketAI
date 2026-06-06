@@ -149,9 +149,12 @@ def build_index() -> dict:
 
     conn = _connect()
     try:
+        # detail='none' drops per-term position data we don't use (we only do
+        # term-match + BM25 ranking, not phrase/NEAR search). This roughly
+        # halves the on-disk index, important for fitting a big corpus on a USB.
         conn.execute(
             "CREATE VIRTUAL TABLE chunks USING fts5("
-            "title, source, content, tokenize='porter unicode61')"
+            "title, source, content, tokenize='porter unicode61', detail='none')"
         )
         docs = 0
         passages = 0
