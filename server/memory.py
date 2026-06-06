@@ -139,7 +139,13 @@ async def update_session_summary(session_id: str, summary: str):
 
 
 async def build_system_prompt(session_id: str = None) -> str:
-    """Compose the full system prompt: base + memories + recent summaries."""
+    """
+    Compose the full system prompt:
+      base instructions
+      + persistent user memories (facts the user saved)
+      + rolling history of prior conversations (loaded from the USB store)
+      + recent session summaries
+    """
     parts = [BASE_SYSTEM_PROMPT]
 
     memories = await get_memories()
@@ -147,9 +153,23 @@ async def build_system_prompt(session_id: str = None) -> str:
         parts.append("\n\nThings to always remember about the user:\n" +
                      "\n".join(f"- {m['content']}" for m in memories))
 
+    # Persistent cross-session history (survives restarts, stored on the USB).
+    # Loaded newest-first within a token budget so the context never overflows.
+    try:
+        from server import history as history_mod
+        prior = history_mod.load_recent_context()
+        if prior:
+            parts.append(
+                "\n\nHere is what you and the user discussed in earlier "
+                "conversations (use it as background context, and stay "
+                "consistent with it):\n" + prior
+            )
+    except Exception:
+        pass   # history is best-effort; never block a chat on it
+
     summaries = await get_recent_summaries()
     if summaries:
-        parts.append("\n\nContext from recent conversations:\n" +
+        parts.append("\n\nShort summaries of recent sessions:\n" +
                      "\n\n".join(summaries))
 
     return "".join(parts)

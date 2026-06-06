@@ -708,6 +708,22 @@ body { display: flex; height: 100vh; }
 .btn-send:active { transform: scale(.95); }
 .btn-send:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
+/* Stop state — the send button turns red while a reply is streaming */
+.btn-send.stopping { background: var(--red); }
+.btn-send.stopping:hover { background: #dc2626; }
+
+.stopped-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-dim);
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 2px 9px;
+}
+
 .input-hint {
   font-size: 11px;
   color: var(--text-muted);

@@ -14,6 +14,7 @@ let modelA        = "phi4-mini";
 let modelB        = "";
 let selectedModel = "all";   // current model toggle selection
 let availableModels = [];    // populated from /api/models
+let abortController = null;   // lets us cancel an in-flight query
 const synth       = window.speechSynthesis;
 
 // ── Init ───────────────────────────────────────────────────────
@@ -162,7 +163,45 @@ function useSuggestion(btn) {
   sendMessage();
 }
 
-// ── Send ────────────────────────────────────────────────────────
+// ── Send / Stop button ──────────────────────────────────────────
+// While streaming, the same button becomes a Stop control.
+function onSendStopClick() {
+  if (isStreaming) {
+    stopGenerating();
+  } else {
+    sendMessage();
+  }
+}
+
+// Cancel the in-flight query so the user can type a new prompt immediately
+function stopGenerating() {
+  if (abortController) {
+    abortController.abort();
+    abortController = null;
+  }
+  synth?.cancel();
+}
+
+// Flip the Send button into Stop mode (or back)
+function setStreamingUI(streaming) {
+  const btn  = document.getElementById("send-btn");
+  const sIco = document.getElementById("send-icon");
+  const xIco = document.getElementById("stop-icon");
+  if (streaming) {
+    btn.classList.add("stopping");
+    btn.title = "Stop";
+    sIco.classList.add("hidden");
+    xIco.classList.remove("hidden");
+  } else {
+    btn.classList.remove("stopping");
+    btn.title = "Send";
+    sIco.classList.remove("hidden");
+    xIco.classList.add("hidden");
+  }
+  // The button stays enabled in both states so Stop is always clickable
+  btn.disabled = false;
+}
+
 async function sendMessage() {
   const input = document.getElementById("query-input");
   const query = input.value.trim();
@@ -175,8 +214,11 @@ async function sendMessage() {
   input.value = "";
   autoResize(input);
   isStreaming = true;
-  setSendDisabled(true);
+  setStreamingUI(true);
   showThinking(true);
+
+  // Fresh abort controller for this request
+  abortController = new AbortController();
 
   // Create AI bubble
   const aiId    = "ai-" + Date.now();
@@ -190,13 +232,14 @@ async function sendMessage() {
   msgs.appendChild(bubble);
   scrollBottom();
 
-  let merged = "", merging = false, cached = false;
+  let merged = "", merging = false, cached = false, stopped = false;
 
   try {
     const resp = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query, session_id: sessionId, model: selectedModel }),
+      signal: abortController.signal,
     });
     if (!resp.ok) throw new Error(`Server error ${resp.status}`);
 
@@ -212,23 +255,14 @@ async function sendMessage() {
         let e;
         try { e = JSON.parse(line.slice(5).trim()); } catch { continue; }
 
-        if (e.type === "token_a") {
-          setBadge("badge-a", "active");
-        } else if (e.type === "token_b") {
-          setBadge("badge-b", "active");
-        } else if (e.type === "merge_token") {
-          if (!merging) {
-            showThinking(false);
-            setBadge("badge-a", "done");
-            merging = true;
-          }
+        if (e.type === "merge_token") {
+          if (!merging) { showThinking(false); merging = true; }
           merged += e.token;
           const el = document.getElementById(aiId);
           if (el) { el.innerHTML = marked.parse(merged); scrollBottom(); }
         } else if (e.type === "done") {
           sessionId = e.session_id || sessionId;
           cached    = e.cached || false;
-          setBadge("badge-b", "done");
           loadSessions();
         } else if (e.type === "error") {
           showThinking(false);
@@ -238,14 +272,28 @@ async function sendMessage() {
       }
     }
   } catch (err) {
-    showThinking(false);
-    const el = document.getElementById(aiId);
-    if (el) el.innerHTML = `<span style="color:var(--red)">&#9888; Connection error — is PocketAI still running?</span>`;
+    if (err.name === "AbortError") {
+      // User pressed Stop — keep whatever streamed so far, mark it stopped
+      stopped = true;
+      const el = document.getElementById(aiId);
+      if (el) {
+        if (!merged) el.innerHTML = `<span style="color:var(--text-dim)">Stopped.</span>`;
+        const meta = document.createElement("div");
+        meta.className = "msg-meta";
+        meta.innerHTML = `<span class="stopped-pill">&#9632; Stopped</span>`;
+        el.closest(".ai-content").appendChild(meta);
+      }
+    } else {
+      showThinking(false);
+      const el = document.getElementById(aiId);
+      if (el) el.innerHTML = `<span style="color:var(--red)">&#9888; Connection error — is PocketAI still running?</span>`;
+    }
   }
 
   showThinking(false);
-  setSendDisabled(false);
+  setStreamingUI(false);
   isStreaming = false;
+  abortController = null;
 
   if (cached) {
     const el = document.getElementById(aiId);
@@ -257,7 +305,8 @@ async function sendMessage() {
     }
   }
 
-  if (speakBack && merged) speak(merged);
+  if (speakBack && merged && !stopped) speak(merged);
+  document.getElementById("query-input").focus();
   scrollBottom();
 }
 
@@ -569,7 +618,13 @@ function setSendDisabled(d) { document.getElementById("send-btn").disabled = d; 
 
 function handleKey(e) {
   if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  else if (e.key === "Escape" && isStreaming) { e.preventDefault(); stopGenerating(); }
 }
+
+// Esc anywhere stops a running generation
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && isStreaming) stopGenerating();
+});
 
 function autoResize(el) {
   el.style.height = "auto";

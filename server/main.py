@@ -33,6 +33,7 @@ from server import cache    as cache_mod
 from server import memory   as mem_mod
 from server import inference as inf_mod
 from server import uploads  as uploads_mod
+from server import history  as history_mod
 from server.config import (
     detect_config, SERVER_PORT, USB_MODE,
     AVAILABLE_MODELS, MODEL_ORDER,
@@ -56,6 +57,7 @@ MODEL_TIMEOUT = 300
 async def startup():
     await cache_mod.init_cache()
     await mem_mod.init_memory()
+    history_mod.init_history()   # rolling cross-session conversation memory
 
     if USB_MODE:
         from server import launcher as launcher_mod
@@ -92,6 +94,7 @@ async def status():
         "single_model": cfg.single_model,
         "description":  cfg.description,
         "cache":        stats,
+        "history":      history_mod.history_stats(),
     }
 
 
@@ -179,6 +182,7 @@ async def chat(request: Request):
             await mem_mod.create_session(session_id)
             await mem_mod.add_message(session_id, "user",      query)
             await mem_mod.add_message(session_id, "assistant", cached)
+            history_mod.save_exchange(session_id, query, cached)
             return
 
         # Fresh inference
@@ -207,6 +211,7 @@ async def chat(request: Request):
                 merged_holder.append(merged)
                 await cache_mod.save_cache(query, cache_key_model, "", merged)
                 await mem_mod.add_message(session_id, "assistant", merged)
+                history_mod.save_exchange(session_id, query, merged)
 
                 msgs = await mem_mod.get_session_messages(session_id)
                 if len(msgs) == 2:
@@ -217,23 +222,30 @@ async def chat(request: Request):
             except Exception as e:
                 await sse_queue.put({"type": "error", "message": str(e)})
 
-        asyncio.create_task(run_inference())
+        inference_task = asyncio.create_task(run_inference())
 
-        while True:
-            try:
-                event = await asyncio.wait_for(sse_queue.get(), timeout=MODEL_TIMEOUT)
-            except asyncio.TimeoutError:
-                yield f"data: {json.dumps({'type':'error','message':'AI is taking too long. Is the model loaded?'})}\n\n"
-                break
+        try:
+            while True:
+                try:
+                    event = await asyncio.wait_for(sse_queue.get(), timeout=MODEL_TIMEOUT)
+                except asyncio.TimeoutError:
+                    yield f"data: {json.dumps({'type':'error','message':'AI is taking too long. Is the model loaded?'})}\n\n"
+                    break
 
-            if event.get("type") == "done":
-                yield f"data: {json.dumps({**event, 'session_id': session_id})}\n\n"
-                break
-            elif event.get("type") == "error":
-                yield f"data: {json.dumps(event)}\n\n"
-                break
-            else:
-                yield f"data: {json.dumps(event)}\n\n"
+                if event.get("type") == "done":
+                    yield f"data: {json.dumps({**event, 'session_id': session_id})}\n\n"
+                    break
+                elif event.get("type") == "error":
+                    yield f"data: {json.dumps(event)}\n\n"
+                    break
+                else:
+                    yield f"data: {json.dumps(event)}\n\n"
+        finally:
+            # If the client disconnected (pressed Stop) before we finished,
+            # cancel the background inference so the model is freed immediately
+            # for the next prompt instead of running to completion unseen.
+            if not inference_task.done():
+                inference_task.cancel()
 
     return StreamingResponse(
         event_stream(),
