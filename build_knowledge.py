@@ -219,6 +219,14 @@ def build_from_hf(out_dir: Path, target_bytes: int, hf_config: str) -> int:
 
 
 def main():
+    # Make all console/log output UTF-8 safe (Wikipedia titles have non-Latin
+    # characters that crash the default Windows cp1252 console encoding).
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
     ap = argparse.ArgumentParser(description="Build PocketAI's knowledge base")
     ap.add_argument("--source", choices=["api", "hf"], default="api",
                     help="api = live Wikipedia/Wikinews crawl (current, slow); "
