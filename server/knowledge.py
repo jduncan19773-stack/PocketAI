@@ -230,9 +230,12 @@ def search(query: str, k: int = TOP_K) -> list[dict]:
         return []
     conn = _connect()
     try:
+        # Weight the title column heavily so passages from the article that
+        # actually matches the question rank above tangential mentions.
+        # bm25() is lower (more negative) = better, so ORDER BY ascending.
         cur = conn.execute(
-            "SELECT title, source, content, rank FROM chunks "
-            "WHERE chunks MATCH ? ORDER BY rank LIMIT ?",
+            "SELECT title, source, content, bm25(chunks, 10.0, 1.0, 1.0) AS score "
+            "FROM chunks WHERE chunks MATCH ? ORDER BY score LIMIT ?",
             (match, k),
         )
         rows = cur.fetchall()
