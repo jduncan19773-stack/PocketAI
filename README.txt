@@ -40,6 +40,19 @@ TIPS:
   * "Stop" (bottom-left) shuts PocketAI down cleanly
 
 ------------------------------------------------------------
+KNOWLEDGE BASE (knows facts and events offline):
+  PocketAI ships with an offline knowledge base built from
+  Wikipedia. When you ask about a topic, it automatically looks
+  up relevant articles and uses them to answer — no internet.
+
+  To add more knowledge to a drive (needs internet ONCE):
+    pip install datasets
+    python build_knowledge.py --source hf --target-mb 1500
+  This downloads cleaned Wikipedia text and indexes it. After
+  that it works fully offline again. Use a bigger USB drive for
+  a larger knowledge base.
+
+------------------------------------------------------------
 WHAT IS POCKETAI?
   A private AI assistant that runs entirely on this flash
   drive. It never sends your data to the internet. Everything
