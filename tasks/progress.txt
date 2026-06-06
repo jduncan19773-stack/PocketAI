@@ -1,108 +1,80 @@
 POCKETAI -- BUILD PROGRESS
-Updated: 2026-06-05
+Updated: 2026-06-06
 
 ============================================================
-STATUS: PHASE 1+2 COMPLETE + E: DRIVE DEPLOYED
+STATUS: FEATURE-COMPLETE BUILD ON E: DRIVE
 ============================================================
 
 GitHub: https://github.com/jduncan19773-stack/PocketAI
 Branch: feature/phase2-complete
+Deployed: E:/PocketAI/ (plug-and-play)
 
 ============================================================
-BENCHMARK RESULTS (2026-06-04, this machine)
+HOW TO RUN
 ============================================================
-
-Hardware: Intel CPU + NVIDIA GPU 4096MB VRAM, 16GB RAM
-Mode: Single-model (phi4-mini) — VRAM-aware tier selection
-Ollama backend
-
-  Queries run     : 50
-  Errors          : 0
-  Avg TTFT        : 3.58s
-  Avg tok/sec     : 22.8
-  Avg total time  : 11.56s
-  Avg response    : 127 words
-
-E: Drive USB Mode (llama-server CPU build, embedded Python):
-  Avg TTFT        : 6.40s
-  Accuracy        : 3/3 spot checks passed
+Double-click  E:/PocketAI/PocketAI.bat
+  (native window, no browser, launches via trusted pythonw.exe)
+First launch ~60s while the model loads from USB.
 
 ============================================================
-COMPLETED
+FEATURES (all working, deployed, pushed)
 ============================================================
 
-INFERENCE ENGINE
-  [x] Switched from Ollama NDJSON to OpenAI /v1/chat/completions API
-      Works with both Ollama and llama-server
-  [x] Single-model mode auto-detected based on VRAM
-      VRAM < 6GB: single model (phi4-mini only)
-      VRAM >= 6GB: dual model
-  [x] Fast TTFT: model_a streams live, model_b enhances after
-      Before: 43s TTFT (waiting for both models)
-      After:  3.6s TTFT (model_a streams immediately)
-  [x] Anti-preamble system prompt (no "Certainly!" etc.)
-  [x] Preamble stripping in inference.py
-  [x] Session summaries auto-generated after 4+ messages
-  [x] 300s timeout for cold-start model loading
-  [x] Fixed _chunk AttributeError on cached responses
+CORE
+  [x] FastAPI + SSE streaming, OpenAI-compatible API
+  [x] Works with Ollama (dev) and llama-server (USB/offline)
+  [x] VRAM-aware model tiering; fast TTFT (model_a streams live)
 
-WEB UI
-  [x] Font size 19px
-  [x] Voice input mic button
-  [x] Voice output speaker toggle (was missing, now wired)
-  [x] Thinking indicator: model_a done => model_b still active
-  [x] "Things AI Remembers" labeling
-  [x] Plain-English error messages
-  [x] Mobile sidebar close-on-outside-click
+MODELS + TOGGLE
+  [x] 4 models on the drive: phi4-mini, qwen3-4b, llama3.2-3b, moondream(vision)
+  [x] UI model picker: "All Models" (combine) or single model
+  [x] "All Models" runs sequentially (no VRAM thrashing)
+  [x] Best single model for reasoning: Qwen3-4B (5/5 on hard tests)
 
-LAUNCHERS (mom-friendly)
-  [x] START_POCKETAI.bat: finds Python in 4 locations,
-      auto-starts Ollama, detects USB vs Ollama mode
-  [x] SETUP.bat: friendly wizard, asks about RAM
-  [x] run.py: auto-starts Ollama if installed but not running
-  [x] README.txt: plain-English instructions at USB root
+MEMORY + CONTEXT
+  [x] Conversation history persists across restarts (data/history/, 500MB spare, FIFO)
+  [x] Per-session summaries + user memories injected into prompt
+  [x] 16K context window for long conversations
 
-USB DEPLOYMENT
-  [x] llama-server CPU build (b9519) on E: drive
-      All DLLs extracted, works on any Windows PC
-  [x] phi4-mini-q4_k_m.gguf (2.4 GB) on E: drive
-  [x] qwen3-4b-q4_k_m.gguf (2.4 GB) on E: drive
-  [x] Python 3.12 Embeddable on E: drive (no host Python needed)
-  [x] All dependencies installed in embedded Python
+KNOWLEDGE BASE (RAG)  -- offline factual lookup
+  [x] server/knowledge.py: SQLite FTS5 (BM25), detail='none' (1.6x overhead)
+  [x] Retrieves relevant passages on every prompt (incl. first)
+  [x] build_knowledge.py: two sources
+        --source api : live Wikipedia+Wikinews (current, slow)
+        --source hf  : Hugging Face Wikipedia dump (bulk, GBs in minutes)
+  [x] Multi-article shard files (avoids 100k tiny files on USB)
+  [x] 64-article seed corpus committed to git (fresh clone works)
+  [x] Bulk corpus + index gitignored, built per-drive
+  [x] E: drive corpus: ~1.3GB text (filling now)
 
-BENCHMARKING
-  [x] benchmarks/benchmark.py: top-50 LLM queries
-  [x] Report saved: benchmarks/report_20260604_234138.md
+FILE + IMAGE UPLOAD
+  [x] Attach PDF/Word/text/code -> text extracted into context
+  [x] Attach image -> auto-routes to Moondream vision model
+  [x] Thumbnails, multimodal /v1/chat/completions
 
-DOCUMENTATION
-  [x] docs/STATUS.md: full status table
-  [x] docs/DESIGN.md: full architecture document
-  [x] README.txt: plain-English user instructions
+UI + UX
+  [x] Modern dark redesign, SVG icons
+  [x] Voice input (mic) + voice output (speaker toggle)
+  [x] Stop button (or Esc) cancels a running reply, frees the model
+  [x] Softer prompt: respects "explain/show work" requests
+  [x] Shutdown button
+
+PACKAGING
+  [x] PocketAI.exe (PyInstaller) + PocketAI.bat launcher
+  [x] Python 3.12 embeddable on drive (no host Python needed)
+  [x] llama-server CPU build + 4 GGUF models on drive
 
 ============================================================
-REMAINING (FUTURE PHASES)
+DRIVE SIZING NOTE
 ============================================================
-
-PHASE 3 - BROWSER EXTENSION
-  [ ] Chrome/Firefox/Edge sidebar
-  [ ] "Summarise this page"
-
-PHASE 4 - POLISH
-  [ ] Python Embeddable bundled by default in git repo
-  [ ] Piper TTS (better voice)
-  [ ] Whisper STT (offline voice input)
-  [ ] Windows code signing
-  [ ] Mac/Linux launcher
+16GB USB: ~7.3GB models leaves ~7.5GB. Knowledge storage = text x 2.6
+(FTS index). Practical max here ~1.5-2GB text. For a true 3GB+ KB use a
+32GB drive (or drop a model). Builder reaches any size: 
+  python build_knowledge.py --source hf --target-mb <N>   (needs: pip install datasets)
 
 ============================================================
-CREDENTIALS + RESOURCES
+PROVISION A NEW DRIVE
 ============================================================
-
-GitHub: https://github.com/jduncan19773-stack/PocketAI
-E: drive: E:/PocketAI/ (fully deployed, plug-and-play)
-Benchmark report: benchmarks/report_20260604_234138.md
-
-Ports:
-  PocketAI server  : 7860
-  Ollama / model A : 11434
-  Model B (USB)    : 11435
+1. Clone repo (seed KB + code included, works immediately)
+2. Run SETUP to download llama-server + models
+3. (optional) python build_knowledge.py --source hf --target-mb 1500
