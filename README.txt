@@ -32,6 +32,9 @@ TIPS:
   * Click the speaker button to hear answers read aloud
   * Click the paperclip to attach a file (PDF, Word, text,
     code) — the AI will read it and answer questions about it
+  * Attach an IMAGE (photo, screenshot, png/jpg) and ask about
+    it — PocketAI automatically uses the Moondream vision model
+    to look at the picture and answer
   * "New Conversation" starts fresh
   * "Things AI Remembers" — save facts the AI keeps forever
   * "Stop" (bottom-left) shuts PocketAI down cleanly
