@@ -19,9 +19,12 @@ Two sources:
                                pip install datasets
 
 Usage:
-  python build_knowledge.py                          # ~150 MB via live API
-  python build_knowledge.py --source hf --target-mb 3000   # ~3 GB, fast
-  python build_knowledge.py --seed --target-mb 15    # small committed seed set
+  python build_knowledge.py                          # Simple English Wikipedia
+                                                     # (~260MB, ~147k canonical
+                                                     # articles) -- recommended
+  python build_knowledge.py --hf-config 20231101.en --target-mb 3000
+                                                     # full English (needs 32GB+ USB)
+  python build_knowledge.py --source api --seed      # small committed seed set
 
 Sources are openly licensed: Wikipedia CC BY-SA, Wikinews CC BY.
 Re-runnable: existing files are skipped, so you can top up over time.
@@ -228,17 +231,19 @@ def main():
         pass
 
     ap = argparse.ArgumentParser(description="Build PocketAI's knowledge base")
-    ap.add_argument("--source", choices=["api", "hf"], default="api",
-                    help="api = live Wikipedia/Wikinews crawl (current, slow); "
-                         "hf = Hugging Face Wikipedia dump (fast, bulk)")
-    ap.add_argument("--target-mb", type=int, default=150,
-                    help="Total corpus size to aim for, in MB (default 150)")
+    ap.add_argument("--source", choices=["api", "hf"], default="hf",
+                    help="hf = Hugging Face Wikipedia dump (fast, recommended); "
+                         "api = live Wikipedia/Wikinews crawl (current events, slow)")
+    ap.add_argument("--target-mb", type=int, default=2000,
+                    help="Max corpus size in MB (default 2000; Simple Wikipedia is ~260MB)")
     ap.add_argument("--seed", action="store_true",
                     help="Write into knowledge/seed (the small committed set) instead of corpus/")
     ap.add_argument("--delay", type=float, default=0.3,
                     help="Seconds between API calls (api source only; default 0.3)")
-    ap.add_argument("--hf-config", default="20231101.en",
-                    help="Hugging Face wikimedia/wikipedia config (default 20231101.en)")
+    ap.add_argument("--hf-config", default="20231101.simple",
+                    help="Hugging Face wikimedia/wikipedia config. Default 20231101.simple "
+                         "(Simple English: ~147k canonical articles, ~260MB, best accuracy/size). "
+                         "Use 20231101.en for full English (much larger, needs a 32GB+ drive).")
     args = ap.parse_args()
 
     out_dir = SEED_DIR if args.seed else CORPUS_DIR
