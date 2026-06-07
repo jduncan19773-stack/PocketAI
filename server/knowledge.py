@@ -59,6 +59,31 @@ _STOPWORDS = {
     "in","on","at","by","for","with","as","that","this","it","its","what",
     "who","when","where","why","how","do","does","did","i","you","me","my",
     "tell","about","give","please","can","could","would","explain",
+    # Question/answer verbs that describe the ASK, not the topic. Dropping them
+    # lets the topic terms drive the title match ("who WON the 2020 election").
+    "won","win","wins","name","named","call","called","happen","happened",
+    "mean","means","get","got","make","made","use","used","work","works",
+    "many","much","long","old","year","years","first","last","know",
+    "wrote","write","written","author","authored","created","create",
+    "invented","invent","discovered","discover","built","build","founded",
+    "found","directed","composed","painted","designed","developed","led",
+}
+
+# Common abbreviations / normalizations applied before tokenizing so their
+# signal survives (and matches Wikipedia's article titles).
+_ABBREV = {
+    "u\\.?s\\.?a": "united states",
+    "u\\.?s": "united states",
+    "u\\.?k": "united kingdom",
+    "u\\.?n": "united nations",
+    "e\\.?u": "european union",
+    "usa": "united states",
+    "world war 2": "world war ii",
+    "world war 1": "world war i",
+    "ww2": "world war ii",
+    "ww1": "world war i",
+    "wwii": "world war ii",
+    "wwi": "world war i",
 }
 
 
@@ -154,12 +179,13 @@ def build_index() -> dict:
 
     conn = _connect()
     try:
-        # detail='none' drops per-term position data we don't use (we only do
-        # term-match + BM25 ranking, not phrase/NEAR search). This roughly
-        # halves the on-disk index, important for fitting a big corpus on a USB.
+        # detail='column' keeps per-column data (a bit larger than 'none') so we
+        # can (a) weight the title column in bm25 ranking and (b) run title-only
+        # queries -- both essential for surfacing the RIGHT article. Phrase
+        # position data ('full') is omitted to keep the index smaller.
         conn.execute(
             "CREATE VIRTUAL TABLE chunks USING fts5("
-            "title, source, content, tokenize='porter unicode61', detail='none')"
+            "title, source, content, tokenize='porter unicode61', detail='column')"
         )
         docs = 0
         passages = 0
@@ -239,7 +265,13 @@ def _match_query(query: str) -> str:
     keep meaningful words, drop stopwords/punctuation, OR them together.
     Returns "" if there is nothing useful to search for.
     """
-    words = re.findall(r"[A-Za-z0-9]+", query.lower())
+    # Expand common abbreviations BEFORE tokenizing so country/term signals
+    # aren't lost as short tokens (e.g. "US" -> "united states").
+    q = query.lower()
+    for abbr, full in _ABBREV.items():
+        q = re.sub(rf"\b{abbr}\b", full, q)
+
+    words = re.findall(r"[A-Za-z0-9]+", q)
     # Keep meaningful terms: drop stopwords, keep words of 2+ chars, and always
     # keep any token containing a digit (years, "15", model names, etc.).
     terms = [
@@ -268,43 +300,119 @@ def _run_match(conn, match: str, k: int) -> list:
         return []
 
 
-def search(query: str, k: int = TOP_K) -> list[dict]:
+def _canonical_rank(rows: list, terms: list) -> list:
+    """
+    Re-rank title-match candidates to surface the CANONICAL article.
+
+    Scoring (higher = better), then bm25 as tiebreak:
+      + coverage: sum of lengths of query terms that appear in the title.
+        This makes distinctive terms dominate -- "Earthquake" (matches the long
+        term "earthquake") beats "Common Cause" (matches only "cause").
+      - clutter: disambiguation markers "(film)" / "Foo: Bar" and extra words
+        beyond the query, so "Cleopatra" beats "Cleopatra (1934 film)".
+    """
+    def score(row):
+        title = row[0]
+        tl = title.lower()
+        title_tokens = set(re.findall(r"\w+", tl))
+        coverage = sum(len(t) for t in terms if t in title_tokens)
+        clutter = 0.0
+        if "(" in title: clutter += 8
+        if ":" in title: clutter += 4
+        clutter += max(0, len(re.findall(r"\w+", title)) - len(terms)) * 1.0
+        # Higher coverage and lower clutter rank first; bm25 (negative) breaks ties
+        return (-(coverage - clutter), row[3])
+    return sorted(rows, key=score)
+
+
+def search(query: str, k: int = TOP_K, _return_strength: bool = False):
     """
     Return up to k best-matching passages for a query.
 
-    Strategy: try an AND query first (all terms must appear). FTS5 intersects
-    the postings lists starting from the rarest term, so AND is typically
-    30-260x faster than OR on a large USB index AND more precise. If AND finds
-    nothing (no single passage holds every term), fall back to OR for recall.
+    Retrieval order (best precision first):
+      1. TITLE pass — find articles whose TITLE contains the query terms
+         (title:term AND ...). This reliably surfaces the canonical article
+         (e.g. "Photosynthesis" for "what is photosynthesis"). Fast: titles
+         are short so the postings are tiny.
+      2. CONTENT AND — all terms appear in one passage.
+      3. CONTENT OR — any term (recall fallback).
+
+    `strong` is True when the title pass matched — a strong signal the corpus
+    genuinely covers the question.
     """
+    empty = ([], False) if _return_strength else []
     if not INDEX_DB.exists():
-        return []
+        return empty
     terms = _match_query(query)
     if not terms:
-        return []
+        return empty
 
     conn = _connect()
+    strong = False
     try:
-        # Fast, precise path: require all terms
-        and_match = " AND ".join(f'"{t}"' for t in terms)
-        rows = _run_match(conn, and_match, k)
-
-        # Recall fallback: any term (only runs when AND found nothing)
-        if not rows:
-            or_match = " OR ".join(f'"{t}"' for t in terms)
-            rows = _run_match(conn, or_match, k)
+        # 1. STRONG title pass: every query term appears in the TITLE. This means
+        # the article is unambiguously about the question (e.g. "Photosynthesis",
+        # "2020 United States presidential election"). High precision -> inject.
+        title_and = " AND ".join(f'title:"{t}"' for t in terms)
+        cand = _run_match(conn, title_and, max(k * 5, 10))
+        if cand:
+            strong = True
+            rows = _canonical_rank(cand, terms)[:k]
+        else:
+            # 2. Weak passes (kept for callers, but NOT trusted for injection):
+            #    title-OR, then content AND/OR.
+            rows = _run_match(conn, " OR ".join(f'title:"{t}"' for t in terms), max(k * 5, 10))
+            if rows:
+                rows = _canonical_rank(rows, terms)[:k]
+            if not rows:
+                rows = _run_match(conn, " AND ".join(f'"{t}"' for t in terms), k)
+            if not rows:
+                rows = _run_match(conn, " OR ".join(f'"{t}"' for t in terms), k)
     finally:
         conn.close()
-    return [{"title": r[0], "source": r[1], "content": r[2], "score": r[3]} for r in rows]
+    results = [{"title": r[0], "source": r[1], "content": r[2], "score": r[3]} for r in rows]
+    return (results, strong) if _return_strength else results
+
+
+def _topically_relevant(query: str, hits: list) -> bool:
+    """
+    True if the top result is genuinely ABOUT the query, judged by whether a
+    meaningful query word (>=4 letters, not a stopword) appears in the top
+    result's title. This filters out incidental matches so math/writing/logic
+    questions don't drag in irrelevant articles.
+    """
+    if not hits:
+        return False
+    q_words = [
+        w for w in re.findall(r"[A-Za-z]{4,}", query.lower())
+        if w not in _STOPWORDS
+    ]
+    if not q_words:
+        return False
+    title_words = re.findall(r"[A-Za-z]{4,}", hits[0]["title"].lower())
+    # Prefix match (min 4 chars) so plurals/stems count:
+    # "earthquakes" vs "earthquake", "election" vs "elections", etc.
+    for qw in q_words:
+        for tw in title_words:
+            if qw == tw or qw.startswith(tw[:5]) or tw.startswith(qw[:5]):
+                return True
+    return False
 
 
 def search_context(query: str, k: int = TOP_K) -> str:
     """
     Build a context block of relevant knowledge for a query, or "" if none.
     This is what gets injected into the model's prompt.
+
+    Injects only on a STRONG match (every query term appears in the article
+    title) — i.e. the corpus has an article that is unambiguously about the
+    question. This keeps injection high-precision: named-topic lookups get
+    grounded, while descriptive/superlative queries ("largest planet") and
+    non-factual ones (math, writing) are left to the model instead of being
+    fed possibly-misleading context.
     """
-    hits = search(query, k)
-    if not hits:
+    hits, strong = search(query, k, _return_strength=True)
+    if not hits or not strong:
         return ""
     parts = []
     used = 0
