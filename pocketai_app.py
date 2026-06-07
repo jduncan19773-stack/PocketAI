@@ -20,6 +20,14 @@ import threading
 import time
 from pathlib import Path
 
+# When launched via pythonw.exe or a windowed (console-less) exe, sys.stdout
+# and sys.stderr are None. Libraries like uvicorn write to them and crash.
+# Redirect to devnull so the app runs cleanly with no console.
+if sys.stdout is None:
+    sys.stdout = open(os.devnull, "w")
+if sys.stderr is None:
+    sys.stderr = open(os.devnull, "w")
+
 # ── Paths / environment ──────────────────────────────────────────
 if getattr(sys, "frozen", False):
     HERE = Path(sys.executable).parent
@@ -38,13 +46,29 @@ if str(HERE) not in sys.path:
 PORT = int(os.environ.get("POCKETAI_PORT", "7860"))
 URL  = f"http://127.0.0.1:{PORT}"
 
+_LOG = HERE / "data" / "launch.log"
+
+def _log(msg: str):
+    try:
+        _LOG.parent.mkdir(parents=True, exist_ok=True)
+        with open(_LOG, "a", encoding="utf-8") as f:
+            f.write(f"{time.strftime('%H:%M:%S')} {msg}\n")
+    except Exception:
+        pass
+
 
 # ── Server (background thread) ───────────────────────────────────
 
 def _run_server():
-    import uvicorn
-    from server.main import app
-    uvicorn.run(app, host="127.0.0.1", port=PORT, log_level="warning")
+    try:
+        _log("server thread: importing")
+        import uvicorn
+        from server.main import app
+        _log("server thread: starting uvicorn")
+        uvicorn.run(app, host="127.0.0.1", port=PORT, log_level="warning")
+    except Exception:
+        import traceback
+        _log("server thread CRASHED:\n" + traceback.format_exc())
 
 
 def _wait_for_server(timeout: int = 180) -> bool:
@@ -124,10 +148,15 @@ def _cleanup_and_exit(code: int = 0):
 # ── Main ─────────────────────────────────────────────────────────
 
 def main():
+    _log(f"main: frozen={getattr(sys,'frozen',False)} HERE={HERE} USB={os.environ.get('POCKETAI_MODE')}")
     threading.Thread(target=_run_server, daemon=True).start()
-    _wait_for_server(timeout=180)
+    ok = _wait_for_server(timeout=180)
+    _log(f"main: server ready={ok}")
 
+    browser = _find_browser()
+    _log(f"main: browser={browser}")
     proc = _open_app_window(URL)
+    _log(f"main: app window proc={proc.pid if proc else None}")
     if proc is not None:
         # Wait until the user closes the app window, then shut everything down
         try:
@@ -147,4 +176,16 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        # The packaged app is windowed (no console); record any startup crash
+        # so it can be diagnosed instead of vanishing silently.
+        try:
+            import traceback
+            log = HERE / "data" / "startup_error.log"
+            log.parent.mkdir(parents=True, exist_ok=True)
+            log.write_text(traceback.format_exc(), encoding="utf-8")
+        except Exception:
+            pass
+        raise
