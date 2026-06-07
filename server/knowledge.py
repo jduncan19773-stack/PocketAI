@@ -45,9 +45,12 @@ CHUNK_OVERLAP  = 150
 # the USB); single-article files from the API crawler simply have no separator.
 DOC_SEP = "\n<<<<POCKETAI_DOC>>>>\n"
 
-# How many passages to retrieve per query, and how much text to inject
-TOP_K          = 4
-MAX_CONTEXT_CHARS = 6000
+# How many passages to retrieve per query, and how much text to inject.
+# Kept deliberately small: USB mode runs CPU-only inference, where every extra
+# token of injected context slows prompt-processing a lot. The single best
+# passage (plus one backup) is usually enough for a good grounded answer.
+TOP_K          = 2
+MAX_CONTEXT_CHARS = 2000
 
 _STOPWORDS = {
     "the","a","an","is","are","was","were","be","been","to","of","and","or",
