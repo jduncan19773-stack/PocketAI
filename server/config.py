@@ -28,6 +28,8 @@ from dataclasses import dataclass
 #   vision  — True if it is an image model (excluded from the text "all" merge)
 #   port    — llama-server port reserved for this model in USB mode
 
+# USB-mode llama-server ports. Deliberately NOT 11434 (Ollama's default) so
+# the bundled engine never collides with an Ollama install on the host.
 AVAILABLE_MODELS = {
     "phi4-mini": {
         "tag":   "phi4-mini",
@@ -35,7 +37,7 @@ AVAILABLE_MODELS = {
         "label": "Phi-4 Mini",
         "blurb": "Fast & balanced — Microsoft",
         "vision": False,
-        "port":  11434,
+        "port":  17431,
     },
     "qwen3-4b": {
         "tag":   "qwen3:4b",
@@ -43,7 +45,7 @@ AVAILABLE_MODELS = {
         "label": "Qwen 3 (4B)",
         "blurb": "Strong reasoning — Alibaba",
         "vision": False,
-        "port":  11435,
+        "port":  17432,
     },
     "llama3.2-3b": {
         "tag":   "llama3.2:3b",
@@ -51,7 +53,7 @@ AVAILABLE_MODELS = {
         "label": "Llama 3.2 (3B)",
         "blurb": "Versatile all-rounder — Meta",
         "vision": False,
-        "port":  11436,
+        "port":  17433,
     },
     "moondream": {
         "tag":   "moondream",
@@ -59,7 +61,7 @@ AVAILABLE_MODELS = {
         "label": "Moondream 2",
         "blurb": "Understands images",
         "vision": True,
-        "port":  11437,
+        "port":  17434,
     },
 }
 

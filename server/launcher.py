@@ -120,8 +120,10 @@ class LlamaLauncher:
             "--host",     "127.0.0.1",
             "--ctx-size", str(CONTEXT_SIZE),
             "--threads",  str(max(2, (os.cpu_count() or 4) - 1)),
-            "--mlock",    # lock the model in RAM so inference never faults to USB
-            "--no-mmap",  # load the model fully into RAM instead of mmapping the USB
+            # Memory-map the model (default): the server becomes ready quickly
+            # and pages are loaded on demand, then cached in RAM. Forcing a full
+            # read (--no-mmap) made startup read the whole 2.5GB from USB first,
+            # which blocked launch past the timeout.
             "--log-disable",
         ]
         return subprocess.Popen(

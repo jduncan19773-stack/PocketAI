@@ -67,7 +67,9 @@ async def startup():
         _launcher = launcher_mod.LlamaLauncher()
         launcher_mod.set_active_launcher(_launcher)
         cfg = detect_config()
-        await _launcher.start(cfg)
+        # Load the model in the BACKGROUND so the web UI opens immediately.
+        # The first chat request calls ensure_model() and waits for it then.
+        asyncio.create_task(_launcher.start(cfg))
 
 
 @app.on_event("shutdown")

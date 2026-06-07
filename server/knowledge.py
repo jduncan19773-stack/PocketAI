@@ -25,6 +25,7 @@ Each corpus file is plain text. The first lines may be a small header:
   (blank line, then the body)
 """
 
+import json
 import os
 import re
 import sqlite3
@@ -35,6 +36,7 @@ KNOWLEDGE_DIR  = _HERE / "knowledge"
 SEED_DIR       = KNOWLEDGE_DIR / "seed"
 CORPUS_DIR     = KNOWLEDGE_DIR / "corpus"
 INDEX_DB       = KNOWLEDGE_DIR / "index.db"
+INDEX_META     = KNOWLEDGE_DIR / "index_meta.json"   # cached counts (instant stats)
 
 # Passage chunking — ~300 tokens per chunk with a little overlap
 CHUNK_CHARS    = 1200
@@ -181,6 +183,17 @@ def build_index() -> dict:
                 "INSERT INTO chunks (title, source, content) VALUES (?,?,?)", batch
             )
         conn.commit()
+        # Cache counts so kb_stats() never has to COUNT(*) a multi-GB index
+        files = list(_iter_corpus_files())
+        size_mb = round(sum((f.stat().st_size for f in files), 0) / (1024 * 1024), 1)
+        try:
+            INDEX_META.write_text(json.dumps(
+                {"documents": docs, "passages": passages, "size_mb": size_mb}
+            ), encoding="utf-8")
+        except Exception:
+            pass
+        global _stats_cache
+        _stats_cache = None   # force re-read next stats call
         return {"documents": docs, "passages": passages}
     finally:
         conn.close()
@@ -276,21 +289,25 @@ def search_context(query: str, k: int = TOP_K) -> str:
     )
 
 
+# kb_stats is polled by the UI; the passage COUNT(*) over a multi-GB FTS index
+# on USB is slow, so compute it once and cache it (the corpus is static at runtime).
+_stats_cache: dict | None = None
+
 def kb_stats() -> dict:
-    """Stats for /api/status and diagnostics."""
-    files = list(_iter_corpus_files())
-    total_bytes = sum((f.stat().st_size for f in files), 0)
-    passages = 0
-    if INDEX_DB.exists():
+    """
+    Stats for /api/status — always fast. Reads cached counts from a small
+    metadata file written at build time; never runs COUNT(*) on the USB index.
+    """
+    global _stats_cache
+    if _stats_cache is not None:
+        return _stats_cache
+
+    meta = {"documents": 0, "passages": 0, "size_mb": 0.0}
+    if INDEX_META.exists():
         try:
-            conn = _connect()
-            passages = conn.execute("SELECT COUNT(*) FROM chunks").fetchone()[0]
-            conn.close()
+            meta = json.loads(INDEX_META.read_text(encoding="utf-8"))
         except Exception:
-            passages = 0
-    return {
-        "documents": len(files),
-        "passages":  passages,
-        "size_mb":   round(total_bytes / (1024 * 1024), 1),
-        "indexed":   INDEX_DB.exists(),
-    }
+            pass
+
+    _stats_cache = {**meta, "indexed": INDEX_DB.exists()}
+    return _stats_cache
