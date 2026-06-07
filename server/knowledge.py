@@ -209,6 +209,28 @@ def ensure_index() -> None:
         build_index()
 
 
+def prewarm_index() -> None:
+    """
+    Read the index file sequentially to pull it into the OS page cache.
+    Retrieval over a multi-GB index on a USB drive is slow on the FIRST read
+    of each query's postings (cold cache), then instant once cached. Warming
+    the whole index up front makes every query fast and consistent.
+
+    Call this from a background thread on startup; it just does sequential
+    I/O and exits. Safe if the file is missing.
+    """
+    if not INDEX_DB.exists():
+        return
+    try:
+        chunk = 8 * 1024 * 1024   # 8 MB reads
+        with open(INDEX_DB, "rb", buffering=0) as f:
+            while True:
+                if not f.read(chunk):
+                    break
+    except Exception:
+        pass
+
+
 # ── Retrieval ────────────────────────────────────────────────────
 
 def _match_query(query: str) -> str:
@@ -225,38 +247,52 @@ def _match_query(query: str) -> str:
         if w not in _STOPWORDS and (len(w) >= 2 or any(ch.isdigit() for ch in w))
     ]
     if not terms:
-        return ""
-    # Quote each term so FTS5 treats it as a literal, OR them for recall
+        return []
+    # De-duplicate, preserve order
     seen = []
     for t in terms:
         if t not in seen:
             seen.append(t)
-    return " OR ".join(f'"{t}"' for t in seen[:20])
+    return seen[:12]
 
 
-def search(query: str, k: int = TOP_K) -> list[dict]:
-    """
-    Return up to k best-matching passages for a query.
-    Each: {title, source, content, score}. Empty list if no index/match.
-    """
-    if not INDEX_DB.exists():
-        return []
-    match = _match_query(query)
-    if not match:
-        return []
-    conn = _connect()
+def _run_match(conn, match: str, k: int) -> list:
     try:
-        # Weight the title column heavily so passages from the article that
-        # actually matches the question rank above tangential mentions.
-        # bm25() is lower (more negative) = better, so ORDER BY ascending.
         cur = conn.execute(
             "SELECT title, source, content, bm25(chunks, 10.0, 1.0, 1.0) AS score "
             "FROM chunks WHERE chunks MATCH ? ORDER BY score LIMIT ?",
             (match, k),
         )
-        rows = cur.fetchall()
+        return cur.fetchall()
     except sqlite3.OperationalError:
         return []
+
+
+def search(query: str, k: int = TOP_K) -> list[dict]:
+    """
+    Return up to k best-matching passages for a query.
+
+    Strategy: try an AND query first (all terms must appear). FTS5 intersects
+    the postings lists starting from the rarest term, so AND is typically
+    30-260x faster than OR on a large USB index AND more precise. If AND finds
+    nothing (no single passage holds every term), fall back to OR for recall.
+    """
+    if not INDEX_DB.exists():
+        return []
+    terms = _match_query(query)
+    if not terms:
+        return []
+
+    conn = _connect()
+    try:
+        # Fast, precise path: require all terms
+        and_match = " AND ".join(f'"{t}"' for t in terms)
+        rows = _run_match(conn, and_match, k)
+
+        # Recall fallback: any term (only runs when AND found nothing)
+        if not rows:
+            or_match = " OR ".join(f'"{t}"' for t in terms)
+            rows = _run_match(conn, or_match, k)
     finally:
         conn.close()
     return [{"title": r[0], "source": r[1], "content": r[2], "score": r[3]} for r in rows]

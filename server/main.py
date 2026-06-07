@@ -61,6 +61,11 @@ async def startup():
     history_mod.init_history()   # rolling cross-session conversation memory
     kb_mod.ensure_index()        # build the knowledge-base search index if needed
 
+    # Warm the knowledge index into OS cache in the background so retrieval is
+    # fast and consistent (cold USB reads of postings are the main slowdown).
+    import threading
+    threading.Thread(target=kb_mod.prewarm_index, daemon=True).start()
+
     if USB_MODE:
         from server import launcher as launcher_mod
         global _launcher
