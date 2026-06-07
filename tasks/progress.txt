@@ -1,80 +1,57 @@
 POCKETAI -- BUILD PROGRESS
-Updated: 2026-06-06
+Updated: 2026-06-07 (overnight performance + accuracy pass)
 
 ============================================================
-STATUS: FEATURE-COMPLETE BUILD ON E: DRIVE
+STATUS: FAST + ACCURATE. Deployed to E: drive. Pushed to GitHub.
 ============================================================
-
-GitHub: https://github.com/jduncan19773-stack/PocketAI
-Branch: feature/phase2-complete
-Deployed: E:/PocketAI/ (plug-and-play)
+GitHub: https://github.com/jduncan19773-stack/PocketAI  (feature/phase2-complete)
+Launch: double-click E:/PocketAI/PocketAI.bat  (opens an Edge app window)
 
 ============================================================
-HOW TO RUN
+OVERNIGHT IMPROVEMENTS (this pass)
 ============================================================
-Double-click  E:/PocketAI/PocketAI.bat
-  (native window, no browser, launches via trusted pythonw.exe)
-First launch ~60s while the model loads from USB.
+PERFORMANCE
+  [x] Fixed "thinking forever" (was 60-119s): keep ONE model resident in RAM
+      - launcher stops other models when switching (no RAM thrash)
+      - --no-mmap loads model fully into RAM (no per-token USB faulting)
+      - model loads in a background task so the window opens immediately
+  [x] Retrieval 20s -> 0.0-0.16s:
+      - index pre-warmed into OS cache on startup (background thread)
+      - title-first FTS lookups (tiny postings) instead of huge OR scans
+  [x] TTFT now consistent: median ~6s, range 2.7-10.8s (was 2.6-119s)
+  [x] "All Models" on USB maps to the fast resident model (multi-model
+      blending isn't practical when only one model fits in RAM)
 
-============================================================
-FEATURES (all working, deployed, pushed)
-============================================================
-
-CORE
-  [x] FastAPI + SSE streaming, OpenAI-compatible API
-  [x] Works with Ollama (dev) and llama-server (USB/offline)
-  [x] VRAM-aware model tiering; fast TTFT (model_a streams live)
-
-MODELS + TOGGLE
-  [x] 4 models on the drive: phi4-mini, qwen3-4b, llama3.2-3b, moondream(vision)
-  [x] UI model picker: "All Models" (combine) or single model
-  [x] "All Models" runs sequentially (no VRAM thrashing)
-  [x] Best single model for reasoning: Qwen3-4B (5/5 on hard tests)
-
-MEMORY + CONTEXT
-  [x] Conversation history persists across restarts (data/history/, 500MB spare, FIFO)
-  [x] Per-session summaries + user memories injected into prompt
-  [x] 16K context window for long conversations
-
-KNOWLEDGE BASE (RAG)  -- offline factual lookup
-  [x] server/knowledge.py: SQLite FTS5 (BM25), detail='none' (1.6x overhead)
-  [x] Retrieves relevant passages on every prompt (incl. first)
-  [x] build_knowledge.py: two sources
-        --source api : live Wikipedia+Wikinews (current, slow)
-        --source hf  : Hugging Face Wikipedia dump (bulk, GBs in minutes)
-  [x] Multi-article shard files (avoids 100k tiny files on USB)
-  [x] 64-article seed corpus committed to git (fresh clone works)
-  [x] Bulk corpus + index gitignored, built per-drive
-  [x] E: drive corpus: ~1.3GB text (filling now)
-
-FILE + IMAGE UPLOAD
-  [x] Attach PDF/Word/text/code -> text extracted into context
-  [x] Attach image -> auto-routes to Moondream vision model
-  [x] Thumbnails, multimodal /v1/chat/completions
-
-UI + UX
-  [x] Modern dark redesign, SVG icons
-  [x] Voice input (mic) + voice output (speaker toggle)
-  [x] Stop button (or Esc) cancels a running reply, frees the model
-  [x] Softer prompt: respects "explain/show work" requests
-  [x] Shutdown button
-
-PACKAGING
-  [x] PocketAI.exe (PyInstaller) + PocketAI.bat launcher
-  [x] Python 3.12 embeddable on drive (no host Python needed)
-  [x] llama-server CPU build + 4 GGUF models on drive
+ACCURACY (end-to-end ~24/25 correct)
+  [x] Corpus rebuilt: Simple English Wikipedia (147k CANONICAL articles)
+      replaced the random 4.5% full-English sample that lacked most key
+      articles. Index 407MB (was 2.3GB) -> fits in 8GB RAM. Freed 3.4GB.
+  [x] detail='column' index -> title-weighted bm25 + title-only queries work
+  [x] Title-first retrieval + canonical re-rank (de-clutters "(film)" etc.)
+      -> surfaces the right article: Photosynthesis, Cleopatra VII,
+         2020 United States presidential election, Causes of World War I...
+  [x] Abbreviation/numeral expansion: US->United States, WW1->World War I
+  [x] Question/answer verbs (won, wrote, invented...) treated as stopwords
+  [x] High-precision injection gate: inject KB only when every topic term is
+      in an article title; descriptive/superlative + non-factual queries
+      (math, writing) are left to the model (faster, no misleading context)
+  [x] Verified: 2020 election=Biden+Harris, Jupiter, speed of light, WWI
+      causes, DNA, Einstein, Mona Lisa=da Vinci, Everest, penicillin=Fleming
+  [x] Conversation context retained across follow-ups ("what year was HE born")
 
 ============================================================
-DRIVE SIZING NOTE
+EARLIER (prior sessions, still in place)
 ============================================================
-16GB USB: ~7.3GB models leaves ~7.5GB. Knowledge storage = text x 2.6
-(FTS index). Practical max here ~1.5-2GB text. For a true 3GB+ KB use a
-32GB drive (or drop a model). Builder reaches any size: 
-  python build_knowledge.py --source hf --target-mb <N>   (needs: pip install datasets)
+  [x] 4 models + UI picker; voice in/out; image upload (Moondream vision)
+  [x] Persistent cross-session memory; stop button; file upload (PDF/Word/code)
+  [x] PocketAI.bat launcher (Edge --app window; the PyInstaller exe was
+      dropped -- Python 3.14 bootloader + pywebview WinForms both unreliable)
+  [x] Embedded Python + llama-server on the drive (zero install)
 
 ============================================================
 PROVISION A NEW DRIVE
 ============================================================
-1. Clone repo (seed KB + code included, works immediately)
-2. Run SETUP to download llama-server + models
-3. (optional) python build_knowledge.py --source hf --target-mb 1500
+1. Clone repo (seed KB + code work immediately)
+2. SETUP.bat -> downloads llama-server + models
+3. pip install datasets; python build_knowledge.py   (Simple Wikipedia, ~260MB)
+   (use --hf-config 20231101.en --target-mb 3000 on a 32GB+ drive for full English)
