@@ -29,3 +29,4 @@ benchmarks/report_*.md
 .DS_Store
 Thumbs.db
 desktop.ini
+knowledge/index_meta.json
