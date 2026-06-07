@@ -94,6 +94,12 @@ class LlamaLauncher:
                 if await self._is_ready(port):
                     return True
 
+            # Keep only ONE model resident in RAM at a time. Each model is
+            # ~2.5GB loaded with --no-mmap; running several at once exhausts
+            # RAM and makes everything thrash. Stop any other running model
+            # before starting this one.
+            self._stop_others(keep=model_id)
+
             # (Re)start it
             print(f"[launcher] Starting {model_id} on port {port}")
             self._procs[model_id] = self._spawn(gguf, port)
@@ -102,8 +108,29 @@ class LlamaLauncher:
                 print(f"[launcher] WARNING: {model_id} did not become ready")
             return ok
 
+    def _stop_others(self, keep: str) -> None:
+        """Terminate every running model except `keep` (frees its RAM)."""
+        for other_id, proc in list(self._procs.items()):
+            if other_id == keep:
+                continue
+            try:
+                if proc.poll() is None:
+                    proc.terminate()
+                    proc.wait(timeout=5)
+            except Exception:
+                try:
+                    proc.kill()
+                except Exception:
+                    pass
+            self._procs.pop(other_id, None)
+
     async def ensure_models(self, model_ids: list) -> list:
-        """Ensure several models are ready. Returns the ones that came up."""
+        """
+        Ensure the given models are usable. Because only one model stays
+        resident at a time, they are prepared one at a time (callers that
+        need several, e.g. 'All Models', already query them sequentially).
+        Returns the ones that came up.
+        """
         ready = []
         for mid in model_ids:
             if await self.ensure_model(mid):
@@ -120,10 +147,13 @@ class LlamaLauncher:
             "--host",     "127.0.0.1",
             "--ctx-size", str(CONTEXT_SIZE),
             "--threads",  str(max(2, (os.cpu_count() or 4) - 1)),
-            # Memory-map the model (default): the server becomes ready quickly
-            # and pages are loaded on demand, then cached in RAM. Forcing a full
-            # read (--no-mmap) made startup read the whole 2.5GB from USB first,
-            # which blocked launch past the timeout.
+            # Load the model fully into RAM (--no-mmap). This is essential for
+            # speed: with memory-mapping, inference faults pages back from the
+            # slow USB on every token ("thinking forever"). The model loads in
+            # a background task (see main.startup) so the window still opens
+            # immediately; the first question waits ~30-60s for the load, then
+            # all answers are fast because the model is resident in RAM.
+            "--no-mmap",
             "--log-disable",
         ]
         return subprocess.Popen(

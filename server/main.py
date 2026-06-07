@@ -178,6 +178,12 @@ async def chat(request: Request):
     else:
         run_model  = sel_model
 
+    # On USB hardware only one model can be resident in RAM at a time, so the
+    # multi-model "All Models" blend isn't practical (it would reload several
+    # 2.5GB models per question). Use the fast default model instead.
+    if USB_MODE and run_model == "all":
+        run_model = "phi4-mini"
+
     # Cache key includes the model selection so different models cache separately
     cache_key_model = run_model
 
