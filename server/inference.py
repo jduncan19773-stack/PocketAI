@@ -82,31 +82,54 @@ async def _stream_llm(host: str, model: str, messages: list, on_token=None, imag
                 m["content"] = content
                 break
 
+    # The model server returns 503 "loading model" while it reads the GGUF into
+    # RAM (slow from a USB drive). Wait and retry rather than failing the query.
+    import asyncio as _asyncio
+    deadline = _asyncio.get_event_loop().time() + MODEL_TIMEOUT
+
     async with httpx.AsyncClient(timeout=MODEL_TIMEOUT) as client:
-        async with client.stream(
-            "POST", url,
-            json={"model": model, "messages": payload_messages, "stream": True},
-        ) as resp:
-            resp.raise_for_status()
-            async for line in resp.aiter_lines():
-                if not line.startswith("data: "):
-                    continue
-                data_str = line[6:].strip()
-                if data_str == "[DONE]":
-                    break
-                try:
-                    data = json.loads(data_str)
-                except Exception:
-                    continue
-                token = (
-                    data.get("choices", [{}])[0]
-                        .get("delta", {})
-                        .get("content", "")
-                )
-                if token:
-                    full += token
-                    if on_token:
-                        await on_token(token)
+        while True:
+            try:
+                async with client.stream(
+                    "POST", url,
+                    json={"model": model, "messages": payload_messages, "stream": True},
+                ) as resp:
+                    if resp.status_code == 503:
+                        # Model still loading — wait briefly and retry
+                        await resp.aread()
+                        if _asyncio.get_event_loop().time() >= deadline:
+                            resp.raise_for_status()
+                        await _asyncio.sleep(2.0)
+                        continue
+                    resp.raise_for_status()
+                    async for line in resp.aiter_lines():
+                        if not line.startswith("data: "):
+                            continue
+                        data_str = line[6:].strip()
+                        if data_str == "[DONE]":
+                            break
+                        try:
+                            data = json.loads(data_str)
+                        except Exception:
+                            continue
+                        token = (
+                            data.get("choices", [{}])[0]
+                                .get("delta", {})
+                                .get("content", "")
+                        )
+                        if token:
+                            full += token
+                            if on_token:
+                                await on_token(token)
+                break   # finished streaming successfully
+            except httpx.HTTPStatusError:
+                raise
+            except (httpx.ConnectError, httpx.ReadError):
+                # Server not accepting connections yet (still starting) — retry
+                if _asyncio.get_event_loop().time() >= deadline:
+                    raise
+                await _asyncio.sleep(2.0)
+                continue
 
     return _strip_preamble(full)
 
