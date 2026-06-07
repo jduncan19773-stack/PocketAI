@@ -4,12 +4,16 @@
 
 TO START:
   -> Double-click  PocketAI.bat
-     (a window opens with PocketAI inside — no browser needed)
 
-  First launch takes about 60 seconds while the AI loads.
-  After that it is fast.
+     PocketAI opens in its own clean app window (no browser tabs,
+     no address bar). The first launch takes ~15-30 seconds while
+     the AI loads from the drive; after that it is fast.
 
 THAT'S IT. No typing, no installation, no internet needed.
+
+  (If Windows shows a blue "Windows protected your PC" box, click
+   "More info" then "Run anyway" — it's just because the file isn't
+   code-signed. It is completely safe; everything runs on this drive.)
 
 ------------------------------------------------------------
 CHOOSING AN AI MODEL:
@@ -60,10 +64,6 @@ WHAT IS POCKETAI?
   completely clean — nothing installed, nothing stored.
 
 ------------------------------------------------------------
-IF WINDOWS BLOCKS IT:
-  Use PocketAI.bat (not the .exe). The .bat launches through
-  the trusted Python on the drive and avoids security blocks.
-
 NEED HELP?
   See docs\STATUS.md and docs\DESIGN.md for details.
 ============================================================
