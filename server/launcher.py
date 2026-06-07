@@ -120,6 +120,8 @@ class LlamaLauncher:
             "--host",     "127.0.0.1",
             "--ctx-size", str(CONTEXT_SIZE),
             "--threads",  str(max(2, (os.cpu_count() or 4) - 1)),
+            "--mlock",    # lock the model in RAM so inference never faults to USB
+            "--no-mmap",  # load the model fully into RAM instead of mmapping the USB
             "--log-disable",
         ]
         return subprocess.Popen(
